@@ -7,18 +7,13 @@ const ScrollingContent = () => {
 
   useEffect(() => {
     const container = containerRef.current;
-    // Clone the items and append them to the end
-    const items = container.getElementsByClassName("item-container");
+   const items = container.getElementsByClassName("item-container");
     const cloneItems = Array.from(items).map((item) => item.cloneNode(true));
     cloneItems.forEach((clone) => container.appendChild(clone));
 
-    // Calculate animation duration based on the number of items
-    const animationDuration = healthBenifits.length * 2 + "s"; // Adjust as needed
+   const animationDuration = healthBenifits.length * 2 + "s"; 
 
-    // Apply animation to the container
     container.style.animation = `scroll ${animationDuration} linear infinite`;
-
-    // Cleanup cloned items and reset animation duration on component unmount
     return () => {
       cloneItems.forEach((clone) => container.removeChild(clone));
       container.style.animation = "none";

@@ -37,7 +37,7 @@ export const healthBenifits=[{
 }]
 export const bestSellers=[{
     img:"https://spyranretail.in/files/catalog/new_products/Spyran-Godkeri-Pickele-200-g.png",
-    title:"phrawn pickle",
+    title:"prawns pickle",
     price1:170,
     quantity:"1kg"
 },{
