@@ -1,0 +1,82 @@
+.contact-container {
+    width: 100%;
+    min-height: 15vh;
+    height: auto;
+    background-color: green;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#contact-details{
+    display: flex;
+    justify-content:space-between;
+    width: 60%;
+}
+.contact-container-text {
+    width: 30%;
+   
+}
+
+/* Add styles for mobile screens */
+@media (max-width: 745.98px) {
+    .contact-container {
+        flex-direction: row;
+        min-height: auto;
+    }
+
+    .contact-container-text {
+        width: 30%;
+        text-align: center;
+    }
+
+    #contact-details {
+        width: 50%;
+        flex-direction: column;
+        align-items:start;
+        font-size: smaller;
+    }
+
+    .rounded-circle {
+        margin-bottom: 10px;
+    }
+}
+
+.foot-ter{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    padding-top: 3%;
+    padding-bottom: 3%;
+    height: auto;
+    justify-content: space-evenly;
+    background-color: green;
+}
+.foot-ter span{
+max-width:30%;
+min-width:20%;
+min-height: 100px;
+}
+
+.black-line {
+    width: 80%;
+    height: 2px; /* Adjust the height of the line as needed */
+    margin: 0 auto; /* Center the line */
+  }
+  .outer-div {
+    
+    background-color: green;
+  }
+  
+  .inner-div {
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .social-icons a {
+    font-size: 1.5rem;
+  }
+  

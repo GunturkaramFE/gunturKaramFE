@@ -50,10 +50,7 @@ const Bestseller = () => {
    <Button variant="outlined"><ShoppingBagIcon/>Buy</Button>
    <Button variant="outlined"><ShoppingCartIcon/>Add</Button>
     </Stack>
-
     </div>
-
-
     </div>
   </CardActionArea>
 </Card>
