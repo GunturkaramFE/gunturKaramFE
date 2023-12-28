@@ -49,7 +49,7 @@ const NavBar = () => {
           <ShoppingCartIcon />
         </Badge>
       <div>
-      {true ? <a onClick={toggleDrawer('right', true)}>Login/Signup</a> : (<PersonIcon/>)}
+      {true ? <a onClick={toggleDrawer('right', true)}>Log/Signup</a> : (<PersonIcon/>)}
   <Drawer
     anchor="right"
     open={state.right}
