@@ -10,6 +10,8 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SearchFilter from '../reusableComponents/filter';
 import logo from '../asserts/logo.png';
+import Login from './Login';
+import BasicTabs from './Tabs';
 type Anchor = 'right';
 const NavBar = () => {
   const [state, setState] = React.useState({
@@ -56,6 +58,19 @@ const NavBar = () => {
     onClose={toggleDrawer('right', false)}
    >
     {list('right')}
+    <div style={{width:'100%',height:"100%"}}>
+      <div style={{width:"100%",height:'20%',display:'flex',justifyContent:'center'}}>
+      <img src={logo} alt="" style={{ width: '200px', objectFit: 'contain' }} />
+      </div>
+      <div style={{width:'100%',height:"80%" ,display:'flex',justifyContent:'center'}} >
+      <div style={{width:"80%",height:'100%'}}>
+        <BasicTabs/>            
+        </div>         
+
+      </div>
+    </div>
+
+
   </Drawer>
    </div>
   </div>
