@@ -60,7 +60,7 @@ const Signup = () => {
     <button
      className="btn btn-success btn-block fa-lg gradient-custom-2 mb-3 w-100"
     type="button"
-    onClick={HandleSignup}
+    onClick={handleSignup}
     style={{
       backgroundColor: 'green',color: 'white' }}
     >
