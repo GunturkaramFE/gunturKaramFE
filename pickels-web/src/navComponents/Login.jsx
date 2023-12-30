@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
+import PopupForm from '../Pop-up/PopupForm';
+import VerificationForm from '../Authorization/VerificationForm';
+
 const Login = () => {
+  const[ispop,setIsPopUp]=useState(false)
   const handleLogin = () => {
     // Add your login logic here
     console.log('Login button clicked');
   };
   const [isHovered, setIsHovered] = useState(false);
-
+const handlePopup=()=>{
+setIsPopUp(!ispop)
+}
   const linkStyle = {
     color: isHovered ? 'red' : 'green',
     textDecoration: 'none',
   };
-
   return (
     <div style={{width:'100%',height:'100%'}}>
-      <div className="card-body p-md-1 mx-md-3">
-       
+      <div className="card-body p-md-1 mx-md-3">       
         <form>
           <div className="form-outline mb-4">
            <label className="form-label" htmlFor="form2Example11">
@@ -58,9 +62,10 @@ const Login = () => {
       style={linkStyle}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-    >
-      <u>Forgot Password?</u>
+  >
+      <u onClick={handlePopup}>Forgot Password?</u>
     </a>
+    <PopupForm ispop={ispop} formData={<VerificationForm/>} fun={handlePopup}/>
 </div>
       
     </form>

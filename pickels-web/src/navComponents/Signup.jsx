@@ -34,7 +34,7 @@ const Signup = () => {
          
           <div className="text-center pt-1 mb-1 pb-1">
     <button
-     className="btn btn-success btn-block fa-lg gradient-custom-2 mb-3"
+     className="btn btn-success btn-block fa-lg gradient-custom-2 mb-3 w-100"
     type="button"
     onClick={HandleSignup}
     style={{
