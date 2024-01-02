@@ -53,9 +53,7 @@ const Bestseller = () => {
     </div>
     </div>
   </CardActionArea>
-</Card>
-
-      
+</Card>      
           </div>
 
         )
