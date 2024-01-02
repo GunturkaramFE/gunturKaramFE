@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { isValidEmail } from '../helpers/validations';
+import api from '../api';
 
 const Signup = () => {
   const [userName, setUserName] = useState('');
@@ -11,10 +12,27 @@ const Signup = () => {
       setError('Invalid email format');
       return;
     }
-
-    // Additional validation checks for other fields, if any
-
-    setError('Signup successful');
+    let payload={
+   document:{
+    email,
+    name:userName,
+   }
+    }
+    api.post('/user/register', payload)
+    .then(response => {
+       if (response.success==true) {
+          alert('verification-link-sent')       
+      }else if(response.success==true&&response.error=='User already exists'){
+        setError('user-already exist');
+      }else{
+        setError("something went wroung")
+      }
+    })
+    .catch(error => {
+     setError('Signup failed due to a network error. Please try again.');
+     console.log(error)
+    });
+  
   };
 
   const [isHovered, setIsHovered] = useState(false);

@@ -5,13 +5,12 @@ import { useEffect } from 'react';
 import Verifydiv from './Authorization/Verifydiv';
 function App() {
  
- useEffect(()=>console.log("app-loaded"),[])  
 return (
 <>
       <BrowserRouter>
       <Routes>
         <Route  path="/" element={<Landing_page/>}/>    
-        <Route path='/verification' element={<Verifydiv/>} />
+        <Route path='/verify' element={<Verifydiv/>} />
       </Routes>
       </BrowserRouter>                 
 </>
