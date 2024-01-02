@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { isValidEmail,isValidPassword } from '../helpers/validations';
+import bcrypt from 'bcryptjs';
 
 import PopupForm from '../Pop-up/PopupForm';
 import VerificationForm from '../Authorization/VerificationForm';
+import { HashPassword } from '../helpers/hashpassword';
+import api from '../api';
 
 const Login = () => {
   const[ispop,setIsPopUp]=useState(false)
@@ -12,19 +15,39 @@ const Login = () => {
   const [error, setError] = useState('');
 
 
-  const handleLogin = () => {
+  const handleLogin = async() => {
    if (!isValidEmail(email)) {
       setError('Invalid email format');
       return;
     }
-
     if (!isValidPassword(password)) {
       setError('Enter Correct Password Format');
       return;
     }
-    setError('loginn');
-  };
+ 
+   const payload={
+    document:{
+      password:password,
+      email:email
+    }
+   }
+   const response = await api.post('/user/login', payload);
+try{
+      if (response.success === true) {
+        alert(response.msg)
+       localStorage.setItem('Auth',response?.token)
+        
+      } else if (response.success === false) {
+        alert(response.msg)
+      } else {
+        setError('Something went wrong');
+      }
+    } catch (error) {
+      setError('Confirmation failed due to a network error. Please try again.');
+      console.log(error);
+    }
 
+  }
   const [isHovered, setIsHovered] = useState(false);
 const handlePopup=()=>{
 setIsPopUp(!ispop)

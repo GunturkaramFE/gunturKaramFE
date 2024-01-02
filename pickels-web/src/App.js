@@ -6,14 +6,16 @@ import Verifydiv from './Authorization/Verifydiv';
 import ProductsContainer from './ProductStore/ProductsContainer';
 function App() {
  
- useEffect(()=>console.log("app-loaded"),[])  
 return (
 <>
       <BrowserRouter>
       <Routes>
         <Route  path="/" element={<Landing_page/>}/>    
+
         <Route path='/verification' element={<Verifydiv/>} />
         <Route path='/Products' element={<ProductsContainer/>} />
+//          <Route path='/verify' element={<Verifydiv/>} />
+
       </Routes>
       </BrowserRouter>                 
 </>
