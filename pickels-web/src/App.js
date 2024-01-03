@@ -10,8 +10,10 @@ return (
 <>
       <BrowserRouter>
       <Routes>
+
         <Route  path="/" element={<Landing_page/>}/> 
         <Route path='/ViewCart' element={<ViewCart/>} /> 
+
         <Route path='/Products' element={<ProductsContainer/>} />
         <Route path='/verify' element={<Verifydiv/>} />
       </Routes>
