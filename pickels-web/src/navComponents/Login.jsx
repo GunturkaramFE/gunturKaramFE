@@ -48,7 +48,7 @@ try{
     }
 
   }
-  const [isHovered, setIsHovered] = useState(false);
+const [isHovered, setIsHovered] = useState(false);
 const handlePopup=()=>{
 setIsPopUp(!ispop)
 }
@@ -58,8 +58,7 @@ setIsPopUp(!ispop)
   };
   return (
     <div style={{width:'100%',height:'100%'}}>
-      <div className="card-body p-md-1 mx-md-3">       
-
+      <div className="card-body p-md-1 mx-md-3">      
         <form>
           <div className="form-outline mb-4">
             <label className="form-label" htmlFor="form2Example11">
@@ -102,7 +101,6 @@ setIsPopUp(!ispop)
   >
     Log in
   </button>
-  
   <a
       href="#"
       style={linkStyle}
@@ -111,13 +109,10 @@ setIsPopUp(!ispop)
   >
       <u onClick={handlePopup}>Forgot Password?</u>
     </a>
-    <PopupForm ispop={ispop} formData={<VerificationForm/>} fun={handlePopup}/>
-</div>
-      
+    <PopupForm ispop={ispop} formData={<VerificationForm/>} fun={handlePopup} width='350'/>
+</div>      
     </form>
-    </div>
-
-        
+    </div>        
     </div>
   );
 };

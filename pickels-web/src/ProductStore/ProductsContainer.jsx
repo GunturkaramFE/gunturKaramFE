@@ -1,10 +1,14 @@
 
 import React from 'react'
-import Card from './Card'
+import ProductTab from './ProductTab'
+import NavBar from '../navComponents/mainNav'
 const ProductsContainer = () => {
   return (
     <div style={{width:'100%',height:'100vh'}}>
-      <Card/>
+      <NavBar/>
+      <div style={{width:"100%",height:'100%'}}> 
+      <ProductTab />
+      </div> 
     </div>
   )
 }
