@@ -5,14 +5,12 @@ const api = axios.create({
 });
 
 // Define an array of routes that require authentication
-const authenticatedRoutes = ['', '/route2', '/route3'];
-
+const authenticatedRoutes = ['/user/getShoppingData'];
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('Auth');
-
     // Check if the current route is in the array of authenticated routes
-    if (token && authenticatedRoutes.some(route => config.url.includes(route))) {
+    if (token && authenticatedRoutes.some(route => config.url===route)) {
       config.headers.Authorization = `Bearer ${token}`;
     }
 

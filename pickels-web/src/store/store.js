@@ -12,7 +12,7 @@ const store = configureStore({
 });
 const fetchShoppingDataOnPageRefresh = async () => {
   try {
-    const response = await api.get('/shopping-data');
+    const response = await api.get('/user/getShoppingData');
     store.dispatch(setShoppingData(response.data));
   } catch (error) {
     console.error('Error fetching shopping data:', error);

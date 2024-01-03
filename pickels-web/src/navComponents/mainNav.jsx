@@ -12,12 +12,27 @@ import SearchFilter from '../reusableComponents/filter';
 import logo from '../asserts/logo.png';
 import Login from './Login';
 import BasicTabs from './Tabs';
+import { useDispatch, useSelector } from 'react-redux';
+import { parseShoppingData } from '../helpers/parser';
+import { useState,useEffect } from 'react';
+
 type Anchor = 'right';
 const NavBar = () => {
+
   const [state, setState] = React.useState({
     right: false,
   });
+  const [navData, setNavData] = useState(false);
+  const shoppingData = useSelector((state) => state.shopping);
 
+  useEffect(() => {
+    setNavData(parseShoppingData(shoppingData));
+ 
+  }, [shoppingData]);
+  useEffect(()=>{
+console.log(navData)
+  },[navData])
+  
   const toggleDrawer = (anchor: Anchor, open: boolean) => () => {
     setState({ ...state, [anchor]: open });
   };
@@ -41,17 +56,17 @@ const NavBar = () => {
         <SearchFilter />
       </div>
       <div className="carts">
-        <Badge badgeContent={4} color="success">
+        <Badge badgeContent={(navData?.wishlist?.length)} color="success">
           <FavoriteBorderIcon />
         </Badge>
         <Badge badgeContent={4} color="success">
           <NotificationsNoneIcon />
         </Badge>
-        <Badge badgeContent={4} color="success">
+        <Badge badgeContent={(navData?.cart?.length)} color="success">
           <ShoppingCartIcon />
         </Badge>
       <div>
-      {true ? <a onClick={toggleDrawer('right', true)}>Log/Signup</a> : (<PersonIcon/>)}
+      {navData?.id?(<PersonIcon/>):<a onClick={toggleDrawer('right', true)}>Log/Signup</a> }
   <Drawer
     anchor="right"
     open={state.right}

@@ -9,7 +9,7 @@ return (
 <>
       <BrowserRouter>
       <Routes>
-        <Route  path="/" element={<Landing_page/>}/> 
+        <Route  path="*" element={<Landing_page/>}/> 
         {/* <Route path='/verification' element={<Verifydiv/>} /> */}
         <Route path='/Products' element={<ProductsContainer/>} />
         <Route path='/verify' element={<Verifydiv/>} />
