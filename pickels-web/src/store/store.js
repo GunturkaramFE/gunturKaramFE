@@ -2,29 +2,25 @@
 import { configureStore } from '@reduxjs/toolkit';
 import profileReducer, { clearProfile, setProfile } from '../store/profileSlicer';
 import api from '../api';
+import shoppingReducer, { clearShoppingData, setShoppingData } from '../store/shoppingSlicer'; // Import the shopping slicer
 
 const store = configureStore({
   reducer: {
     profile: profileReducer,
+    shopping:shoppingReducer
   },
 });
-const fetchUserProfileOnPageRefresh = async () => {
+const fetchShoppingDataOnPageRefresh = async () => {
   try {
-    const token = localStorage.getItem('Auth');
-    if (token) {
-      // Make an API request to get user data
-      const response = await api.get('/user-profile');
-      
-  
-      store.dispatch(setProfile());
-    }
+    const response = await api.get('/shopping-data');
+    store.dispatch(setShoppingData(response.data));
   } catch (error) {
-    console.error('Error fetching user profile:', error);
-    // If an error occurs, you might want to dispatch clearProfile or handle it accordingly
-    store.dispatch(clearProfile());
+    console.error('Error fetching shopping data:', error);
+    store.dispatch(clearShoppingData());
   }
 };
 
-// Call the function on page refresh
-fetchUserProfileOnPageRefresh();
+ fetchShoppingDataOnPageRefresh().then(()=>console.log('data-fetched'));
+
+
 export default store;

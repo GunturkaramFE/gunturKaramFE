@@ -4,16 +4,10 @@ import { createSlice } from '@reduxjs/toolkit';
 const profileSlice = createSlice({
   name: 'profile',
   initialState: {
-    id: null,
     email: '',
-    password: '',
     type: '',
     name: '',
-    mobile: '',
-    isDeleted: false,
-    modifyAt: null,
-    lastLogin: null,
-    isSignIn: false,
+    mobile: '', 
   },
   reducers: {
     setProfile: (state, action) => {
@@ -21,16 +15,10 @@ const profileSlice = createSlice({
     },
     clearProfile: (state) => {
       return {
-        id: null,
-        email: '',
-        password: '',
+        email: '',   
         type: '',
         name: '',
         mobile: '',
-        isDeleted: false,
-        modifyAt: null,
-        lastLogin: null,
-        isSignIn: false,
       };
     },
   },
