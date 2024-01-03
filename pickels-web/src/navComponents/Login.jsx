@@ -35,8 +35,7 @@ const Login = () => {
 try{
       if (response.success === true) {
         alert(response.msg)
-       localStorage.setItem('Auth',response?.token)
-        
+       localStorage.setItem('Auth',response?.token)        
       } else if (response.success === false) {
         alert(response.msg)
       } else {
