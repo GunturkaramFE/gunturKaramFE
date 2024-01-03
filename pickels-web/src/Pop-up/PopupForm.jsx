@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './PopupForm.css'; // Import a CSS file for styling
 
-const PopupForm = ({fun,ispop,formData}) => {
+const PopupForm = ({fun,ispop,formData,width}) => {
   const [isPopupOpen, setPopupOpen] = useState(ispop);
   const handleButtonClick = () => {
     setPopupOpen(true);
@@ -16,7 +16,7 @@ const PopupForm = ({fun,ispop,formData}) => {
 
       {ispop && (
         <div className="popup-overlay" >
-          <div className="popup-form" style={{width:'350px',height:"350px"}}>
+          <div className="popup-form" style={{width:width,height:"350px"}}>
             <button className="close-button" onClick={handlePopupClose}>
               &times;
             </button>
