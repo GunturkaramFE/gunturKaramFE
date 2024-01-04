@@ -17,7 +17,6 @@ const CarouselSmall = ({ data, Component }) => {
       const newCardsToShow = Math.floor(screenWidth / cardWidth);
       setCardsToShow(newCardsToShow);
     };
-
     updateCardsToShow();
     window.addEventListener('resize', updateCardsToShow);
 
@@ -26,13 +25,11 @@ const CarouselSmall = ({ data, Component }) => {
     };
   }, [cardWidth]);
 
-  const handlers = useSwipeable({
-  
+  const handlers = useSwipeable({  
     onSwipedLeft: () => {
       if(!(position <= -(((totalCards - cardsToShow) * cardWidth)-1000))){
         handleSwipe('right')
-      }
-    
+      }    
   },
     onSwipedRight: () => {
       handleSwipe('left')
