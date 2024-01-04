@@ -5,6 +5,7 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Card from './Card';
+import { useDispatch, useSelector } from 'react-redux';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -40,7 +41,10 @@ function a11yProps(index) {
 }
 
 const ProductTab = () => {
-  const [value, setValue] = React.useState(0);
+const [value, setValue] = React.useState(0);
+const dispatch = useDispatch();
+
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

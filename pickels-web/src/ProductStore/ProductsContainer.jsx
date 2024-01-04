@@ -3,6 +3,9 @@ import React from 'react'
 import ProductTab from './ProductTab'
 import NavBar from '../navComponents/mainNav'
 const ProductsContainer = () => {
+
+
+
   return (
     <div style={{width:'100%',height:'100vh'}}>
       <NavBar/>
@@ -11,6 +14,8 @@ const ProductsContainer = () => {
       </div> 
     </div>
   )
+
+  
 }
 
 export default ProductsContainer

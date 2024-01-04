@@ -66,7 +66,7 @@ const CarouselSmall = ({ data, Component }) => {
       />
 
       <div style={{ display: 'flex', transition: 'transform 0.5s ease', transform: `translateX(${position}px)`, justifyContent: 'space-between' }}>
-        {data.map((card, index) => (
+        {data?.map((card, index) => (
           <div key={index} style={{ width: cardWidth }}>
             <Component productdetails={card} />
           </div>
