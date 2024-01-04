@@ -26,12 +26,9 @@ const NavBar = () => {
   const shoppingData = useSelector((state) => state.shopping);
 
   useEffect(() => {
-    setNavData(parseShoppingData(shoppingData));
- 
+    setNavData(parseShoppingData(shoppingData)); 
   }, [shoppingData]);
-  useEffect(()=>{
-console.log(navData)
-  },[navData])
+
   
   const toggleDrawer = (anchor: Anchor, open: boolean) => () => {
     setState({ ...state, [anchor]: open });

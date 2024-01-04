@@ -20,8 +20,7 @@ const ProductCard = ({ productdetails }) => {
             <span className="animate__animated animate__headShake">
       <VisibilityIcon className="icon"/>
         <h6>View</h6>
-      </span>
-            
+      </span>            
           </div>
         </div>
       )}
@@ -47,8 +46,8 @@ const ProductCard = ({ productdetails }) => {
           flexDirection: 'column',
         }}
       >
-        <h5 className="card-title">{productdetails.name}</h5>
-        <p className="card-text">Price: &#x20B9;100 </p>
+       <h5 className="card-title">{productdetails.title}</h5>
+        <p className="card-text">Price: &#x20B9;{productdetails.startingPrice} </p>
       </div>
     </div>
   );
