@@ -1,6 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import VerifiedIcon from '@mui/icons-material/Verified';
+import PopupForm from '../Pop-up/PopupForm';
+import AddressPopup from './AddressPopup';
 const ViewCart = () => {
+  const[popup,setPopup]=useState(false)
+  const HandleChangeAddress=()=>{
+    setPopup(!popup)
+    }    
   return (
 <div style={{width:'100%',height:"100vh",display:'flex'}}>
 <div style={{width:'70%',height:'100vh',display:'flex',flexDirection:'column'}}>
@@ -382,13 +388,15 @@ const ViewCart = () => {
         <h6 className="card-subtitle mb-2 text-muted">ADDRESS</h6>
         <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
       </div>
+    </div>      
     </div>
-      
-    </div>
-    <div style={{display:"flex",justifyContent:'space-between'}}> <a href="#" className="card-link">Change Address</a>
-        <a href="#" className="card-link">Edit</a></div>        
+    <div style={{display:"flex",justifyContent:'space-between',width:"100%"}}>
+    <a href="#" onClick={HandleChangeAddress} className="card-link">Change Address</a>
+    <a href="#"  className="card-link">Edit</a>
+    </div>  
+    <PopupForm ispop={popup} formData={<AddressPopup/>} fun={HandleChangeAddress} width='600px'/>  
     <hr/>
-              <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+              <li className="d-flex justify-content-between align-items-center border-0 px-0 mb-3">
                 <div>
                   <strong>Total amount</strong>
                   <strong>
