@@ -3,13 +3,19 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { useSwipeable } from 'react-swipeable'; // Updated import
 import ProductCard from './productCard';
+import PopupForm from '../Pop-up/PopupForm';
+import AddToCart from '../ProductStore/AddToCart';
+
+// ... (imports)
 
 const CarouselSmall = ({ data, Component }) => {
-  const cardWidth = 300; // Update with the actual width of your cards
-  const step = 1; // Number of cards to show in each swipe
+  const cardWidth = 300;
+  const step = 1;
   const [cardsToShow, setCardsToShow] = useState(0);
-  const totalCards = data.length;
+  const totalCards = data?.length;
   const [position, setPosition] = useState(0);
+  const[pop,setPopUp]=useState(false)
+  const[popUpData,setPopUpData]=useState({})
 
   useEffect(() => {
     const updateCardsToShow = () => {
@@ -17,38 +23,45 @@ const CarouselSmall = ({ data, Component }) => {
       const newCardsToShow = Math.floor(screenWidth / cardWidth);
       setCardsToShow(newCardsToShow);
     };
-    updateCardsToShow();
+
+    if (data?.length > 0) {
+      updateCardsToShow();
+    }
+
     window.addEventListener('resize', updateCardsToShow);
 
     return () => {
       window.removeEventListener('resize', updateCardsToShow);
     };
-  }, [cardWidth]);
+  }, [cardWidth, data]);
 
-  const handlers = useSwipeable({  
-    onSwipedLeft: () => {
-      if(!(position <= -(((totalCards - cardsToShow) * cardWidth)-1000))){
-        handleSwipe('right')
-      }    
-  },
-    onSwipedRight: () => {
-      handleSwipe('left')
-    },
+  const handlers = useSwipeable({
+    onSwipedLeft: () => handleSwipe('left'),
+    onSwipedRight: () => handleSwipe('right'),
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true,
   });
 
   const handleSwipe = (direction) => {
-    console.log(position <=-(((totalCards - cardsToShow) * cardWidth)-1000))
-    if (direction === 'left') {
+    if (direction === 'left' && position < 0) {
       const nextPosition = position + step * cardWidth;
       setPosition(nextPosition >= 0 ? 0 : nextPosition);
-    } else {
+    } else if (direction === 'right' && position > -((totalCards - cardsToShow) * cardWidth)) {
       const nextPosition = position - step * cardWidth;
-      const maxPosition = -((totalCards - cardsToShow) * cardWidth);
-      setPosition(nextPosition <= maxPosition ? maxPosition : nextPosition);
+      setPosition(nextPosition <= -((totalCards - cardsToShow) * cardWidth) ? -((totalCards - cardsToShow) * cardWidth) : nextPosition);
     }
   };
+  const HandlePopup=(data)=>{
+    setPopUpData(data)
+    setPopUp(!pop)
+    }
+  if (!data) {
+    // Return a loading state or handle the absence of data
+    return <div>Loading...</div>;
+  }
 
   return (
+    <>
     <div {...handlers} style={{ position: 'relative', width: '100%', height: '50vh', overflow: 'hidden', marginBottom: '20px' }}>
       <ArrowBackIosNewIcon
         style={{
@@ -65,7 +78,7 @@ const CarouselSmall = ({ data, Component }) => {
       <div style={{ display: 'flex', transition: 'transform 0.5s ease', transform: `translateX(${position}px)`, justifyContent: 'space-between' }}>
         {data?.map((card, index) => (
           <div key={index} style={{ width: cardWidth }}>
-            <Component productdetails={card} />
+            <Component productdetails={card} PopUpHandler={HandlePopup}/>
           </div>
         ))}
       </div>
@@ -76,11 +89,13 @@ const CarouselSmall = ({ data, Component }) => {
           top: '50%',
           right: 0,
           backgroundColor: 'lightgray',
-          cursor: position <= -(((totalCards - cardsToShow) * cardWidth)-1000) ? 'not-allowed' : 'pointer',
+          cursor: position <= -((totalCards - cardsToShow) * cardWidth) ? 'not-allowed' : 'pointer',
         }}
-        onClick={() => position <= -(((totalCards - cardsToShow) * cardWidth)-1000) ? null : handleSwipe('right')}
+        onClick={() => position <= -((totalCards - cardsToShow) * cardWidth) ? null : handleSwipe('right')}
       />
     </div>
+    <PopupForm ispop={pop}formData={<AddToCart data={popUpData}/>} fun={HandlePopup} width='460px'/>
+    </>
   );
 };
 

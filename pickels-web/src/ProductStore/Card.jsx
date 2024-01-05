@@ -10,7 +10,8 @@ const Card = () => {
     setPopUp(!pop)
     }
   return (
-    <div style={{width:'20%',height:'30%' }}>
+    <div style={{width:'20%',height:'30%',position: 'relative', // Set position to relative or absolute
+    zIndex: 10000,  }}>
          <div className="card  " style={{width:'300px',height:'auto',margin: '0', padding: '0'}}>
          <div  className="card-body" style={{ margin: '0', padding: '0', display: 'flex', flexDirection: 'column'}} >
          <div style={{position:'relative'}}>       

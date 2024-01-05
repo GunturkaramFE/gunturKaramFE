@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { AddShoppingCart, AttachMoney } from '@mui/icons-material'; // Import icons
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import '../styles/productCard.css';
+import PopupForm from '../Pop-up/PopupForm';
+import AddToCart from '../ProductStore/AddToCart';
 
-const ProductCard = ({ productdetails }) => {
+const ProductCard = ({ productdetails,PopUpHandler }) => {
   const [isHovered, setIsHovered] = useState(false);
-
-  return (
+ 
+  return (<>
+  
     <div
       className="card"
       style={{ width: '14rem', height: '38vh', marginTop: '10px', marginLeft: '12px', position: 'relative' }}
@@ -16,7 +19,7 @@ const ProductCard = ({ productdetails }) => {
       {isHovered && (
         <div className="overlay">
           <div className="overlay-content">
-            <span className="animate__animated animate__headShake"> <AddShoppingCart className="icon" /><h6>Add</h6></span>
+            <span className="animate__animated animate__headShake" onClick={()=>{PopUpHandler(productdetails)}}> <AddShoppingCart className="icon" /><h6>Add</h6></span>
             <span className="animate__animated animate__headShake">
       <VisibilityIcon className="icon"/>
         <h6>View</h6>
@@ -27,7 +30,7 @@ const ProductCard = ({ productdetails }) => {
 
       <div style={{ height: '60%' }}>
         <img
-          src={productdetails.imageSrc}
+          src={productdetails.url}
           className="card-img-top"
           alt="..."
           style={{
@@ -49,7 +52,10 @@ const ProductCard = ({ productdetails }) => {
        <h5 className="card-title">{productdetails.title}</h5>
         <p className="card-text">Price: &#x20B9;{productdetails.startingPrice} </p>
       </div>
+   
     </div>
+   
+    </>
   );
 };
 
