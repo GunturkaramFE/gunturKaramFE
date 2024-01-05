@@ -1,4 +1,4 @@
-import '../styles/nav.css'
+import '../styles/nav.css';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -11,25 +11,51 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SearchFilter from '../reusableComponents/filter';
 import logo from '../asserts/logo.png';
 import Login from './Login';
+import { useState,useRef, useEffect } from 'react';
 import BasicTabs from './Tabs';
 import { useDispatch, useSelector } from 'react-redux';
 import { parseShoppingData } from '../helpers/parser';
-import { useState,useEffect } from 'react';
+import Logout from './Logout';
 
 type Anchor = 'right';
 const NavBar = () => {
-
   const [state, setState] = React.useState({
     right: false,
   });
   const [navData, setNavData] = useState(false);
   const shoppingData = useSelector((state) => state.shopping);
+  const [isLogoutOpen, setIsLogoutOpen] = useState(false);
+  const logoutRef = useRef(null)
+  const handleLogout = () => {
+    setIsLogoutOpen(true);
+  };
+
+  const handleLogoutClose = () => {
+    setIsLogoutOpen(false);
+  };
+
+  const handleClickOutside = (event) => {
+    if (
+      logoutRef.current &&
+      !logoutRef.current.contains(event.target) &&
+      !event.target.closest('.nav')
+    ) {
+      handleLogoutClose();
+    }
+  };
 
   useEffect(() => {
-    setNavData(parseShoppingData(shoppingData)); 
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    setNavData(parseShoppingData(shoppingData));
   }, [shoppingData]);
 
-  
   const toggleDrawer = (anchor: Anchor, open: boolean) => () => {
     setState({ ...state, [anchor]: open });
   };
@@ -40,10 +66,11 @@ const NavBar = () => {
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
-    >      
-    <Divider /> 
+    >
+      <Divider />
     </Box>
   );
+
   return (
     <div className="nav">
       <div className="image-container">
@@ -53,40 +80,46 @@ const NavBar = () => {
         <SearchFilter />
       </div>
       <div className="carts">
-        <Badge badgeContent={(navData?.wishlist?.length)} color="success">
+        <Badge badgeContent={navData?.wishlist?.length} color="success">
           <FavoriteBorderIcon />
         </Badge>
         <Badge badgeContent={4} color="success">
           <NotificationsNoneIcon />
         </Badge>
-        <Badge badgeContent={(navData?.cart?.length)} color="success">
+        <Badge badgeContent={navData?.cart?.length} color="success">
           <ShoppingCartIcon />
         </Badge>
-      <div>
-      {navData?.id?(<PersonIcon/>):<a onClick={toggleDrawer('right', true)}>Log/Signup</a> }
-  <Drawer
-    anchor="right"
-    open={state.right}
-    onClose={toggleDrawer('right', false)}
-   >
-    {list('right')}
-    <div style={{width:'100%',height:"100%"}}>
-      <div style={{width:"100%",height:'20%',display:'flex',justifyContent:'center'}}>
-      <img src={logo} alt="" style={{ width: '200px', objectFit: 'contain' }} />
-      </div>
-      <div style={{width:'100%',height:"80%" ,display:'flex',justifyContent:'center'}} >
-      <div style={{width:"80%",height:'100%'}}>
-        <BasicTabs/>            
-        </div>         
-
+        <div>
+          <div style={{ position: 'relative' }}>
+            {navData?.id ? (
+              <PersonIcon onClick={handleLogout} />
+            ) : (
+              <a onClick={toggleDrawer('right', true)}>Log/Signup</a>
+            )}
+            <div style={{ width: '100%', position: 'absolute', top: '150%', right: '550%' }}>
+              {isLogoutOpen && (
+                <div ref={logoutRef}>
+                  <Logout onLogout={handleLogoutClose} />
+                </div>
+              )}
+            </div>
+          </div>
+          <Drawer anchor="right" open={state.right} onClose={toggleDrawer('right', false)}>
+            {list('right')}
+            <div style={{ width: '100%', height: '100%' }}>
+              <div style={{ width: '100%', height: '20%', display: 'flex', justifyContent: 'center' }}>
+                <img src={logo} alt="" style={{ width: '200px', objectFit: 'contain' }} />
+              </div>
+              <div style={{ width: '100%', height: '80%', display: 'flex', justifyContent: 'center' }}>
+                <div style={{ width: '80%', height: '100%' }}>
+                  <BasicTabs />
+                </div>
+              </div>
+            </div>
+          </Drawer>
+        </div>
       </div>
     </div>
-
-
-  </Drawer>
-   </div>
-  </div>
-  </div>
   );
 };
 
