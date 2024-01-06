@@ -16,12 +16,11 @@ import BasicTabs from './Tabs';
 import { useDispatch, useSelector } from 'react-redux';
 import { parseShoppingData } from '../helpers/parser';
 import Logout from './Logout';
-
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 type Anchor = 'right';
+
 const NavBar = () => {
-  const [state, setState] = React.useState({
-    right: false,
-  });
+  const [state, setState] = React.useState({right: false });
   const [navData, setNavData] = useState(false);
   const shoppingData = useSelector((state) => state.shopping);
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
@@ -29,11 +28,12 @@ const NavBar = () => {
   const handleLogout = () => {
     setIsLogoutOpen(true);
   };
-
   const handleLogoutClose = () => {
     setIsLogoutOpen(false);
   };
-
+  const HandleBack=()=>{
+    toggleDrawer('right', false)();
+  }
   const handleClickOutside = (event) => {
     if (
       logoutRef.current &&
@@ -70,7 +70,6 @@ const NavBar = () => {
       <Divider />
     </Box>
   );
-
   return (
     <div className="nav">
       <div className="image-container">
@@ -84,7 +83,7 @@ const NavBar = () => {
           <FavoriteBorderIcon />
         </Badge>
         <Badge badgeContent={4} color="success">
-          <NotificationsNoneIcon />
+          <NotificationsNoneIcon/>
         </Badge>
         <Badge badgeContent={navData?.cart?.length} color="success">
           <ShoppingCartIcon />
@@ -104,13 +103,17 @@ const NavBar = () => {
               )}
             </div>
           </div>
-          <Drawer anchor="right" open={state.right} onClose={toggleDrawer('right', false)}>
+          <Drawer anchor="right" open={state.right} onClose={toggleDrawer('right', false)} style={{width:"100%",height:"auto"}}>
             {list('right')}
+           
             <div style={{ width: '100%', height: '100%' }}>
+            <div style={{width:'100%',paddingLeft:'20px',height:'6%',display:'flex',alignItems:'end'}}>
+            <KeyboardBackspaceIcon onClick={HandleBack} style={{color:'#8B8589'}}/>
+            </div>
               <div style={{ width: '100%', height: '20%', display: 'flex', justifyContent: 'center' }}>
                 <img src={logo} alt="" style={{ width: '200px', objectFit: 'contain' }} />
               </div>
-              <div style={{ width: '100%', height: '80%', display: 'flex', justifyContent: 'center' }}>
+              <div style={{ width: '100%', height: '74%', display: 'flex', justifyContent: 'center' }}>
                 <div style={{ width: '80%', height: '100%' }}>
                   <BasicTabs />
                 </div>

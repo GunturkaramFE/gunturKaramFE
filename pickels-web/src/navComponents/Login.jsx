@@ -14,8 +14,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-
-  const handleLogin = async() => {
+  const handleLogin = async() =>{
    if (!isValidEmail(email)) {
       setError('Invalid email format');
       return;
@@ -35,7 +34,7 @@ const Login = () => {
 try{
       if (response.success === true) {
         alert(response.msg)
-       localStorage.setItem('Auth',response?.token)        
+       localStorage.setItem('Auth', response?.token)        
       } else if (response.success === false) {
         alert(response.msg)
       } else {
