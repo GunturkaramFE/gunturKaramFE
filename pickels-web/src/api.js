@@ -5,7 +5,7 @@ const api = axios.create({
 });
 
 // Define an array of routes that require authentication
-const authenticatedRoutes = ['/user/getShoppingData'];
+const authenticatedRoutes = ['/user/getShoppingData','/user/updateUserShoppingList'];
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('Auth');

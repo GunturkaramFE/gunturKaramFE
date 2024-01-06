@@ -1,34 +1,67 @@
 import React, { useState, useEffect } from 'react';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { parseShoppingData } from '../helpers/parser';
+import { setShoppingData } from '../store/shoppingSlicer';
+import api from '../api';
 const AddToCart = ({ data }) => {
   const [selectedQuantity, setSelectedQuantity] = useState(0);
-const[count,setCount]=useState(1)
-
+  const [count, setCount] = useState(1)
+  const dispatch=useDispatch()
+let parsedData;
+  const shoppingData = useSelector((state) => state.shopping);
   const handleDecrease = (e) => {
-
-    if (count> 1) {
-   
+    if (count > 1) {
       e.preventDefault()
-      setCount(count-1)
- 
+      setCount(count - 1)
     }
   };
-  const handleIncrease = (e) => {   
+  const handleIncrease = (e) => {
     e.preventDefault();
-    setCount(count+1)
-  
+    setCount(count + 1)
+
   };
-
-  useEffect(() => {
-    console.log('Selected Quantity:', selectedQuantity);
-  }, [selectedQuantity]);
-
   const selectedPrice = data.pricelist[selectedQuantity]?.price || 0;
   const priceperkg =
-  data.pricelist[selectedQuantity]?.price /
-  parseFloat(data.pricelist[selectedQuantity]?.quantity) /
-  (data.pricelist[selectedQuantity]?.quantity.includes('kg') ? 1 : 1000);
+    data.pricelist[selectedQuantity]?.price /
+    parseFloat(data.pricelist[selectedQuantity]?.quantity) /
+    (data.pricelist[selectedQuantity]?.quantity.includes('kg') ? 1 : 1000);
 
+const HandleAddToCart= async()=>{
+  let cartitem={
+   id:data.id,
+   category:data.category,
+   rating:data.rating,
+   subCategory:data.subCategory,
+   title:data.title,
+   url:data.url,
+  }
+  cartitem.price=selectedPrice*count
+  cartitem.quantity=count
+  cartitem.selectedQuantity=data.pricelist[selectedQuantity]
+  console.log(shoppingData)
+ parsedData=await parseShoppingData(shoppingData)
+  
+  console.log('i',parsedData)
+  let filtered=parsedData?.cart.filter((x)=>x.id==cartitem.id)
+  if(filtered.length){
+alert("sameitem")
+  }else{
+    console.log("fil",filtered)
+  let jsonobj=JSON.stringify([cartitem,...parsedData.cart])  
+   let response= await api.put('/user/updateUserShoppingList',{document:{cart:jsonobj}});
+   console.log("res",response.success)   
+   if(response.success){
+        console.log("inside redux")
+        let obj={...shoppingData}
+        obj.cart=jsonobj
+        console.log('new',obj)
+        dispatch(setShoppingData(obj))
+        
+       }
+  console.log(response);
+  }
+}
+useEffect(()=>console.log("sh",shoppingData),[shoppingData])
   return (
     <>
       {data && (
@@ -90,7 +123,7 @@ const[count,setCount]=useState(1)
                           <button
                             type="button"
                             className="btn btn-link px-2"
-                            onClick={(e) =>{handleDecrease(e)}}
+                            onClick={(e) => { handleDecrease(e) }}
                             style={{ textDecoration: 'none' }}
                           >
                             <i className="fas fa-minus">-</i>
@@ -104,42 +137,45 @@ const[count,setCount]=useState(1)
                             className="form-control form-control-sm"
                             style={{ height: '20px' }}
                           />
-             <button
-  type="button"
-  className="btn btn-link px-2"
-  onClick={(e) => handleIncrease(e)}
-  style={{ textDecoration: 'none' }}
->
-  <i className="fas fa-plus"> +</i>
-</button>
+                          <button
+                            type="button"
+                            className="btn btn-link px-2"
+                            onClick={(e) => handleIncrease(e)}
+                            style={{ textDecoration: 'none' }}
+                          >
+                            <i className="fas fa-plus"> +</i>
+                          </button>
 
 
                         </div>
                         <p style={{ display: 'flex', flexDirection: 'column' }}>
-                          <p className="lead fw-normal mb-1" style={{ fontSize: '18px' }}>
-                            $ {selectedPrice*count}
-                          </p>
+                          <span className="lead fw-normal mb-1" style={{ fontSize: '18px' }}>
+                            $ {selectedPrice * count}
+                          </span>
                         </p>
 
                       </div>
                     </div>
                   </div>
-                  
+
                 </div>
-                <div style={{display:'flex',width:'100%',justifyContent:'space-evenly',paddingTop:'20px'}}>
-        <button
-        className="btn btn-success btn-block "
-        type="button"
-        style={{backgroundColor: 'green', color: 'white', width:'35%'  }}  >
-         View
-       </button>
-        <button
-        className="btn btn-success btn-block "
-        type="button"
-        style={{backgroundColor: 'green', color: 'white', width:'35%'  }} >
-        ADD+
-        </button>
-        </div>
+                <div style={{ display: 'flex', width: '100%', justifyContent: 'space-evenly', paddingTop: '20px' }}>
+                  <button
+                    className="btn btn-success btn-block "
+                    type="button"
+                    style={{ backgroundColor: 'green', color: 'white', width: '35%' }}  >
+                    View
+                  </button>
+                  <button
+                    className="btn btn-success btn-block "
+                    type="button"
+                    style={{ backgroundColor: 'green', color: 'white', width: '35%' }} 
+                    onClick={HandleAddToCart}
+                    >
+                    
+                    ADD+
+                  </button>
+                </div>
               </div>
             </div>
           </div>

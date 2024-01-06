@@ -8,7 +8,7 @@ import TopProducts from "./TrendingProducts"
 import Footer from "./footer"
 const Landing_page=()=>{
     return(<div style={{ width: "100%", height: "auto", backgroundColor: "#eeeee4" }}>
-    <DisplayAdsOnNav/>
+    {/* <DisplayAdsOnNav/> */}
     <NavBar/> 
     <div className="carousel-container" style={{width:"100%",height:"auto"}}>
     <Carousel/>
