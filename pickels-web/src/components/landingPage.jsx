@@ -3,7 +3,7 @@ import NavBar from "../navComponents/mainNav"
 import DisplayAdsOnNav from "../navComponents/navads"
 import Carousel from "../reusableComponents/carousel"
 import ScrollingContent from "./Benifits"
-import DeliveryData from "./DeliveryData"
+import PaperCard from "./DeliveryData"
 import Bestseller from "./Topproducts"
 import TopProducts from "./TrendingProducts"
 import Footer from "./footer"
@@ -16,7 +16,7 @@ const Landing_page=()=>{
     <div className="carousel-container" style={{width:"100%",height:"auto"}}>
     <Carousel/>
     </div >
-    <DeliveryData/>
+    <PaperCard/>
     </div>    
     <div style={{width:"100%",height:"55vh",marginTop:"90px" }}><TopProducts/></div>
     <div style={{width:"100%",height:"auto",marginTop:"5px"}}><Bestseller/></div>

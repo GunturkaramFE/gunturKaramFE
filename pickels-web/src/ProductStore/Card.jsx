@@ -4,11 +4,12 @@ import PopupForm from '../Pop-up/PopupForm'
 import AddToCart from './AddToCart'
 // import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
-const Card = () => {
+const Card = ({data}) => {
   const[pop,setPopUp]=useState(false)
   const HandlePopup=()=>{
     setPopUp(!pop)
     }
+    
   return (
     <div style={{width:'20%',height:'30%',position: 'relative', // Set position to relative or absolute
     zIndex: 10000,  }}>
@@ -16,7 +17,7 @@ const Card = () => {
          <div  className="card-body" style={{ margin: '0', padding: '0', display: 'flex', flexDirection: 'column'}} >
          <div style={{position:'relative'}}>       
          <div style={{width:'100%',height:'60%',overflow:'hidden'}} >
-         <img id='ImageHover' src="https://dwarakapickles.com/wp-content/uploads/2022/05/DrumStick-1-592x600.png" alt="" style={{ objectFit: 'contain' }} />
+         <img id='ImageHover' src={data.url} alt="" style={{ objectFit: 'contain' }} />
          </div>
          </div>        
          <div style={{ width: '100%', height: '40%',padding: '0', margin: '0', display: 'flex', flexDirection: 'column',justifyContent:"center",alignItems:"center" }}>

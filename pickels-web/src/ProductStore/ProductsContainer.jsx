@@ -1,4 +1,3 @@
-
 import React from 'react'
 import ProductTab from './ProductTab'
 import NavBar from '../navComponents/mainNav'
