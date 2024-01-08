@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -6,6 +6,8 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Card from './Card';
 import { useDispatch, useSelector } from 'react-redux';
+import { setAllProducts } from '../store/allProductsSlicer';
+import api from '../api';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -43,8 +45,18 @@ function a11yProps(index) {
 const ProductTab = () => {
 const [value, setValue] = React.useState(0);
 const dispatch = useDispatch();
+const allproducts = useSelector(state => state.allProducts);
+const fetchAllProducts=async()=>{
+  const products=await api.get('/user/get-all-products')
+  dispatch(setAllProducts(products?.items||[]))
+}
 
-
+useEffect(()=>{
+fetchAllProducts()
+},[])
+useEffect(()=>{
+console.log(allproducts)
+},[allproducts])
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -71,7 +83,14 @@ const dispatch = useDispatch();
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-          <Card />
+         {allproducts?.map((x)=>{
+          return(<>
+          <div>
+           <Card data={x}/>  
+          </div>
+         
+          </>)
+         })}
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
         Chicken-Pickles
