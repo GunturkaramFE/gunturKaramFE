@@ -11,6 +11,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SearchFilter from '../reusableComponents/filter';
 import logo from '../asserts/logo.png';
 import Login from './Login';
+import {useNavigate} from 'react-router-dom'
 import { useState,useRef, useEffect } from 'react';
 import BasicTabs from './Tabs';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,6 +26,7 @@ const NavBar = () => {
   const shoppingData = useSelector((state) => state.shopping);
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
   const logoutRef = useRef(null)
+  const navigate =useNavigate()
   const handleLogout = () => {
     setIsLogoutOpen(true);
   };
@@ -56,7 +58,7 @@ const NavBar = () => {
     setNavData(parseShoppingData(shoppingData));
   }, [shoppingData]);
 
-  const toggleDrawer = (anchor: Anchor, open: boolean) => () => {
+ const toggleDrawer = (anchor: Anchor, open: boolean) => () => {
     setState({ ...state, [anchor]: open });
   };
 
@@ -86,7 +88,7 @@ const NavBar = () => {
           <NotificationsNoneIcon/>
         </Badge>
         <Badge badgeContent={navData?.cart?.length} color="success">
-          <ShoppingCartIcon />
+          <ShoppingCartIcon  onClick={()=>{navigate('/viewcart')}}/>
         </Badge>
         <div>
           <div style={{ position: 'relative' }}>
@@ -115,7 +117,7 @@ const NavBar = () => {
               </div>
               <div style={{ width: '100%', height: '74%', display: 'flex', justifyContent: 'center' }}>
                 <div style={{ width: '80%', height: '100%' }}>
-                  <BasicTabs />
+                  <BasicTabs closeDrawer={HandleBack} />
                 </div>
               </div>
             </div>

@@ -15,7 +15,7 @@ const store = configureStore({
   },
 });
 
-const fetchShoppingDataOnPageRefresh = async () => {
+export const fetchShoppingDataOnPageRefresh = async () => {
   try {
     const response = await api.get('/user/getShoppingData');
     store.dispatch(setShoppingData(response.data));

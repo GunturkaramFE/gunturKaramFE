@@ -6,8 +6,9 @@ import PopupForm from '../Pop-up/PopupForm';
 import VerificationForm from '../Authorization/VerificationForm';
 import { HashPassword } from '../helpers/hashpassword';
 import api from '../api';
+import { fetchShoppingDataOnPageRefresh } from '../store/store';
 
-const Login = () => {
+const Login = ({closeDrawer}) => {
   const[ispop,setIsPopUp]=useState(false)
 
   const [email, setEmail] = useState('');
@@ -23,8 +24,7 @@ const Login = () => {
       setError('Enter Correct Password Format');
       return;
     }
- 
-   const payload={
+    const payload={
     document:{
       password:password,
       email:email
@@ -33,8 +33,10 @@ const Login = () => {
    const response = await api.post('/user/login', payload);
 try{
       if (response.success === true) {
-        alert(response.msg)
-       localStorage.setItem('Auth', response?.token)        
+       localStorage.setItem('Auth', response?.token)  
+       fetchShoppingDataOnPageRefresh() 
+       closeDrawer() 
+       
       } else if (response.success === false) {
         alert(response.msg)
       } else {

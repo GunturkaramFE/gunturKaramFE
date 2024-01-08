@@ -1,12 +1,55 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import VerifiedIcon from '@mui/icons-material/Verified';
 import PopupForm from '../Pop-up/PopupForm';
 import AddressPopup from './AddressPopup';
+import { useDispatch, useSelector } from 'react-redux';
+import { parseShoppingData } from '../helpers/parser';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { setShoppingData } from '../store/shoppingSlicer';
+import api from '../api';
 const ViewCart = () => {
-  const[popup,setPopup]=useState(false)
+  const[popup,setPopup]=useState(false);
+  const[totalPrice,setTotalPrice]=useState(0)
   const HandleChangeAddress=()=>{
     setPopup(!popup)
-    }    
+  }  
+  let dispatch =useDispatch()
+
+const shoppingData = useSelector((state) => state.shopping);
+const[parsedData,setParsedData]=useState()
+useEffect(()=>{
+ setTotalPrice(0)
+ setParsedData(parseShoppingData(shoppingData)) 
+},[shoppingData])
+useEffect(()=>{console.log('j',parsedData)},[parsedData])
+useEffect(() => {
+  let total = 0;
+  if (parsedData?.cart) {
+    parsedData?.cart.forEach((item) => {
+      total += item.price;
+    });
+  }
+  setTotalPrice(total);
+}, [parsedData]);
+const updateCart=async(data)=>{
+  let response= await api.put('/user/updateUserShoppingList',{document:{cart:data}});
+ console.log(response)
+
+}
+const HandleChange=async(property,cartId)=>{
+  var shoppingdataobj={...shoppingData}
+if(property=='delete'){
+  let otherItems= parsedData?.cart.filter((x)=>cartId!==x.cartId)
+  let jsonobj=JSON.stringify(otherItems)
+  await  updateCart(jsonobj)
+  shoppingdataobj.cart=jsonobj
+}
+
+
+dispatch(setShoppingData(shoppingdataobj))
+
+
+}
   return (
 <div style={{width:'100%',height:"100vh",display:'flex'}}>
 <div style={{width:'70%',height:'100vh',display:'flex',flexDirection:'column'}}>
@@ -15,73 +58,37 @@ const ViewCart = () => {
       <div className="row d-flex justify-content-center align-items-center h-100">
         <div className="col-11">
           <div className="d-flex justify-content-between align-items-center mb-4">
-            <h2 className="fw-normal mb-0 text-black">Shopping Cart</h2>
-           
-          </div>
+         </div>
           <div style={{ overflowY: 'scroll', overflowX: 'hidden', width: '100%',height:"72vh" }}>
-          <div className="card rounded-3 mb-1">
+        
+{parsedData?.cart.length ? (
+  parsedData.cart.map((item, index) =>{
+   
+    return (
+    <div key={index} className="card rounded-3 mb-1">
+       <div className="card rounded-3 mb-1">
             <div className="card-body p-2">
               <div className="row d-flex justify-content-between align-items-center">
                 <div className="col-md-2 col-lg-2 col-xl-2">
                   <img
-                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
+                    src={item.url}
                     className="img-fluid rounded-3" alt="Cotton T-shirt" style={{width:'60px'}}
                   />
                 </div>
                 <div className="col-md-3 col-lg-3 col-xl-3">
-                  <p className="lead fw-normal mb-2">Basic T-shirt</p>
-                  <p><span className="text-muted">Size: </span>M <span className="text-muted">Color: </span>Grey</p>
-                </div>
-                <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
-                  <button className="btn btn-link px-2 " onClick={() => document.getElementById('form1').stepDown() } style={{ textDecoration: 'none' }}>
-                    <i className="fas fa-minus">-</i>
-                  </button>
-
-                  <input
-                    id="form1"
-                    min="0"
-                    name="quantity"
-                    value="2"
-                    type="number"
-                    className="form-control form-control-sm"
-                  />
-
-                  <button className="btn btn-link px-2" onClick={() => document.getElementById('form1').stepUp()} style={{ textDecoration: 'none' }}>
-                    <i className="fas fa-plus">+</i>
-                  </button>
-                </div>
-                <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                  <h5 className="mb-0">$499.00</h5>
-                </div>
-                <div className="col-md-1 col-lg-1 col-xl-1 text-end">
-                  <a href="#!" className="text-danger"><i className="fas fa-trash fa-lg"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card rounded-3 mb-1">
-            <div className="card-body p-2">
-              <div className="row d-flex justify-content-between align-items-center">
-                <div className="col-md-2 col-lg-2 col-xl-2">
-                  <img
-                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
-                    className="img-fluid rounded-3" alt="Cotton T-shirt" style={{width:'60px'}}
-                  />
-                </div>
-                <div className="col-md-3 col-lg-3 col-xl-3">
-                  <p className="lead fw-normal mb-2">Basic T-shirt</p>
+                  <p className="lead fw-normal mb-2">{item.title}</p>
                   <p><span className="text-muted">Size: </span>M <span className="text-muted">Color: </span>Grey</p>
                 </div>
                 <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
                   <button className="btn btn-link px-2" onClick={() => document.getElementById('form1').stepDown()}>
                     <i className="fas fa-minus"></i>
                   </button>
-
+                  <DeleteForeverIcon style={{color:'red',marginTop:'15px'}} onClick={()=>{HandleChange('delete',item.cartId)}}/>
                   <input
                     id="form1"
                     min="0"
                     name="quantity"
-                    value="2"
+                    value={item.quantity}
                     type="number"
                     className="form-control form-control-sm"
                   />
@@ -90,258 +97,26 @@ const ViewCart = () => {
                     <i className="fas fa-plus"></i>
                   </button>
                 </div>
+              
                 <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                  <h5 className="mb-0">$499.00</h5>
+                  <h5 className="mb-0"> &#x20B9;{item.price}</h5>
+                  
                 </div>
+               
                 <div className="col-md-1 col-lg-1 col-xl-1 text-end">
                   <a href="#!" className="text-danger"><i className="fas fa-trash fa-lg"></i></a>
                 </div>
+            
               </div>
             </div>
           </div>
-          <div className="card rounded-3 mb-1">
-            <div className="card-body p-2">
-              <div className="row d-flex justify-content-between align-items-center">
-                <div className="col-md-2 col-lg-2 col-xl-2">
-                  <img
-                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
-                    className="img-fluid rounded-3" alt="Cotton T-shirt" style={{width:'60px'}}
-                  />
-                </div>
-                <div className="col-md-3 col-lg-3 col-xl-3">
-                  <p className="lead fw-normal mb-2">Basic T-shirt</p>
-                  <p><span className="text-muted">Size: </span>M <span className="text-muted">Color: </span>Grey</p>
-                </div>
-                <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
-                  <button className="btn btn-link px-2" onClick={() => document.getElementById('form1').stepDown()}>
-                    <i className="fas fa-minus"></i>
-                  </button>
-
-                  <input
-                    id="form1"
-                    min="0"
-                    name="quantity"
-                    value="2"
-                    type="number"
-                    className="form-control form-control-sm"
-                  />
-
-                  <button className="btn btn-link px-2" onClick={() => document.getElementById('form1').stepUp()}>
-                    <i className="fas fa-plus"></i>
-                  </button>
-                </div>
-                <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                  <h5 className="mb-0">$499.00</h5>
-                </div>
-                <div className="col-md-1 col-lg-1 col-xl-1 text-end">
-                  <a href="#!" className="text-danger"><i className="fas fa-trash fa-lg"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card rounded-3 mb-1">
-            <div className="card-body p-2">
-              <div className="row d-flex justify-content-between align-items-center">
-                <div className="col-md-2 col-lg-2 col-xl-2">
-                  <img
-                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
-                    className="img-fluid rounded-3" alt="Cotton T-shirt" style={{width:'60px'}}
-                  />
-                </div>
-                <div className="col-md-3 col-lg-3 col-xl-3">
-                  <p className="lead fw-normal mb-2">Basic T-shirt</p>
-                  <p><span className="text-muted">Size: </span>M <span className="text-muted">Color: </span>Grey</p>
-                </div>
-                <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
-                  <button className="btn btn-link px-2" onClick={() => document.getElementById('form1').stepDown()}>
-                    <i className="fas fa-minus"></i>
-                  </button>
-
-                  <input
-                    id="form1"
-                    min="0"
-                    name="quantity"
-                    value="2"
-                    type="number"
-                    className="form-control form-control-sm"
-                  />
-
-                  <button className="btn btn-link px-2" onClick={() => document.getElementById('form1').stepUp()}>
-                    <i className="fas fa-plus"></i>
-                  </button>
-                </div>
-                <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                  <h5 className="mb-0">$499.00</h5>
-                </div>
-                <div className="col-md-1 col-lg-1 col-xl-1 text-end">
-                  <a href="#!" className="text-danger"><i className="fas fa-trash fa-lg"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card rounded-3 mb-1">
-            <div className="card-body p-2">
-              <div className="row d-flex justify-content-between align-items-center">
-                <div className="col-md-2 col-lg-2 col-xl-2">
-                  <img
-                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
-                    className="img-fluid rounded-3" alt="Cotton T-shirt" style={{width:'60px'}}
-                  />
-                </div>
-                <div className="col-md-3 col-lg-3 col-xl-3">
-                  <p className="lead fw-normal mb-2">Basic T-shirt</p>
-                  <p><span className="text-muted">Size: </span>M <span className="text-muted">Color: </span>Grey</p>
-                </div>
-                <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
-                  <button className="btn btn-link px-2" onClick={() => document.getElementById('form1').stepDown()}>
-                    <i className="fas fa-minus"></i>
-                  </button>
-
-                  <input
-                    id="form1"
-                    min="0"
-                    name="quantity"
-                    value="2"
-                    type="number"
-                    className="form-control form-control-sm"
-                  />
-
-                  <button className="btn btn-link px-2" onClick={() => document.getElementById('form1').stepUp()}>
-                    <i className="fas fa-plus"></i>
-                  </button>
-                </div>
-                <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                  <h5 className="mb-0">$499.00</h5>
-                </div>
-                <div className="col-md-1 col-lg-1 col-xl-1 text-end">
-                  <a href="#!" className="text-danger"><i className="fas fa-trash fa-lg"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="card rounded-3 mb-1">
-            <div className="card-body p-2">
-              <div className="row d-flex justify-content-between align-items-center">
-                <div className="col-md-2 col-lg-2 col-xl-2">
-                  <img
-                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
-                    className="img-fluid rounded-3" alt="Cotton T-shirt" style={{width:'60px'}}
-                  />
-                </div>
-                <div className="col-md-3 col-lg-3 col-xl-3">
-                  <p className="lead fw-normal mb-2">Basic T-shirt</p>
-                  <p><span className="text-muted">Size: </span>M <span className="text-muted">Color: </span>Grey</p>
-                </div>
-                <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
-                  <button className="btn btn-link px-2" onClick={() => document.getElementById('form1').stepDown()}>
-                    <i className="fas fa-minus"></i>
-                  </button>
-
-                  <input
-                    id="form1"
-                    min="0"
-                    name="quantity"
-                    value="2"
-                    type="number"
-                    className="form-control form-control-sm"
-                  />
-
-                  <button className="btn btn-link px-2" onClick={() => document.getElementById('form1').stepUp()}>
-                    <i className="fas fa-plus"></i>
-                  </button>
-                </div>
-                <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                  <h5 className="mb-0">$499.00</h5>
-                </div>
-                <div className="col-md-1 col-lg-1 col-xl-1 text-end">
-                  <a href="#!" className="text-danger"><i className="fas fa-trash fa-lg"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
+    </div>
+  )})
+) : (
+  <>"emptycart"</>
+)}
 
 
-          <div className="card rounded-3 mb-1">
-            <div className="card-body p-2">
-              <div className="row d-flex justify-content-between align-items-center">
-                <div className="col-md-2 col-lg-2 col-xl-2">
-                  <img
-                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
-                    className="img-fluid rounded-3" alt="Cotton T-shirt" style={{width:'60px'}}
-                  />
-                </div>
-                <div className="col-md-3 col-lg-3 col-xl-3">
-                  <p className="lead fw-normal mb-2">Basic T-shirt</p>
-                  <p><span className="text-muted">Size: </span>M <span className="text-muted">Color: </span>Grey</p>
-                </div>
-                <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
-                  <button className="btn btn-link px-2" onClick={() => document.getElementById('form1').stepDown()}>
-                    <i className="fas fa-minus"></i>
-                  </button>
-
-                  <input
-                    id="form1"
-                    min="0"
-                    name="quantity"
-                    value="2"
-                    type="number"
-                    className="form-control form-control-sm"
-                  />
-
-                  <button className="btn btn-link px-2" onClick={() => document.getElementById('form1').stepUp()}>
-                    <i className="fas fa-plus"></i>
-                  </button>
-                </div>
-                <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                  <h5 className="mb-0">$499.00</h5>
-                </div>
-                <div className="col-md-1 col-lg-1 col-xl-1 text-end">
-                  <a href="#!" className="text-danger"><i className="fas fa-trash fa-lg"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="card rounded-3 mb-1">
-            <div className="card-body p-2">
-              <div className="row d-flex justify-content-between align-items-center">
-                <div className="col-md-2 col-lg-2 col-xl-2">
-                  <img
-                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
-                    className="img-fluid rounded-3" alt="Cotton T-shirt" style={{width:'60px'}}
-                  />
-                </div>
-                <div className="col-md-3 col-lg-3 col-xl-3">
-                  <p className="lead fw-normal mb-2">Basic T-shirt</p>
-                  <p><span className="text-muted">Size: </span>M <span className="text-muted">Color: </span>Grey</p>
-                </div>
-                <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
-                  <button className="btn btn-link px-2" onClick={() => document.getElementById('form1').stepDown()}>
-                    <i className="fas fa-minus"></i>
-                  </button>
-
-                  <input
-                    id="form1"
-                    min="0"
-                    name="quantity"
-                    value="2"
-                    type="number"
-                    className="form-control form-control-sm"
-                  />
-
-                  <button className="btn btn-link px-2" onClick={() => document.getElementById('form1').stepUp()}>
-                    <i className="fas fa-plus"></i>
-                  </button>
-                </div>
-                <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                  <h5 className="mb-0">$499.00</h5>
-                </div>
-                <div className="col-md-1 col-lg-1 col-xl-1 text-end">
-                  <a href="#!" className="text-danger"><i className="fas fa-trash fa-lg"></i></a>
-                </div>
-              </div>
-            </div>
-          </div> 
           </div>         
 
         </div>
@@ -404,7 +179,7 @@ const ViewCart = () => {
                   </strong>
                 </div>
                 <span>
-                  <strong>$53.98</strong>
+                  <strong> &#x20B9;{totalPrice}</strong>
                 </span>
               </li>
             </ul>
