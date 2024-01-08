@@ -5,6 +5,7 @@ import Verifydiv from './Authorization/Verifydiv';
 import ProductsContainer from './ProductStore/ProductsContainer';
 import ViewCart from './ProductStore/ViewCart';
 import EditAddress from './ProductStore/EditAddress';
+import CheckoutPage from './ProductStore/CheckoutPage';
 function App() {
  
 return (
@@ -16,6 +17,7 @@ return (
         <Route path='/Products' element={<ProductsContainer/>} />
         <Route path='/verify' element={<Verifydiv/>} />
         <Route path='/Edit' element={<EditAddress/>}/>
+        <Route path='/Checkout' element={<CheckoutPage/>}/>
       </Routes>
       </BrowserRouter>                 
 </>
