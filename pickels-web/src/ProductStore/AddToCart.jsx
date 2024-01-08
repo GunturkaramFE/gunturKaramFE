@@ -6,6 +6,7 @@ import api from '../api';
 const AddToCart = ({ data }) => {
   const [selectedQuantity, setSelectedQuantity] = useState(0);
   const [count, setCount] = useState(1)
+  const[err,setErr]=useState('')
   const dispatch=useDispatch()
 let parsedData;
   const shoppingData = useSelector((state) => state.shopping);
@@ -56,13 +57,8 @@ const HandleAddToCart= async()=>{
       let jsonobj=JSON.stringify([cartitem,...parsedData.cart])  
       await updateCart(jsonobj)
     }else{
-      let currentItem=filtered.find((x)=>x.selectedQuantity.price===cartitem.selectedQuantity.price)
-      currentItem.quantity+=1;
-      
-     console.log("parse",parsedData)
-     console.log('filt',filtered)
-     console.log('curre',currentItem)
-       alert("sameitem")
+   
+      setErr('product already added to cart')
     }
   
   }else{
@@ -71,7 +67,6 @@ await updateCart(jsonobj)
 
   }
 }
-useEffect(()=>console.log("sh",shoppingData),[shoppingData])
   return (
     <>
       {data && (
@@ -169,6 +164,7 @@ useEffect(()=>console.log("sh",shoppingData),[shoppingData])
                   </div>
 
                 </div>
+                <h2 style={{color:'red'}}>{err}</h2>
                 <div style={{ display: 'flex', width: '100%', justifyContent: 'space-evenly', paddingTop: '20px' }}>
                   <button
                     className="btn btn-success btn-block "
