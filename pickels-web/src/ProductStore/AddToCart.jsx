@@ -20,9 +20,18 @@ let parsedData;
     setCount(count + 1)
 
   };
+  const updateCart=async(data)=>{
+    let response= await api.put('/user/updateUserShoppingList',{document:{cart:data}});
+    if(response.success){
+         console.log("inside redux")
+         let obj={...shoppingData}
+         obj.cart=data
+         dispatch(setShoppingData(obj))
+         
+        }
+  }
   const selectedPrice = data.pricelist[selectedQuantity]?.price || 0;
-  const priceperkg =
-    data.pricelist[selectedQuantity]?.price /
+  const priceperkg = data.pricelist[selectedQuantity]?.price /
     parseFloat(data.pricelist[selectedQuantity]?.quantity) /
     (data.pricelist[selectedQuantity]?.quantity.includes('kg') ? 1 : 1000);
 
@@ -38,27 +47,28 @@ const HandleAddToCart= async()=>{
   cartitem.price=selectedPrice*count
   cartitem.quantity=count
   cartitem.selectedQuantity=data.pricelist[selectedQuantity]
-  console.log(shoppingData)
- parsedData=await parseShoppingData(shoppingData)
-  
-  console.log('i',parsedData)
+  parsedData=await parseShoppingData(shoppingData)
+  cartitem.cartId=parsedData.cart.length+1;
   let filtered=parsedData?.cart.filter((x)=>x.id==cartitem.id)
   if(filtered.length){
-alert("sameitem")
+   let isSameCart=filtered.find((x)=>x.selectedQuantity.price==cartitem.selectedQuantity.price)
+    if(isSameCart==undefined){
+      let jsonobj=JSON.stringify([cartitem,...parsedData.cart])  
+      await updateCart(jsonobj)
+    }else{
+      let currentItem=filtered.find((x)=>x.selectedQuantity.price===cartitem.selectedQuantity.price)
+      currentItem.quantity+=1;
+      
+     console.log("parse",parsedData)
+     console.log('filt',filtered)
+     console.log('curre',currentItem)
+       alert("sameitem")
+    }
+  
   }else{
-    console.log("fil",filtered)
-  let jsonobj=JSON.stringify([cartitem,...parsedData.cart])  
-   let response= await api.put('/user/updateUserShoppingList',{document:{cart:jsonobj}});
-   console.log("res",response.success)   
-   if(response.success){
-        console.log("inside redux")
-        let obj={...shoppingData}
-        obj.cart=jsonobj
-        console.log('new',obj)
-        dispatch(setShoppingData(obj))
-        
-       }
-  console.log(response);
+     let jsonobj=JSON.stringify([cartitem,...parsedData.cart])  
+await updateCart(jsonobj)
+
   }
 }
 useEffect(()=>console.log("sh",shoppingData),[shoppingData])
