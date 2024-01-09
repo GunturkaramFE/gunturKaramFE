@@ -6,10 +6,16 @@ import React from 'react'
 import countries from './Countries'
 import indianStates from './IndainStates';
 const EditAddress = () => {
+  const containerStyle={
+    width:'50%'
+  }
+  if (window.innerWidth <= 600) {
+    containerStyle.width = '100%'; // Change width for small screens
+  }
   return (
     <div style={{width:'100%',height:'100vh',display:'flex',justifyContent:'center',alignItems:'center'}}>
-        <div style={{width:'50%',padding:'5px',height:'auto'}}>
-        <Card variant="outlined" style={{ display: 'flex', flexDirection: 'column',gap:'10px', alignItems: 'center', padding: '15px' }}>
+    <div style={{ containerStyle, padding: '5px', height: 'auto', }}>
+        <Card  variant="outlined" style={{ display: 'flex', flexDirection: 'column',gap:'10px', alignItems: 'center', padding: '15px' }}>
         <div style={{width:'100%'}}>
         <Typography variant="h6" gutterBottom>
         Shipping Address
