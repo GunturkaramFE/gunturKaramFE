@@ -5,11 +5,9 @@ import Verifydiv from './Authorization/Verifydiv';
 import ProductsContainer from './ProductStore/ProductsContainer';
 import ViewCart from './ProductStore/ViewCart';
 import EditAddress from './ProductStore/EditAddress';
-
 import HandleAllProducts from './dev/allProducts'
-
 import CheckoutPage from './ProductStore/CheckoutPage';
-
+import MainMenu from './dev/main'
 function App() {
  
 return (
@@ -22,9 +20,11 @@ return (
         <Route path='/verify' element={<Verifydiv/>} />
         <Route path='/Edit' element={<EditAddress/>}/>
 
-        <Route path='/all' element={<HandleAllProducts/>}/>
+        <Route path='/manage-products' element={<HandleAllProducts/>}/>
 
         <Route path='/Checkout' element={<CheckoutPage/>}/>
+        {/* == Admin Routes */}
+        <Route path='/admin-menu' element={<MainMenu/>}/>
        </Routes>
 
       </BrowserRouter>                 
