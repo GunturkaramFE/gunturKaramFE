@@ -2,27 +2,26 @@ import React, { useState } from 'react'
 import './Card.css'
 import PopupForm from '../Pop-up/PopupForm'
 import AddToCart from './AddToCart'
+import RatingComponent from './RatingComponent'
 // import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 const Card = ({data}) => {
   const[pop,setPopUp]=useState(false)
   const HandlePopup=()=>{
     setPopUp(!pop)
-    }
-    
+    }    
   return (
     <div style={{width:'20%',height:'30%',position: 'relative', // Set position to relative or absolute
     zIndex: 10000,  }}>
          <div className="card  " style={{width:'300px',height:'auto',margin: '0', padding: '0'}}>
          <div  className="card-body" style={{ margin: '0', padding: '0', display: 'flex', flexDirection: 'column'}} >
          <div style={{position:'relative'}}>       
-         <div style={{width:'100%',height:'60%',overflow:'hidden'}} >
-         <img id='ImageHover' src={data.url} alt="" style={{ objectFit: 'contain' }} />
+         <div style={{width:'100%',height:'50%',overflow:'hidden',display:'flex',alignItems:'center',justifyContent:'center'}} >
+         <img id='ImageHover' src={data.url} alt="" style={{ objectFit: 'contain',height:'250px' }} />
          </div>
          </div>        
          <div style={{ width: '100%', height: '40%',padding: '0', margin: '0', display: 'flex', flexDirection: 'column',justifyContent:"center",alignItems:"center" }}>
             <p  style={{ margin: '0' ,fontWeight:'bold',color:'grey' }}>Gongura Pickle</p>
-            <bdi style={{ margin: '0',color:'green',fontWeight:'bold' }}><span>₹ </span> 200.00</bdi>
             <div className='select-container'>
             <select class="form-select form-select-sm" aria-label="Small select example">
                <option selected value="0">1kg--₹200</option>
@@ -30,6 +29,11 @@ const Card = ({data}) => {
                <option value="2">3kg--₹500</option>
                <option value="3">4kg--₹600</option>
             </select>
+           </div>
+           <bdi style={{ margin: '0',color:'green',fontWeight:'bold' }}><span>₹ </span> 200.00</bdi>
+
+         <div>
+          <RatingComponent/>
          </div>
         <div style={{display:'flex',width:'100%',justifyContent:'space-evenly',padding:'6px'}}>
         <button

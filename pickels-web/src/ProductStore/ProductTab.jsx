@@ -11,7 +11,6 @@ import api from '../api';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
-
   return (
     <div
       role="tabpanel"
@@ -62,12 +61,12 @@ console.log(allproducts)
     setValue(newValue);
   };
 
-  const isMobile = window.innerWidth <= 600; // Set your own breakpoint
+  const isMobile = window.innerWidth <= 600; 
 
   return (
     <div>
       <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' ,position: 'fixed',top: 100, zIndex: 300}}>
           <Tabs
             value={value}
             onChange={handleChange}
@@ -82,16 +81,17 @@ console.log(allproducts)
             <Tab label="PRAWN PICKLES" {...a11yProps(4)} />
           </Tabs>
         </Box>
-        <CustomTabPanel value={value} index={0}>
-         {allproducts?.map((x)=>{
-          return(<>
-          <div>
-           <Card data={x}/>  
-          </div>
-         
-          </>)
-         })}
-        </CustomTabPanel>
+<CustomTabPanel value={value} index={0}>
+<div style={{ width: '100%', marginTop: '40px', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '35px', height: 'auto' }}>
+  {allproducts?.map((x, y) => {
+    return (
+      <div key={y} style={{ width: '100%' }}>
+        <Card data={x} />
+      </div>
+    )
+  })}
+</div>        
+</CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
         Chicken-Pickles
       </CustomTabPanel>   
