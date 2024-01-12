@@ -10,6 +10,7 @@ import CheckoutPage from './ProductStore/CheckoutPage';
 import MainMenu from './dev/main';
 import ProductMenu from './dev/productMenu';
 import ManageProducts from './dev/manageProducts';
+import EditProfile from './navComponents/EditProfile'
 
 const ProductLayout = ({ children }) => {
   return (
