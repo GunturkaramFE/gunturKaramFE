@@ -20,6 +20,7 @@ const ProductLayout = ({ children }) => {
   );
 };
 
+
 function App() {
   return (
     <>
@@ -29,9 +30,15 @@ function App() {
           <Route path="/verify" element={<VerifyDiv />} />
           <Route path="/ViewCart" element={<ViewCart />} />
           <Route path="/Products" element={<ProductsContainer />} />
-          <Route path="/Edit" element={<EditAddress />} />
+          <Route path="/Edit" element={<EditAddress />} /
 
-          <Route path="/Checkout" element={<CheckoutPage />} />
+        <Route path='/Checkout' element={<CheckoutPage/>}/>
+        {/* == Admin Routes */}
+        <Route path='/admin-menu' element={<MainMenu/>}/>
+        <Route path='/edit-profile' element={<EditProfile/>}/>
+
+       </Routes>
+
 
           {/* Admin Routes */}
           <Route
