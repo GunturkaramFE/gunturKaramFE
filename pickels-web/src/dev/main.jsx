@@ -32,7 +32,7 @@ const MainMenu = () => {
 
   const menuItems = [
     { icon: <DashboardIcon />, text: 'Dashboard', path: '/admin-menu' },
-    { icon: <InventoryIcon />, text: 'Products', path: '/manage-products' },
+    { icon: <InventoryIcon />, text: 'Products', path: '../admin-menu/products-menu' },
     { icon: <PersonIcon />, text: 'Users', path: '/users' },
     { icon: <ShoppingCartIcon />, text: 'Orders', path: '/orders' },
     { icon: <RedeemIcon />, text: 'Vouchers', path: '/vouchers' },
@@ -89,4 +89,4 @@ const MainMenu = () => {
   );
 };
 
-export default MainMenu;
+export default MainMenu

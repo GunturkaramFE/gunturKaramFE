@@ -92,7 +92,7 @@ const NavBar = () => {
         </Badge>
         <div>
           <div style={{ position: 'relative' }}>
-            {navData?.id ? (
+            {navData?.isuser ? (
               <PersonIcon onClick={handleLogout} />
             ) : (
               <a onClick={toggleDrawer('right', true)}>Log/Signup</a>
