@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import React from 'react'
 import countries from '../asserts/Countries'
-import indianStates from '../asserts/IndainStates';
+import indianStates from './IndainStates';
 const EditAddress = () => {
   const containerStyle={
     width:'50%'

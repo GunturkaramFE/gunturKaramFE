@@ -10,7 +10,7 @@ import CheckoutPage from './ProductStore/CheckoutPage';
 import MainMenu from './dev/main';
 import ProductMenu from './dev/productMenu';
 import ManageProducts from './dev/manageProducts';
-import EditProfile from './navComponents/EditProfile'
+import EditProfile from './navComponents/EditProfile';
 
 const ProductLayout = ({ children }) => {
   return (
@@ -20,7 +20,6 @@ const ProductLayout = ({ children }) => {
     </>
   );
 };
-
 
 function App() {
   return (
@@ -32,14 +31,7 @@ function App() {
           <Route path="/ViewCart" element={<ViewCart />} />
           <Route path="/Products" element={<ProductsContainer />} />
           <Route path="/Edit" element={<EditAddress />} />
-
-        <Route path='/Checkout' element={<CheckoutPage/>}/>
-        {/* == Admin Routes */}
-        <Route path='/admin-menu' element={<MainMenu/>}/>
-        <Route path='/edit-profile' element={<EditProfile/>}/>
-
-       </Routes>
-
+          <Route path="/Checkout" element={<CheckoutPage />} />
 
           {/* Admin Routes */}
           <Route
@@ -54,6 +46,8 @@ function App() {
               </ProductLayout>
             }
           />
+
+          <Route path='/edit-profile' element={<EditProfile />} />
         </Routes>
       </BrowserRouter>
     </>
