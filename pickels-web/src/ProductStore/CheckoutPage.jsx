@@ -3,7 +3,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { Card, Paper, TextField, Typography } from '@mui/material'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import countries from '../asserts/Countries'
-import indianStates from '../asserts/IndainStates';
+import indianStates from './IndainStates';
 const CheckoutPage = () => {
  const containerStyle = {
   width: '80%',

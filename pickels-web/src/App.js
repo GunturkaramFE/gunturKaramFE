@@ -30,33 +30,30 @@ function App() {
           <Route path="/verify" element={<VerifyDiv />} />
           <Route path="/ViewCart" element={<ViewCart />} />
           <Route path="/Products" element={<ProductsContainer />} />
-          <Route path="/Edit" element={<EditAddress />} /
-
-        <Route path='/Checkout' element={<CheckoutPage/>}/>
-        {/* == Admin Routes */}
-        <Route path='/admin-menu' element={<MainMenu/>}/>
-        <Route path='/edit-profile' element={<EditProfile/>}/>
-
-       </Routes>
-
-
-          {/* Admin Routes */}
-          <Route
-            path="/admin-menu/*"
-            element={
-              <ProductLayout>
-                <Routes>
-                  <Route path="/add-product" element={<HandleAllProducts />} />
-                  <Route path="/products-menu" element={<ProductMenu />} />
-                  <Route path="/manage-products" element={<ManageProducts />} />
-                </Routes>
-              </ProductLayout>
-            }
-          />
+          <Route path="/Edit" element={<EditAddress />} />
+          <Route path="/Checkout" element={<CheckoutPage />} />
+          {/* == Admin Routes */}
+          <Route path='/admin-menu' element={<MainMenu />} />
+          <Route path='/edit-profile' element={<EditProfile />} />
         </Routes>
+
+        {/* Admin Routes */}
+        <Route
+          path="/admin-menu/*"
+          element={
+            <ProductLayout>
+              <Routes>
+                <Route path="/add-product" element={<HandleAllProducts />} />
+                <Route path="/products-menu" element={<ProductMenu />} />
+                <Route path="/manage-products" element={<ManageProducts />} />
+              </Routes>
+            </ProductLayout>
+          }
+        />
       </BrowserRouter>
     </>
   );
 }
 
 export default App;
+
