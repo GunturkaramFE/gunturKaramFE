@@ -18,7 +18,24 @@ const store = configureStore({
 export const fetchShoppingDataOnPageRefresh = async () => {
   try {
     const response = await api.get('/user/getShoppingData');
-    store.dispatch(setShoppingData(response.data));
+    let obj={
+    id: null,
+    userId: null,
+    cart: [],
+    wishlist: []
+  }
+    if(response.sucess){
+      obj.isuser=true;
+      store.dispatch(setShoppingData(response.data));
+    }else if(!response.status&&response.data=='Products Not Exists'){
+      obj.isuser=true;
+      store.dispatch(setShoppingData(obj));
+    }else if(!response.status&&response?.error=='Token not provided')
+    {
+      obj.isuser=false;
+      store.dispatch(setShoppingData(obj))
+    }
+   
   } catch (error) {
     console.error('Error fetching shopping data:', error);
     store.dispatch(clearShoppingData());

@@ -36,7 +36,7 @@ export const healthBenifits=[{
     title:"Good Immunity"
 }]
 export const bestSellers=[{
-    img:"https://spyranretail.in/files/catalog/new_products/Spyran-Godkeri-Pickele-200-g.png",
+    img:"https://bom1plzcpnl501948.prod.bom1.secureserver.net:2083/cpsess1342237842/viewer/home%2fggaukbrx40q6%2fpublic_html%2fvarma/Screenshot%202024-01-09%20164740.png/public_html/varma/Screenshot 2023-07-27 114256.png",
     title:"prawns pickle",
     price1:170,
     quantity:"1kg"

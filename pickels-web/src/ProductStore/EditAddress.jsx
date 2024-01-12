@@ -3,8 +3,8 @@ import { Avatar, Card, TextField, Typography } from '@mui/material'
 import Button from '@mui/material/Button';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import React from 'react'
-import countries from './Countries'
-import indianStates from './IndainStates';
+import countries from '../asserts/Countries'
+import indianStates from '../asserts/IndainStates';
 const EditAddress = () => {
   const containerStyle={
     width:'50%'
