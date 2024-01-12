@@ -57,8 +57,7 @@ const EditProfile = () => {
       </Grid>
       <Grid item xs={12} md={8}>
         <Card sx={{ width: '100%', minHeight: { xs: 'unset', md: '80vh' } }}>
-          <CardContent  sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center',flexDirection:'column',marginTop:'15px' }}>
-           
+          <CardContent  sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center',flexDirection:'column',marginTop:'15px' }}>           
                    
             <div style={{ marginTop: '5px',width:'80%' }}>
               {selectedOption === 'Profile' && <ProfileForm />}
