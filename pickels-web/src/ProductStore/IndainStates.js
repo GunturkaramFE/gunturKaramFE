@@ -1,5 +1,5 @@
 const indianStates = [
-    'Choose a state',
+    'Select',
     'Andhra Pradesh',
     'Arunachal Pradesh',
     'Assam',

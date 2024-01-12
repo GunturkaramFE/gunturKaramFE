@@ -8,6 +8,7 @@ import EditAddress from './ProductStore/EditAddress';
 import HandleAllProducts from './dev/allProducts'
 import CheckoutPage from './ProductStore/CheckoutPage';
 import MainMenu from './dev/main'
+import EditProfile from './navComponents/EditProfile';
 function App() {
  
 return (
@@ -25,6 +26,8 @@ return (
         <Route path='/Checkout' element={<CheckoutPage/>}/>
         {/* == Admin Routes */}
         <Route path='/admin-menu' element={<MainMenu/>}/>
+        <Route path='/edit-profile' element={<EditProfile/>}/>
+
        </Routes>
 
       </BrowserRouter>                 
