@@ -26,14 +26,16 @@ const navigate= useNavigate()
         <div className="card-text">
         ALL PRODUCTS
         </div>
-      </div>  <div className="card-container">
+      </div> 
+       <div className="card-container">
         <div >
           <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTj_yAZss657-IsUISFAZmW95F1YSv7miZqVA0TU-IyRvhMhNRHIkY0sgE2DbTYiBHTfHw&usqp=CAU' alt='/' />
         </div>
         <div className="card-text">
           All Type Pickles
         </div>
-      </div>  <div className="card-container">
+      </div>
+      <div className="card-container" style={{borderRight:'0'}}>
         <div>
           <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTj_yAZss657-IsUISFAZmW95F1YSv7miZqVA0TU-IyRvhMhNRHIkY0sgE2DbTYiBHTfHw&usqp=CAU' alt='/' />
         </div>
