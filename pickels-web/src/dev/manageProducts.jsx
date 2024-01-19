@@ -23,9 +23,12 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import PopupForm from '../Pop-up/PopupForm';
+import DeletePop from './DeletePop';
 
 const ManageProducts = () => {
   const [fetchedProducts, setFetchedProducts] = useState([]);
+  const [deletepop,setDeletepop]=useState(false)
   const[loading,setLoading]=useState(false)
   const [filterKey, setFilterKey] = useState('id');
   const [filterValue, setFilterValue] = useState('');
@@ -63,9 +66,12 @@ setBackdrop(true); // Show backdrop
   }
 }
   const handleDelete = (productId) => {
-    // Handle delete logic here
+    
   };
 
+const handledeletePopup=()=>{
+  setDeletepop(!deletepop)
+}
   const handleEdit = (productId) => {
     // Handle edit logic here
   };
@@ -182,14 +188,18 @@ setBackdrop(true); // Show backdrop
                   <Grid container justifyContent="flex-end" marginTop="1rem">
                  
                 <Tooltip title="Make product as trending"> <TrendingUpIcon onClick={()=>{AddtoTrend(product.id)}} sx={{marginTop:"10px"}}/></Tooltip>
-                            <Tooltip title="Delete">      
+                    <Tooltip title="Delete">      
                     <IconButton onClick={() => handleDelete(product.id)} style={{ color: '#ff4d4f' }}>
-                      <DeleteIcon />
-                    </IconButton></Tooltip>
+                    <DeleteIcon  onClick={handledeletePopup} />
+                    <PopupForm ispop={deletepop} formData={<DeletePop/>} fun={handledeletePopup} width='400px' height='150px'/>
+
+                    </IconButton>
+                    </Tooltip>
                     <Tooltip title="Edit">
                     <IconButton onClick={() => handleEdit(product.id)} style={{ color: '#1890ff' }}>
-                      <EditIcon />
-                    </IconButton></Tooltip>
+                    <EditIcon/>
+                    </IconButton>
+                    </Tooltip>
                   </Grid>
                 </Grid>
               </Grid>
