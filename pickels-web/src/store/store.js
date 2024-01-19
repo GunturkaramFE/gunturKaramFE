@@ -24,12 +24,10 @@ export const fetchShoppingDataOnPageRefresh = async () => {
     cart: [],
     wishlist: []
   }
-    if(response.sucess){
-      obj.isuser=true;
-      store.dispatch(setShoppingData(response.data));
-    }else if(!response.status&&response.data=='Products Not Exists'){
-      obj.isuser=true;
-      store.dispatch(setShoppingData(obj));
+  console.log(response,'res')
+    if(response.success){
+   
+      store.dispatch(setShoppingData({...response.data,isuser:true}));
     }else if(!response.status&&response?.error=='Token not provided')
     {
       obj.isuser=false;

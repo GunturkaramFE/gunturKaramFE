@@ -57,7 +57,7 @@ const NavBar = () => {
   useEffect(() => {
     setNavData(parseShoppingData(shoppingData));
   }, [shoppingData]);
-
+useEffect(()=>console.log('dddddd',navData),[navData])
  const toggleDrawer = (anchor: Anchor, open: boolean) => () => {
     setState({ ...state, [anchor]: open });
   };
