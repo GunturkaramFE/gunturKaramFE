@@ -46,7 +46,7 @@ function App() {
               </ProductLayout>
             }
           />
-          <Route path='/edit-profile' element={<EditProfile />} />
+          <Route path='/view-profile' element={<EditProfile />} />
         </Routes>
       </BrowserRouter>
     </>

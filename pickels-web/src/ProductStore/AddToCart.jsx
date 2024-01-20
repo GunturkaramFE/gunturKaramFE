@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { parseShoppingData } from '../helpers/parser';
+import { parseProduct, parseShoppingData } from '../helpers/parser';
 import { setShoppingData } from '../store/shoppingSlicer';
 import api from '../api';
 const AddToCart = ({ data }) => {
+
   const [selectedQuantity, setSelectedQuantity] = useState(0);
   const [count, setCount] = useState(1)
   const[err,setErr]=useState('')
   const dispatch=useDispatch()
+
 let parsedData;
   const shoppingData = useSelector((state) => state.shopping);
   const handleDecrease = (e) => {
@@ -24,13 +26,13 @@ let parsedData;
   const updateCart=async(data)=>{
     let response= await api.put('/user/updateUserShoppingList',{document:{cart:data}});
     if(response.success){
-         console.log("inside redux")
          let obj={...shoppingData}
          obj.cart=data
          dispatch(setShoppingData(obj))
          
         }
   }
+  
   const selectedPrice = data.pricelist[selectedQuantity]?.price || 0;
   const priceperkg = data.pricelist[selectedQuantity]?.price /
     parseFloat(data.pricelist[selectedQuantity]?.quantity) /

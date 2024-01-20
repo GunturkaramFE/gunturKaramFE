@@ -1,26 +1,35 @@
-import { IconButton, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import indianStates from '../ProductStore/IndainStates';
-import countries from '../asserts/Countries';
-import EditIcon from '@mui/icons-material/Edit';
+import {
+  Typography,
+  Button,
+  Box,
+  TextField,
+  Select,
+  MenuItem,
+  Grid,
+  InputLabel,
+  FormControl,
+} from '@mui/material';
+import { countriesWithStates } from '../asserts/countriesWithstates';
 
-const Addressform = () => {
-  const [Data, setData] = useState({
+const AddressForm = () => {
+  const [data, setData] = useState({
     name: '',
     phone: '',
-    hno:'',
-    Street:'',
-    Village:'',
-    Landmark:'',
-    City:'',
-    State:'',
-    Pincode:'',
-    Country:''
+    hno: '',
+    street: '',
+    village: '',
+    landmark: '',
+    city: '',
+    state: '',
+    pincode: '',
+    country: '',
   });
 
   const [edit, setEdit] = useState(false);
+  const [pincodeError, setPincodeError] = useState('');
 
-  const InputChange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setData((prevData) => ({
       ...prevData,
@@ -28,188 +37,204 @@ const Addressform = () => {
     }));
   };
 
-  const EditClick = () => {
+  const handleEditClick = () => {
     setEdit(true);
   };
 
-  const SaveClick = () => {
-    // Add your save logic here
-    console.log('Saved:', Data);
+  const handleSaveClick = () => {
+    if (!isValidPincode(data.pincode)) {
+      setPincodeError('Invalid PIN code. Please enter a valid 6-digit PIN.');
+      return;
+    }
+
+    // Clear the error message when PIN code is valid
+    setPincodeError('');
+
+    // Your save logic here
+    console.log('Saved:', data);
     setEdit(false);
   };
+
+  const handleDiscardClick = () => {
+    // Reset data to the original state
+    setData({
+      name: '',
+      phone: '',
+      hno: '',
+      street: '',
+      village: '',
+      landmark: '',
+      city: '',
+      state: '',
+      pincode: '',
+      country: '',
+    });
+
+    // Clear the PIN code error message
+    setPincodeError('');
+
+    // Set the edit mode to false
+    setEdit(false);
+  };
+
+  const isValidPincode = (pincode) => {
+    const pincodeRegex = /^\d{6}$/;
+    return pincodeRegex.test(pincode);
+  };
+
   return (
-    <div style={{width:'100%'}}>
-      <form>
-       <div style={{width:'100%',display:'flex',marginBottom:'6px',justifyContent:'space-between'}}>
-            <Typography variant="h6" component="div" align="center">
-              Address
-            </Typography>
-            <IconButton id='editButton' onClick={EditClick} size="large" style={{color:"green"}}>
-            <EditIcon />
-          </IconButton>
-       </div>
-      <div className="form-group mb-2">
-        <label htmlFor="name">Full Name :</label>
-        <input
-          type="text"
-          className="form-control"
-          id="name"
+    <Box width="100%">
+      <Typography variant="h6" component="div" align="center" sx={{ mb: 2 }}>
+        Address
+      </Typography>
+
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <TextField
+          label="Full Name"
           name="name"
-          value={Data.name}
-          onChange={InputChange}
+          value={data.name}
+          onChange={handleChange}
           placeholder="Enter your name"
           disabled={!edit}
         />
-      </div>
-      
-      <div className="form-group mb-2">
-        <label htmlFor="phone">Phone:</label>
-        <input
-          type="tel"
-          className="form-control"
-          id="phone"
+
+        <TextField
+          label="Phone"
           name="phone"
-          value={Data.phone}
-          onChange={InputChange}
+          value={data.phone}
+          onChange={handleChange}
           placeholder="Enter your phone number"
           disabled={!edit}
         />
-      </div>
-  <div className="form-group mb-2" style={{ display: 'flex' }}>
-  <div style={{ width: '50%', marginRight: '10px' }}>
-    <label htmlFor="hno">H.no:</label>
-    <input
-      type="text"
-      className="form-control"
-      id="hno"
-      name="hno"
-      value={Data.hno}
-      onChange={InputChange}
-      placeholder="Enter your H.no"
-      disabled={!edit}
-    />
-  </div>
 
-  <div style={{ width: '50%' }}>
-    <label htmlFor="Street">Street:</label>
-    <input
-      type="text"
-      className="form-control"
-      id="Street"
-      name="Street"
-      value={Data.Street}
-      onChange={InputChange}
-      placeholder="Enter your street"
-      disabled={!edit}
-    />
-  </div>
-</div>
-<div className="form-group mb-2" style={{ display: 'flex' }}>
-  <div style={{ width: '50%', marginRight: '10px' }}>
-    <label htmlFor="hno">Village:</label>
-    <input
-      type="text"
-      className="form-control"
-      id="Village"
-      name="Village"
-      value={Data.Village}
-      onChange={InputChange}
-      placeholder="Enter your Village"
-      disabled={!edit}
-    />
-  </div>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+            <TextField
+              label="H.no"
+              name="hno"
+              value={data.hno}
+              onChange={handleChange}
+              placeholder="Enter your H.no"
+              disabled={!edit}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              label="Street"
+              name="street"
+              value={data.street}
+              onChange={handleChange}
+              placeholder="Enter your street"
+              disabled={!edit}
+            />
+          </Grid>
+        </Grid>
 
-  <div style={{ width: '50%' }}>
-    <label htmlFor="street">Landmark:</label>
-    <input
-      type="text"
-      className="form-control"
-      id="Landmark"
-      name="Landmark"
-      value={Data.Landmark}
-      onChange={InputChange}
-      placeholder="Enter your Landmark"
-      disabled={!edit}
-    />
-  </div>
-</div>
-<div className="form-group mb-2" style={{ display: 'flex' }}>
-  <div style={{ width: '50%', marginRight: '10px' }}>
-    <label htmlFor="hno">City:</label>
-    <input
-      type="text"
-      className="form-control"
-      id="City"
-      name="City"
-      value={Data.City}
-      onChange={InputChange}
-      placeholder="Enter your City"
-      disabled={!edit}
-    />
-  </div>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+            <TextField
+              label="Village"
+              name="village"
+              value={data.village}
+              onChange={handleChange}
+              placeholder="Enter your Village"
+              disabled={!edit}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              label="Landmark"
+              name="landmark"
+              value={data.landmark}
+              onChange={handleChange}
+              placeholder="Enter your Landmark"
+              disabled={!edit}
+            />
+          </Grid>
+        </Grid>
 
-  <div style={{ width: '50%' }}>
-    <label htmlFor="street">State:</label>
-    <select
-  className="form-control"
-  id="State"
-  name="State"
-  value={Data.State}
-  onChange={InputChange}
-  disabled={!edit}
-  placeholder='Enter State'
->
-  {indianStates.map((state) => (
-    <option key={state} value={state}>
-      {state}
-    </option>
-  ))}
-</select>
-  </div>
-</div>
-<div className="form-group mb-2" style={{ display: 'flex' }}>
-  <div style={{ width: '50%', marginRight: '10px' }}>
-    <label htmlFor="hno">Pincode:</label>
-    <input
-      type="text"
-      className="form-control"
-      id="Pincode"
-      name="Pincode"
-      value={Data.Pincode}
-      onChange={InputChange}
-      placeholder="Enter your Pincode"
-      disabled={!edit}
-    />
-  </div>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+            <TextField
+              label="City"
+              name="city"
+              value={data.city}
+              onChange={handleChange}
+              placeholder="Enter your City"
+              disabled={!edit}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <FormControl fullWidth>
+              <InputLabel htmlFor="state">State</InputLabel>
+              <Select
+                label="State"
+                name="state"
+                value={data.state}
+                onChange={handleChange}
+                disabled={!edit}
+              >
+                {countriesWithStates.find((country) => country.country === data.country)?.states.map((state) => (
+                  <MenuItem key={state} value={state}>
+                    {state}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
 
-  <div style={{ width: '50%' }}>
-    <label htmlFor="street">Country:</label>
-    <select
-  className="form-control"
-  id="Country"
-  name="Country"
-  value={Data.Country}
-  onChange={InputChange}
-  disabled={!edit}
->
-  {countries.map((country) => (
-    <option key={country} value={country}>
-      {country}
-    </option>
-  ))}
-</select>
-  </div>
-</div>
-{edit && (
-  <div style={{ display: 'flex', justifyContent: 'center', color: 'grey' ,marginTop:'10px'}}>
-    <button type="button" className="btn btn-outline-success" onClick={SaveClick} style={{ width: '100px' }}>
-      Save
-    </button>
-  </div>
-)}
-</form>
-</div>
-)
-}
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+            <TextField
+              label="Pincode"
+              name="pincode"
+              value={data.pincode}
+              onChange={handleChange}
+              placeholder="Enter your Pincode"
+              disabled={!edit}
+              error={Boolean(pincodeError)}
+              helperText={pincodeError}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <FormControl fullWidth>
+              <InputLabel htmlFor="country">Country</InputLabel>
+              <Select
+                label="Country"
+                name="country"
+                value={data.country}
+                onChange={handleChange}
+                disabled={!edit}
+              >
+                {countriesWithStates.map((country) => (
+                  <MenuItem key={country.country} value={country.country}>
+                    {country.country}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
+      </Box>
 
-export default Addressform
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+        {edit ? (
+          <>
+            <Button variant="outlined" color="success" onClick={handleSaveClick} sx={{ width: '120px', mr: 2 }}>
+              Save
+            </Button>
+            <Button variant="outlined" color="error" onClick={handleDiscardClick} sx={{ width: '120px' }}>
+              Discard Changes
+            </Button>
+          </>
+        ) : (
+          <Button variant="outlined" color="success" onClick={handleEditClick} sx={{ width: '120px' }}>
+            Edit
+          </Button>
+        )}
+      </Box>
+    </Box>
+  );
+};
+export default AddressForm;

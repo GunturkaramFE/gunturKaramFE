@@ -32,4 +32,20 @@ export const parseShoppingData = (shoppingData) => {
       wishlist: parsedWishlist,
     };
   };
-  
+  export function parseProduct(data) {
+    const newData = { ...data };
+
+    if (typeof newData.pricelist === 'string') {
+        try {
+            // Parse the JSON string and assign it to the pricelist property of the new object
+            newData.pricelist = JSON.parse(newData.pricelist);
+        } catch (error) {
+            console.error('Error parsing JSON string:', error);
+            // Handle the error as needed, e.g., set pricelist to an empty array
+            newData.pricelist = [];
+        }
+    }
+
+    // Return the modified or original object
+    return newData;
+}

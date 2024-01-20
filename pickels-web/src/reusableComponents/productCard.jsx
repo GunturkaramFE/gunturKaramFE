@@ -4,8 +4,9 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import '../styles/productCard.css';
 import PopupForm from '../Pop-up/PopupForm';
 import AddToCart from '../ProductStore/AddToCart';
+import { parseProduct } from '../helpers/parser';
 
-const ProductCard = ({ productdetails,PopUpHandler }) => {
+const ProductCard = ({productdetails,PopUpHandler }) => {
   const [isHovered, setIsHovered] = useState(false);
  
   return (<>
@@ -19,7 +20,7 @@ const ProductCard = ({ productdetails,PopUpHandler }) => {
       {isHovered && (
         <div className="overlay">
           <div className="overlay-content">
-            <span className="animate__animated animate__headShake" onClick={()=>{PopUpHandler(productdetails)}}> <AddShoppingCart className="icon" /><h6>Add</h6></span>
+            <span className="animate__animated animate__headShake" onClick={()=>{PopUpHandler(parseProduct(productdetails))}}> <AddShoppingCart className="icon" /><h6>Add</h6></span>
             <span className="animate__animated animate__headShake">
       <VisibilityIcon className="icon"/>
         <h6>View</h6>
