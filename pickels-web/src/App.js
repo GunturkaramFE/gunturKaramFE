@@ -11,6 +11,7 @@ import MainMenu from './dev/main';
 import ProductMenu from './dev/productMenu';
 import ManageProducts from './dev/manageProducts';
 import EditProfile from './navComponents/EditProfile';
+import Trendremove from './dev/Trendremove';
 
 const ProductLayout = ({ children }) => {
   return (
@@ -41,6 +42,7 @@ function App() {
                 <Routes>
                   <Route path="/add-product" element={<HandleAllProducts />} />
                   <Route path="/products-menu" element={<ProductMenu />} />
+                  <Route path="/TrenditemRemove" element={<Trendremove/>} />
                   <Route path="/manage-products" element={<ManageProducts />} />
                 </Routes>
               </ProductLayout>

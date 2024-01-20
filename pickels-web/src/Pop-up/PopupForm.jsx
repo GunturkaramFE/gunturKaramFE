@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './PopupForm.css'; // Import a CSS file for styling
 
 const PopupForm = ({fun,ispop,formData,data,width}) => {
-  const [isPopupOpen, setPopupOpen] = useState(ispop);
-
-
+const [isPopupOpen, setPopupOpen] = useState(ispop);
   const handlePopupClose = () => {
     fun()
   };

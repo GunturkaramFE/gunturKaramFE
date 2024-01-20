@@ -144,8 +144,8 @@ const handledeletePopup=()=>{
           <Card key={product.id} sx={{ width: '100%', marginBottom: 2, padding: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
             <CardContent>
               <Grid container >
-                <Grid item xs={12} sm={4} md={4} lg={4}>
-                  <Box style={{ height:'25vh', }}>
+                <Grid item xs={12} sm={4} md={4} lg={4} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                  <Box style={{ height:'25vh' }}>
                     <img
                       src={product.url}
                       alt={product.title}
@@ -153,7 +153,7 @@ const handledeletePopup=()=>{
                     />
                   </Box>
                 </Grid>
-                <Grid item xs={12} sm={8} md={8} lg={8} style={{ paddingLeft: '15px' }}>
+                <Grid item xs={12} sm={8} md={8} lg={8} style={{ paddingLeft: '15px'}}>
                   <Typography variant="subtitle1" style={{ fontWeight: 'bold', fontSize: '16px' }}>
                     {product.title}
                   </Typography>
@@ -177,8 +177,7 @@ const handledeletePopup=()=>{
                               </option>
                             ))}
                           </select>
-                          <Box component="fieldset" borderColor="transparent">
-        
+              <Box component="fieldset" borderColor="transparent">        
                 <Rating
                   name={`rating-${product.id}`}
                   value={product.rating} 
@@ -191,8 +190,7 @@ const handledeletePopup=()=>{
                     <Tooltip title="Delete">      
                     <IconButton onClick={() => handleDelete(product.id)} style={{ color: '#ff4d4f' }}>
                     <DeleteIcon  onClick={handledeletePopup} />
-                    <PopupForm ispop={deletepop} formData={<DeletePop/>} fun={handledeletePopup} width='400px' height='150px'/>
-
+                    <PopupForm ispop={deletepop} formData={<DeletePop onConfirm={handledeletePopup} onCancel={handledeletePopup} />} fun={handledeletePopup} width='400px' height='150px'/>
                     </IconButton>
                     </Tooltip>
                     <Tooltip title="Edit">
