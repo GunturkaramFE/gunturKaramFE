@@ -25,6 +25,7 @@ const ProductMenu = () => {
     };
     const handledeleteproducts = () => {
         setIsTrendingList(true);
+        navigate('../TrenditemRemove')
     };
     
 
@@ -68,7 +69,7 @@ const ProductMenu = () => {
                             </CardContent>
                         </Card>
                     </Grid>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={6} >
                         <Card>
                             <CardContent>
                                 <Typography variant="h5" component="div" gutterBottom>
