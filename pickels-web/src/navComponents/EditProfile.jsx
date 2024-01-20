@@ -10,6 +10,7 @@ import Box from '@mui/material/Box';
 import '../styles/EditProfile.css';
 import CreateIcon from '@mui/icons-material/Create';
 import { Button } from '@mui/material';
+import ViewShippingAdress from './shippingAddresscontainers';
 const EditProfile = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState('Profile');
@@ -48,11 +49,8 @@ const EditProfile = () => {
             <Typography variant="h6">Profile</Typography>
           </div>
           <div id='profilebutton'  onClick={() => handleOptionClick('EditAddress')} style={{ cursor: 'pointer',textAlign:'center',padding:'10px 0px'}}>
-            <Typography variant="h6">Address</Typography>
-          </div>
-          <div id='profilebutton' style={{ cursor: 'pointer', textAlign:'center',padding:'10px 0px' }}>
-            <Typography variant="h6">Settings</Typography>
-          </div>
+            <Typography variant="h6">Shipping Address</Typography>
+          </div>        
         </Box>
       </Grid>
       <Grid item xs={12} md={8}>
@@ -61,7 +59,7 @@ const EditProfile = () => {
                    
             <div style={{ marginTop: '5px',width:'80%' }}>
               {selectedOption === 'Profile' && <ProfileForm />}
-              {selectedOption === 'EditAddress' && <Addressform />}
+              {selectedOption === 'EditAddress' && <ViewShippingAdress/>}
             </div>
           </CardContent>
         </Card>

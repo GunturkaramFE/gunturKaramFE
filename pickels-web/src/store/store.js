@@ -24,7 +24,7 @@ export const fetchShoppingDataOnPageRefresh = async () => {
     cart: [],
     wishlist: []
   }
-  console.log(response,'res')
+
     if(response.success){
    
       store.dispatch(setShoppingData({...response.data,isuser:true}));
