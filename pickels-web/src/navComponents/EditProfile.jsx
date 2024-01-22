@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import ProfileForm from './ProfileForm';
 import ViewShippingAdress from './shippingAddresscontainers';
 import Card from '@mui/material/Card';
@@ -15,14 +15,26 @@ import ToggleShippingAdress from './toggleShippingAdress';
 const EditProfile = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState('Profile');
-
+  const [navigationLink,setNavigationLink]=useState()
+  const location = useLocation();
+ const[isToggle,setIsToggle]=useState()
   const handleNavigateHome = () => {
     navigate('/');
   };
-
   const handleOptionClick = (option) => {
     setSelectedOption(option);
   };
+  useEffect(() => {
+    const optionParam = new URLSearchParams(location.search).get('option');
+    const toggleParam = new URLSearchParams(location.search).get('toggle'); 
+      setNavigationLink(new URLSearchParams(location.search).get('backNav'))
+    setIsToggle(toggleParam);
+  
+    if (optionParam) {
+      setSelectedOption(optionParam);
+     
+    }
+  }, [location.search]);
 
   return (
     <Grid
@@ -58,7 +70,7 @@ const EditProfile = () => {
           <CardContent  sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center',flexDirection:'column',marginTop:'15px' }}>           
             <div style={{ marginTop: '5px',width:'80%' }}>
               {selectedOption === 'Profile' && <ProfileForm />}
-              {selectedOption === 'EditAddress' && <ToggleShippingAdress/>}
+              {selectedOption === 'EditAddress' && <ToggleShippingAdress urltoggle={isToggle} returnUrl={navigationLink}/>}
             </div>
           </CardContent>
         </Card>

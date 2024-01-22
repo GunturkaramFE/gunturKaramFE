@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import VerifiedIcon from '@mui/icons-material/Verified';
 import PopupForm from '../Pop-up/PopupForm';
 import AddressPopup from './AddressPopup';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,23 +6,38 @@ import { parseShoppingData } from '../helpers/parser';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { setShoppingData } from '../store/shoppingSlicer';
 import api from '../api';
-import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
-import { Delete } from '@mui/icons-material';
+import AdressCard from '../reusableComponents/addressCard';
+
 const ViewCart = () => {
   const[popup,setPopup]=useState(false);
   const[totalPrice,setTotalPrice]=useState(0)
+  const [address,setAddress]=useState([])
+  const[defaultAddress,setDefaultAddress]=useState(false)
   const HandleChangeAddress=()=>{
     setPopup(!popup)
   }  
   let dispatch =useDispatch()
+const fetchAddress=async ()=>{
+ const response= await api.get('/user/getShippingAddress');
+ if(response.success){
+  setAddress(response?.shippingAddresses)
+const defaultAddress = response?.shippingAddresses?.find((x) => x.is_default) || response?.shippingAddresses?.[0];
+setDefaultAddress(defaultAddress)
 
+}else{
+  setAddress([])
+}
+
+}
 const shoppingData = useSelector((state) => state.shopping);
 const[parsedData,setParsedData]=useState()
 useEffect(()=>{
  setTotalPrice(0)
  setParsedData(parseShoppingData(shoppingData)) 
 },[shoppingData])
-useEffect(()=>{console.log('j',parsedData)},[parsedData])
+useEffect(()=>{
+fetchAddress()
+},[])
 useEffect(() => {
   let total = 0;
   if (parsedData?.cart) {
@@ -34,9 +48,13 @@ useEffect(() => {
   setTotalPrice(total);
 }, [parsedData]);
 const updateCart=async(data)=>{
-  let response= await api.put('/user/updateUserShoppingList',{document:{cart:data}});
- console.log(response)
+  try {
+    let response= await api.put('/user/updateUserShoppingList',{document:{cart:data}});
 
+
+  } catch (error) {
+    console.log(error)
+  }  
 }
 const HandleChange=async(property,cartId)=>{
   var shoppingdataobj={...shoppingData}
@@ -46,12 +64,13 @@ if(property=='delete'){
   await  updateCart(jsonobj)
   shoppingdataobj.cart=jsonobj
 }
-
-
 dispatch(setShoppingData(shoppingdataobj))
-
-
 }
+
+const handleSelectAdressFromPopUp=(data)=>{
+setDefaultAddress(data)
+}
+
   return (
 <div style={{width:'100%',height:"100vh",display:'flex'}}>
 <div style={{width:'70%',height:'100vh',display:'flex',flexDirection:'column'}}>
@@ -159,13 +178,14 @@ dispatch(setShoppingData(shoppingdataobj))
                 <span >Free</span>
               </li>
     <div style={{display:'flex',alignItems:'center'}}>
-   "put a box"
-       
-    </div>
+   <AdressCard data={defaultAddress}/>       
+    </div>{defaultAddress?
     <div style={{display:"flex",justifyContent:'space-between',width:"100%"}}>
     <a href="#" onClick={HandleChangeAddress} className="card-link">Change Address</a>
-    </div>  
-    <PopupForm ispop={popup} formData={<AddressPopup/>} fun={HandleChangeAddress} width='600px'/>  
+    </div> :<div style={{display:"flex",justifyContent:'space-between',width:"100%"}}>
+    <a href="#" onClick={HandleChangeAddress} className="card-link">Add Address</a>
+    </div> }
+    <PopupForm ispop={popup} selectAddress={handleSelectAdressFromPopUp} fun={HandleChangeAddress} width='600px'/>  
     <hr/>
               <li className="d-flex justify-content-between align-items-center border-0 px-0 mb-3">
                 <div>
