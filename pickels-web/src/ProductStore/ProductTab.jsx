@@ -8,11 +8,12 @@ import Card from './Card';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAllProducts } from '../store/allProductsSlicer';
 import api from '../api';
+import { Grid } from '@mui/material';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
-    <div
+    <Grid
       role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
@@ -24,7 +25,7 @@ function CustomTabPanel(props) {
           <Typography>{children}</Typography>
         </Box>
       )}
-    </div>
+    </Grid>
   );
 }
 
@@ -42,31 +43,33 @@ function a11yProps(index) {
 }
 
 const ProductTab = () => {
-const [value, setValue] = React.useState(0);
-const dispatch = useDispatch();
-const allproducts = useSelector(state => state.allProducts);
-const fetchAllProducts=async()=>{
-  const products=await api.get('/user/get-all-products')
-  dispatch(setAllProducts(products?.items||[]))
-}
+  const [value, setValue] = React.useState(0);
+  const dispatch = useDispatch();
+  const allproducts = useSelector(state => state.allProducts);
 
-useEffect(()=>{
-fetchAllProducts()
-},[])
-useEffect(()=>{
-console.log(allproducts)
-},[allproducts])
+  const fetchAllProducts = async () => {
+    const products = await api.get('/user/get-all-products');
+    dispatch(setAllProducts(products?.items || []));
+  };
+
+  useEffect(() => {
+    fetchAllProducts();
+  }, []);
+
+  useEffect(() => {
+    console.log(allproducts);
+  }, [allproducts]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const isMobile = window.innerWidth <= 600; 
+  const isMobile = window.innerWidth <= 600;
 
   return (
-    <div>
-      <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' ,position: 'fixed',top: 100, zIndex: 300}}>
+    <>
+      <Box sx={{ width: '100%', position: 'relative', zIndex: 1 }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%',position:'fixed',height:'7.8vh',backgroundColor:'white' }}>
           <Tabs
             value={value}
             onChange={handleChange}
@@ -81,31 +84,57 @@ console.log(allproducts)
             <Tab label="PRAWN PICKLES" {...a11yProps(4)} />
           </Tabs>
         </Box>
-<CustomTabPanel value={value} index={0}>
-<div style={{ width: '100%', marginTop: '40px', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '35px', height: 'auto' }}>
-  {allproducts?.map((x, y) => {
-    return (
-      <div key={y} style={{ width: '100%' }}>
-        <Card data={x} />
-      </div>
-    )
-  })}
-</div>        
+
+  <Grid container justifyContent="center" zIndex="-3" position="absolute"  >
+ <CustomTabPanel value={value} index={0}  height="84vh" width="100%"  style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
+  <Grid container spacing={3} justifyContent="center" marginTop={2.5}>
+    {allproducts?.map((product, index) => (
+      <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
+        <Card data={product} />
+      </Grid>
+    ))}
+  </Grid>
 </CustomTabPanel>
-        <CustomTabPanel value={value} index={1}>
-        Chicken-Pickles
-      </CustomTabPanel>   
-      <CustomTabPanel value={value} index={2}>
-        Mutton-Pickles
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={3}>
-        Fish-Pickles
-      </CustomTabPanel> 
-      <CustomTabPanel value={value} index={4}>
-        Prawn-Pickles
-      </CustomTabPanel> 
+       <CustomTabPanel value={value} index={1} overflow="scroll" height="84vh" width="100%"  style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
+              <Grid container spacing={3} justifyContent="center" marginTop={2.5}  >
+                {allproducts?.map((product, index) => (
+                  <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
+                    <Card data={product} />
+                  </Grid>
+                ))}
+         </Grid>
+       </CustomTabPanel>
+       <CustomTabPanel value={value} index={2} overflow="scroll" height="84vh" width="100%" style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
+              <Grid container spacing={3} justifyContent="center"  marginTop={2.5}  >
+                {allproducts?.map((product, index) => (
+                  <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
+                    <Card data={product} />
+                  </Grid>
+                ))}
+     </Grid>
+       </CustomTabPanel>
+       <CustomTabPanel value={value} index={3} overflow="scroll" height="84vh" width="100%" style={{ overflowY: 'scroll', overflowX: 'hidden' }} >
+              <Grid container spacing={3} justifyContent="center"  marginTop={2.5}  >
+                {allproducts?.map((product, index) => (
+                  <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
+                    <Card data={product} />
+                  </Grid>
+                ))}
+     </Grid>
+       </CustomTabPanel>
+       <CustomTabPanel value={value} index={4} overflow="scroll" height="84vh" width="100%" style={{ overflowY: 'scroll', overflowX: 'hidden' }} >
+              <Grid container spacing={3} justifyContent="center"  marginTop={2.5}  >
+                {allproducts?.map((product, index) => (
+                  <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
+                    <Card data={product} />
+                  </Grid>
+                ))}
+     </Grid>
+       </CustomTabPanel>
+          {/* Other CustomTabPanel components */}
+    </Grid>
       </Box>
-    </div>
+    </>
   );
 };
 
