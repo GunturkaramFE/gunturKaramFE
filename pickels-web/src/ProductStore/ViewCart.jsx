@@ -7,6 +7,8 @@ import { parseShoppingData } from '../helpers/parser';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { setShoppingData } from '../store/shoppingSlicer';
 import api from '../api';
+import { Box, Card, CardContent, IconButton, Typography } from '@mui/material';
+import { Delete } from '@mui/icons-material';
 const ViewCart = () => {
   const[popup,setPopup]=useState(false);
   const[totalPrice,setTotalPrice]=useState(0)
@@ -157,17 +159,11 @@ dispatch(setShoppingData(shoppingdataobj))
                 <span >Free</span>
               </li>
     <div style={{display:'flex',alignItems:'center'}}>
-    <VerifiedIcon style={{color:'green'}}/>
-     <div className="card" style={{ width: '90%',margin:'10px'}}>
-      <div className="card-body">
-        <h6 className="card-subtitle mb-2 text-muted">ADDRESS</h6>
-        <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      </div>
-    </div>      
+   "put a box"
+       
     </div>
     <div style={{display:"flex",justifyContent:'space-between',width:"100%"}}>
     <a href="#" onClick={HandleChangeAddress} className="card-link">Change Address</a>
-    <a href="#"  className="card-link">Edit</a>
     </div>  
     <PopupForm ispop={popup} formData={<AddressPopup/>} fun={HandleChangeAddress} width='600px'/>  
     <hr/>
