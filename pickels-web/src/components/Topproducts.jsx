@@ -5,9 +5,14 @@ import { Button, Card, CardActionArea, FormControl, InputLabel, MenuItem, Rating
 import { bestSellers } from '../asserts/benifits';
 import StarIcon from '@mui/icons-material/Star';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import wishlist from '../asserts/wishlist.png'
+import { useNavigate } from 'react-router-dom';
 const Bestseller = () => {
+  const navigate=useNavigate()
+  const handleView=()=>{
+   navigate('/ViewProduct')
+  }
   return (
     <>
       <div className="Best-Seller-Container">    
@@ -47,7 +52,7 @@ const Bestseller = () => {
 </div>
 <div className='buttons-container'>
    <Stack spacing={2} direction="row">
-   <Button variant="outlined"><ShoppingBagIcon/>Buy</Button>
+   <Button variant="outlined" onClick={handleView}><VisibilityIcon/>View</Button>
    <Button variant="outlined"><ShoppingCartIcon/>Add</Button>
     </Stack>
     </div>
