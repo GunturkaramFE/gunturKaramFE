@@ -30,7 +30,7 @@ const ViewShippingAddress = ({handleToggle}) => {
 const handleSetDefault=async(shipping_id)=>{
     setLoading(true)
 try {
-    await api.put('user/setdefaultaddress',{
+    await api.put('/user/setDefaultAddress',{
         filter:{shipping_id:shipping_id}
     })
 } catch (error) {

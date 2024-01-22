@@ -29,11 +29,9 @@ const AddressForm = ({ handleToggle }) => {
     pincode: '',
     country: '',
   });
-
   const [edit, setEdit] = useState(false);
   const [pincodeError, setPincodeError] = useState('');
   const prefilledDetails = useSelector((state) => state.shippingAddress.address);
-
   useEffect(() => {
     if (prefilledDetails) {
       setData({
