@@ -12,6 +12,7 @@ import ProductMenu from './dev/productMenu';
 import ManageProducts from './dev/manageProducts';
 import EditProfile from './navComponents/EditProfile';
 import Trendremove from './dev/Trendremove';
+import View from './reusableComponents/View';
 
 const ProductLayout = ({ children }) => {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/Products" element={<ProductsContainer />} />
           <Route path="/Edit" element={<EditAddress />} />
           <Route path="/Checkout" element={<CheckoutPage />} />
+          <Route path='/ViewProduct' element={<View/>}/>
 
           {/* Admin Routes */}
           <Route

@@ -84,7 +84,6 @@ const Trendremove = ({ product, handleDelete, handledeletePopup }) => {
                     <PopupForm ispop={deleteTrend} formData={<DeletePop onConfirm={handledeleteTrend} onCancel={handledeleteTrend} />} fun={handledeleteTrend} width='400px' height='150px'/>
                   </IconButton>
                 </Tooltip>
-
               </Grid>
             </Grid>
           </Grid>
