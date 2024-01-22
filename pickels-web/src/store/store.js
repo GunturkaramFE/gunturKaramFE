@@ -5,13 +5,14 @@ import api from '../api';
 import shoppingReducer, { clearShoppingData, setShoppingData } from '../store/shoppingSlicer';
 import trendingProductsReducer, { setAllProducts, clearAllProducts } from '../store/trendingProductsSlicer'
 import allProductsReducer, { setAllProducts as setAllProductsAll, clearAllProducts as clearAllProductsAll } from '../store/allProductsSlicer';
-
+import addressReducer from '../store/shippingAddressSlicer'
 const store = configureStore({
   reducer: {
     profile: profileReducer,
     shopping: shoppingReducer,
     trendingProducts: trendingProductsReducer,
     allProducts: allProductsReducer,
+    shippingAddress: addressReducer,
   },
 });
 

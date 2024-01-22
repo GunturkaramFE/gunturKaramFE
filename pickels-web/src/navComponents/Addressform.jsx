@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Typography,
   Button,
@@ -9,14 +9,18 @@ import {
   Grid,
   InputLabel,
   FormControl,
+  IconButton,
 } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { countriesWithStates } from '../asserts/countriesWithstates';
+import { useSelector } from 'react-redux';
+import api from '../api';
 
-const AddressForm = () => {
+const AddressForm = ({ handleToggle }) => {
   const [data, setData] = useState({
     name: '',
-    phone: '',
-    hno: '',
+    mobile: '',
+    housenumber: '',
     street: '',
     village: '',
     landmark: '',
@@ -28,6 +32,24 @@ const AddressForm = () => {
 
   const [edit, setEdit] = useState(false);
   const [pincodeError, setPincodeError] = useState('');
+  const prefilledDetails = useSelector((state) => state.shippingAddress.address);
+
+  useEffect(() => {
+    if (prefilledDetails) {
+      setData({
+        name: prefilledDetails.name || '',
+        mobile: prefilledDetails.mobile || '',
+        housenumber: prefilledDetails.housenumber || '',
+        street: prefilledDetails.street || '',
+        village: prefilledDetails.village || '',
+        landmark: prefilledDetails.landmark || '',
+        city: prefilledDetails.city || '',
+        state: prefilledDetails.state || '',
+        pincode: prefilledDetails.pincode || '',
+        country: prefilledDetails.country || '',
+      });
+    }
+  }, [prefilledDetails]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,40 +63,59 @@ const AddressForm = () => {
     setEdit(true);
   };
 
-  const handleSaveClick = () => {
-    if (!isValidPincode(data.pincode)) {
-      setPincodeError('Invalid PIN code. Please enter a valid 6-digit PIN.');
+  const handleSaveClick = async () => {
+    const validationErrors = {};
+    Object.keys(data).forEach((key) => {
+      if (key === 'mobile' && !isValidMobileNumber(data[key])) {
+        validationErrors[key] = 'Invalid mobile number. Please enter a valid 10-digit number.';
+      } else if (key === 'pincode' && !isValidPincode(data[key])) {
+        validationErrors[key] = 'Invalid PIN code. Please enter a valid 6-digit PIN.';
+      } else if (key !== 'mobile' && key !== 'pincode' && data[key].trim().length < 3) {
+        validationErrors[key] = 'Field should have at least 3 characters.';
+      }
+    });
+
+    if (Object.keys(validationErrors).length > 0) {
+      setData((prevData) => ({ ...prevData, ...validationErrors }));
       return;
     }
 
-    // Clear the error message when PIN code is valid
     setPincodeError('');
+    const changedFields = Object.keys(data).reduce((changed, key) => {
+      if (data[key] !== prefilledDetails[key]) {
+        changed[key] = data[key];
+      }
+      return changed;
+    }, {});
 
-    // Your save logic here
-    console.log('Saved:', data);
-    setEdit(false);
+    if (Object.keys(changedFields).length === 0) {
+      console.log('No changes to save.');
+      setEdit(false);
+      return;
+    }
+
+    try {
+      let body = {
+        filter: {
+          shipping_id: +prefilledDetails.shipping_id,
+        },
+        document: {
+          ...changedFields,
+        },
+      };
+      await api.put('/user/saveAddress', body);
+      handleToggle(1);
+    } catch (error) {
+      // Handle error
+    } finally {
+      setEdit(false);
+    }
   };
 
   const handleDiscardClick = () => {
-    // Reset data to the original state
-    setData({
-      name: '',
-      phone: '',
-      hno: '',
-      street: '',
-      village: '',
-      landmark: '',
-      city: '',
-      state: '',
-      pincode: '',
-      country: '',
-    });
-
-    // Clear the PIN code error message
     setPincodeError('');
-
-    // Set the edit mode to false
     setEdit(false);
+    handleToggle(1);
   };
 
   const isValidPincode = (pincode) => {
@@ -82,8 +123,17 @@ const AddressForm = () => {
     return pincodeRegex.test(pincode);
   };
 
+  const isValidMobileNumber = (mobileNumber) => {
+    const mobileNumberRegex = /^\d{10}$/;
+    return mobileNumberRegex.test(mobileNumber);
+  };
+
   return (
     <Box width="100%">
+      <IconButton sx={{ alignSelf: 'flex-start' }} disabled={false} onClick={() => handleToggle(1)}>
+        <ArrowBackIcon color="primary" />
+      </IconButton>
+
       <Typography variant="h6" component="div" align="center" sx={{ mb: 2 }}>
         Address
       </Typography>
@@ -96,26 +146,32 @@ const AddressForm = () => {
           onChange={handleChange}
           placeholder="Enter your name"
           disabled={!edit}
+          error={data.name.trim().length < 3}
+          helperText={data.name.trim().length < 3 ? 'Field should have at least 3 characters.' : ''}
         />
 
         <TextField
-          label="Phone"
-          name="phone"
-          value={data.phone}
+          label="Mobile"
+          name="mobile"
+          value={data.mobile}
           onChange={handleChange}
-          placeholder="Enter your phone number"
+          placeholder="Enter your mobile number"
           disabled={!edit}
+          error={Boolean(data.mobile.trim() && !isValidMobileNumber(data.mobile))}
+          helperText={data.mobile.trim() && !isValidMobileNumber(data.mobile) ? 'Invalid mobile number.' : ''}
         />
 
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
             <TextField
               label="H.no"
-              name="hno"
-              value={data.hno}
+              name="housenumber"
+              value={data.housenumber}
               onChange={handleChange}
               placeholder="Enter your H.no"
               disabled={!edit}
+              error={data.housenumber.trim().length < 3}
+              helperText={data.housenumber.trim().length < 3 ? 'Field should have at least 3 characters.' : ''}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -126,6 +182,8 @@ const AddressForm = () => {
               onChange={handleChange}
               placeholder="Enter your street"
               disabled={!edit}
+              error={data.street.trim().length < 3}
+              helperText={data.street.trim().length < 3 ? 'Field should have at least 3 characters.' : ''}
             />
           </Grid>
         </Grid>
@@ -139,6 +197,8 @@ const AddressForm = () => {
               onChange={handleChange}
               placeholder="Enter your Village"
               disabled={!edit}
+              error={data.village.trim().length < 3}
+              helperText={data.village.trim().length < 3 ? 'Field should have at least 3 characters.' : ''}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -149,6 +209,8 @@ const AddressForm = () => {
               onChange={handleChange}
               placeholder="Enter your Landmark"
               disabled={!edit}
+              error={data.landmark.trim().length < 3}
+              helperText={data.landmark.trim().length < 3 ? 'Field should have at least 3 characters.' : ''}
             />
           </Grid>
         </Grid>
@@ -162,6 +224,8 @@ const AddressForm = () => {
               onChange={handleChange}
               placeholder="Enter your City"
               disabled={!edit}
+              error={data.city.trim().length < 3}
+              helperText={data.city.trim().length < 3 ? 'Field should have at least 3 characters.' : ''}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -193,8 +257,12 @@ const AddressForm = () => {
               onChange={handleChange}
               placeholder="Enter your Pincode"
               disabled={!edit}
-              error={Boolean(pincodeError)}
-              helperText={pincodeError}
+              error={Boolean(pincodeError || (data.pincode.trim() && !isValidPincode(data.pincode)))}
+              helperText={
+                pincodeError || (data.pincode.trim() && !isValidPincode(data.pincode))
+                  ? pincodeError || 'Invalid PIN code.'
+                  : ''
+              }
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -213,7 +281,7 @@ const AddressForm = () => {
                   </MenuItem>
                 ))}
               </Select>
-            </FormControl>
+          </FormControl>
           </Grid>
         </Grid>
       </Box>
@@ -237,4 +305,5 @@ const AddressForm = () => {
     </Box>
   );
 };
+
 export default AddressForm;

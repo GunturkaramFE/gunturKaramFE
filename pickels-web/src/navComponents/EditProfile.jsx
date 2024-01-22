@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProfileForm from './ProfileForm';
-import Addressform from './Addressform';
+import ViewShippingAdress from './shippingAddresscontainers';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import '../styles/EditProfile.css';
-import CreateIcon from '@mui/icons-material/Create';
 import { Button } from '@mui/material';
-import ViewShippingAdress from './shippingAddresscontainers';
+import AddressForm from './Addressform';
+import ToggleShippingAdress from './toggleShippingAdress';
+
 const EditProfile = () => {
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState('Profile');
@@ -32,13 +33,12 @@ const EditProfile = () => {
       alignItems="center"
       sx={{ minHeight: { xs: 'unset', md: '100vh' } }}
     >
-      <Grid item xs={12} md={2} >
-      <Box
+      <Grid item xs={12} md={2}>
+        <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
             color: 'grey',
-            
             minHeight: { xs: 'unset', md: '80vh' },
           }}
         >
@@ -53,13 +53,12 @@ const EditProfile = () => {
           </div>        
         </Box>
       </Grid>
-      <Grid item xs={12} md={8}>
-        <Card sx={{ width: '100%', minHeight: { xs: 'unset', md: '80vh' } }}>
+      <Grid item xs={12} md={8} sx={{ overflowY: 'auto', maxHeight: '80vh' }}>
+        <Card sx={{ width: '100%' }}>
           <CardContent  sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center',flexDirection:'column',marginTop:'15px' }}>           
-                   
             <div style={{ marginTop: '5px',width:'80%' }}>
               {selectedOption === 'Profile' && <ProfileForm />}
-              {selectedOption === 'EditAddress' && <ViewShippingAdress/>}
+              {selectedOption === 'EditAddress' && <ToggleShippingAdress/>}
             </div>
           </CardContent>
         </Card>
