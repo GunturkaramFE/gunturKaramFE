@@ -6,9 +6,9 @@ const ProductsContainer = () => {
 
 
   return (
-    <div style={{ width: '100%', height: '100vh', overflowY: 'scroll' }}>
-    <NavBar style={{ position: 'fixed', width: '100%', top: 0, zIndex: 100 }} />
-    <ProductTab />
+    <div style={{ width: '100%', height: '100vh',overflowY:"hidden" }}>
+    <NavBar style={{ position: 'fixed', width: '100%', top: '0',bottom:'0' }} />
+    <ProductTab style={{top:"0"}} />
   </div>
   )
 
