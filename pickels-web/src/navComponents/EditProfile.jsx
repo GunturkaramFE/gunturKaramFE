@@ -27,12 +27,11 @@ const EditProfile = () => {
   useEffect(() => {
     const optionParam = new URLSearchParams(location.search).get('option');
     const toggleParam = new URLSearchParams(location.search).get('toggle'); 
-      setNavigationLink(new URLSearchParams(location.search).get('backNav'))
+    setNavigationLink(new URLSearchParams(location.search).get('backNav'))
     setIsToggle(toggleParam);
   
     if (optionParam) {
-      setSelectedOption(optionParam);
-     
+      setSelectedOption(optionParam);     
     }
   }, [location.search]);
 

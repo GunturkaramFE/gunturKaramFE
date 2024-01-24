@@ -5,10 +5,10 @@ import '../styles/productCard.css';
 import PopupForm from '../Pop-up/PopupForm';
 import AddToCart from '../ProductStore/AddToCart';
 import { parseProduct } from '../helpers/parser';
-
+import { useNavigate } from 'react-router-dom';
 const ProductCard = ({productdetails,PopUpHandler }) => {
   const [isHovered, setIsHovered] = useState(false);
- 
+ const navigate=useNavigate()
   return (<>
   
     <div
@@ -21,7 +21,7 @@ const ProductCard = ({productdetails,PopUpHandler }) => {
         <div className="overlay">
           <div className="overlay-content">
             <span className="animate__animated animate__headShake" onClick={()=>{PopUpHandler(parseProduct(productdetails))}}> <AddShoppingCart className="icon" /><h6>Add</h6></span>
-            <span className="animate__animated animate__headShake">
+            <span className="animate__animated animate__headShake" onClick={()=>{ navigate(`/ViewProduct/${productdetails.id}`);}}>
       <VisibilityIcon className="icon"/>
         <h6>View</h6>
       </span>            

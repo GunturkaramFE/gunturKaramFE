@@ -9,12 +9,12 @@ import api from '../api';
 import AdressCard from '../reusableComponents/addressCard';
 
 const ViewCart = () => {
-  const[popup,setPopup]=useState(false);
+  const[isaddressPopup,setIsAddressPopup]=useState(false);
   const[totalPrice,setTotalPrice]=useState(0)
   const [address,setAddress]=useState([])
   const[defaultAddress,setDefaultAddress]=useState(false)
   const HandleChangeAddress=()=>{
-    setPopup(!popup)
+    setIsAddressPopup(!isaddressPopup)
   }  
   let dispatch =useDispatch()
 const fetchAddress=async ()=>{
@@ -185,7 +185,7 @@ setDefaultAddress(data)
     </div> :<div style={{display:"flex",justifyContent:'space-between',width:"100%"}}>
     <a href="#" onClick={HandleChangeAddress} className="card-link">Add Address</a>
     </div> }
-    <PopupForm ispop={popup} selectAddress={handleSelectAdressFromPopUp} fun={HandleChangeAddress} width='600px'/>  
+    <PopupForm ispop={isaddressPopup} selectAddress={handleSelectAdressFromPopUp} fun={HandleChangeAddress} width='600px'/>  
     <hr/>
               <li className="d-flex justify-content-between align-items-center border-0 px-0 mb-3">
                 <div>

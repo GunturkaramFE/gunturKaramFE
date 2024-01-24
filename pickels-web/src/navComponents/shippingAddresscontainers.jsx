@@ -17,7 +17,9 @@ const ViewShippingAddress = ({handleToggle}) => {
         const fetchAddresses = async () => {
             try {
                 const response = await api.get('/user/getShippingAddress');
-                setAddresses(response?.shippingAddresses);
+                const addresses = response?.shippingAddresses || [];
+                const sortedAddresses = addresses.sort((a, b) => (b.is_default ? 1 : -1));                
+                setAddresses(sortedAddresses);
             } catch (error) {
                 setError('No Addresses Added');
             } finally {
@@ -46,9 +48,9 @@ try {
         setDeletingAddressId(shippingId);
         setDeleteDialogOpen(true);
     };
-    const handleEdit=(obj)=>{
-    handleToggle(2)
+    const handleEdit=(obj)=>{   
     dispatch(setAddress(obj));
+    handleToggle(2)
     }
 
     const confirmDelete = async () => {
@@ -66,7 +68,10 @@ try {
             setDeleteDialogOpen(false);
         }
     };
-
+const handleAddAddress=()=>{
+dispatch(setAddress(null));
+handleToggle(2)
+}
     const cancelDelete = () => {
         setDeletingAddressId(null);
         setDeleteDialogOpen(false);
@@ -156,7 +161,7 @@ try {
             )}
 
             {/* "Add New Address" button fixed at the bottom */}
-            <Button variant="contained" color="primary" sx={{ position: 'fixed', bottom: 16 }}>
+            <Button variant="contained" color="primary" sx={{ position: 'fixed', bottom: 16 }} onClick={handleAddAddress}>
                 Add New Address
             </Button>
 

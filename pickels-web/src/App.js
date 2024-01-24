@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LandingPage from './components/landingPage';
 import VerifyDiv from './Authorization/Verifydiv';
@@ -13,7 +13,7 @@ import ManageProducts from './dev/manageProducts';
 import EditProfile from './navComponents/EditProfile';
 import Trendremove from './dev/Trendremove';
 import View from './reusableComponents/View';
-
+import OfflineMessage from './helpers/nointernet'; 
 const ProductLayout = ({ children }) => {
   return (
     <>
@@ -24,34 +24,54 @@ const ProductLayout = ({ children }) => {
 };
 
 function App() {
+  const [isOnline, setIsOnline] = useState(window.navigator.onLine);
+
+  useEffect(() => {
+    const updateOnlineStatus = () => {
+      setIsOnline(window.navigator.onLine);
+    };
+
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+
+    return () => {
+      window.removeEventListener('online', updateOnlineStatus);
+      window.removeEventListener('offline', updateOnlineStatus);
+    };
+  }, []);
+
   return (
     <>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/verify" element={<VerifyDiv />} />
-          <Route path="/ViewCart" element={<ViewCart />} />
-          <Route path="/Products" element={<ProductsContainer />} />
-          <Route path="/Edit" element={<EditAddress />} />
-          <Route path="/Checkout" element={<CheckoutPage />} />
-          <Route path='/ViewProduct' element={<View/>}/>
+        {isOnline ? (
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/verify" element={<VerifyDiv />} />
+            <Route path="/ViewCart" element={<ViewCart />} />
+            <Route path="/Products" element={<ProductsContainer />} />
+            <Route path="/Edit" element={<EditAddress />} />
+            <Route path="/Checkout" element={<CheckoutPage />} />
+            <Route path='/ViewProduct/:id' element={<View />} />
 
-          {/* Admin Routes */}
-          <Route
-            path="/admin-menu/*"
-            element={
-              <ProductLayout>
-                <Routes>
-                  <Route path="/add-product" element={<HandleAllProducts />} />
-                  <Route path="/products-menu" element={<ProductMenu />} />
-                  <Route path="/TrenditemRemove" element={<Trendremove/>} />
-                  <Route path="/manage-products" element={<ManageProducts />} />
-                </Routes>
-              </ProductLayout>
-            }
-          />
-          <Route path='/view-profile' element={<EditProfile />} />
-        </Routes>
+            {/* Admin Routes */}
+            <Route
+              path="/admin-menu/*"
+              element={
+                <ProductLayout>
+                  <Routes>
+                    <Route path="/add-product" element={<HandleAllProducts />} />
+                    <Route path="/products-menu" element={<ProductMenu />} />
+                    <Route path="/TrenditemRemove" element={<Trendremove />} />
+                    <Route path="/manage-products" element={<ManageProducts />} />
+                  </Routes>
+                </ProductLayout>
+              }
+            />
+            <Route path='/view-profile' element={<EditProfile />} />
+          </Routes>
+        ) : (
+          <OfflineMessage />
+        )}
       </BrowserRouter>
     </>
   );

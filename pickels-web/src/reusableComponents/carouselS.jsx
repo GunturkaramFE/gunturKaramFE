@@ -5,6 +5,7 @@ import { useSwipeable } from 'react-swipeable'; // Updated import
 import ProductCard from './productCard';
 import PopupForm from '../Pop-up/PopupForm';
 import AddToCart from '../ProductStore/AddToCart';
+import AddToCartPopUp from './addToCartPopUp';
 
 // ... (imports)
 
@@ -56,7 +57,7 @@ const CarouselSmall = ({ data, Component }) => {
     setPopUp(!pop)
     }
   if (!data) {
-    // Return a loading state or handle the absence of data
+    
     return <div>Loading...</div>;
   }
 
@@ -94,7 +95,9 @@ const CarouselSmall = ({ data, Component }) => {
         onClick={() => position <= -((totalCards - cardsToShow) * cardWidth) ? null : handleSwipe('right')}
       />
     </div>
-    <PopupForm ispop={pop}formData={<AddToCart data={popUpData}/>} fun={HandlePopup} width='460px'/>
+    {pop&& (
+      <AddToCartPopUp ispop={pop} formData={<AddToCart data={popUpData} />} fun={HandlePopup}  />
+    )}
     </>
   );
 };

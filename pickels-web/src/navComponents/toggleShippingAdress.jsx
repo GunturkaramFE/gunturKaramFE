@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import AddressForm from "./Addressform";
+import EditAddressForm from "./Addressform";
 import ViewShippingAddress from "./shippingAddresscontainers";
 import { useNavigate } from "react-router-dom";
 
@@ -20,7 +20,7 @@ const handleToggle=(toggle)=>{
 if(toggle==1){
     return(<ViewShippingAddress handleToggle={handleToggle}/>)
 }else if(toggle==2){
-    return(<AddressForm handleToggle={handleToggle}/>)
+    return(<EditAddressForm handleToggle={handleToggle}/>)
 }
 }
 export default ToggleShippingAdress;
