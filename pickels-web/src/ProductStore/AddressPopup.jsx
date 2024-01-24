@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, CircularProgress, Container, Radio, Typography } from '@mui/material';
 import api from '../api';
-
+import { clearAddress } from '../store/shippingAddressSlicer';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 const AddressPopup = ({selectAddress}) => {
   const [address, setAddress] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isloading,setLoading]=useState()
-
+  const navigate=useNavigate()
+const dispatch=useDispatch()
   useEffect(() => {
     const fetchAddress = async () => {
       try {
@@ -38,7 +41,11 @@ const AddressPopup = ({selectAddress}) => {
        selectAddress(selectedAddress)
     
   };
+const handleAddAddress=()=>{
+    dispatch(clearAddress())
+    navigate(`/view-profile?option=EditAddress&toggle=2&backNav=/viewcart`);
 
+}
   return (
     <>
       {address.length > 0 ? (
@@ -62,8 +69,8 @@ const AddressPopup = ({selectAddress}) => {
                   width: '100%',
                   height: '80px',
                   display: 'flex',
-                  flexDirection: 'row', // Set to 'row' for content in a row direction
-                  justifyContent: 'space-between', // Adjust as needed
+                  flexDirection: 'row',
+                  justifyContent: 'space-between', 
                   alignItems: 'center',
                   padding: '10px',
                   borderRadius: '5px'
@@ -100,7 +107,7 @@ const AddressPopup = ({selectAddress}) => {
       )}
 
       <div style={{ display: 'flex', justifyContent: 'end', gap: '10px', paddingTop: '10px' }}>
-        <Button variant="contained" color="success" onClick={handleSelectButtonClick}>
+        <Button variant="contained" color="success" onClick={()=>{handleAddAddress()}}>
         Add New Address
         </Button>
        {address.length > 0&& <Button variant="contained" color="success" onClick={handleSelectButtonClick}>

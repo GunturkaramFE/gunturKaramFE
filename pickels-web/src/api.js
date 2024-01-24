@@ -11,7 +11,8 @@ const authenticatedRoutes = [
   '/user/getShippingAddress',
   '/user/removeShippingAddress',
   '/user/saveAddress',
-  '/user/setDefaultAddress'
+  '/user/setDefaultAddress',
+  "/user/addShippingAddress"
 ];
 api.interceptors.request.use(
   (config) => {

@@ -16,7 +16,7 @@ import { countriesWithStates } from '../asserts/countriesWithstates';
 import { useSelector } from 'react-redux';
 import api from '../api';
 
-const AddressForm = ({ handleToggle }) => {
+const EditAddressForm = ({ handleToggle }) => {
   const [data, setData] = useState({
     name: '',
     mobile: '',
@@ -29,12 +29,14 @@ const AddressForm = ({ handleToggle }) => {
     pincode: '',
     country: '',
   });
-  const [edit, setEdit] = useState(false);
+
   const [pincodeError, setPincodeError] = useState('');
   const prefilledDetails = useSelector((state) => state.shippingAddress.address);
+  const [edit, setEdit] = useState(prefilledDetails?false:true);
+  const[isediting,setIsEditing]=useState(false)
   useEffect(() => {
-    if (prefilledDetails) {
-      setData({
+     if (prefilledDetails) {
+        setData({
         name: prefilledDetails.name || '',
         mobile: prefilledDetails.mobile || '',
         housenumber: prefilledDetails.housenumber || '',
@@ -50,6 +52,9 @@ const AddressForm = ({ handleToggle }) => {
   }, [prefilledDetails]);
 
   const handleChange = (e) => {
+if(isediting){
+  setIsEditing(false)
+}
     const { name, value } = e.target;
     setData((prevData) => ({
       ...prevData,
@@ -60,23 +65,49 @@ const AddressForm = ({ handleToggle }) => {
   const handleEditClick = () => {
     setEdit(true);
   };
+const handleAddAdress=async()=>{
+  setIsEditing(true)
+  let isallow=true;
+  Object.keys(data).forEach((key) => {
+    if (key === 'mobile' && !isValidMobileNumber(data[key])) {
+      isallow=false
+    } else if (key === 'pincode' && !isValidPincode(data[key])) {
+     isallow=false
+    } else if (key !== 'mobile' && key !== 'pincode' && data[key].trim().length < 3) {
+      isallow=false
+    }
+  });
+  setPincodeError('');
+if(!isallow){
+  return
+}
+try {
+let  body={
+    document:{...data}
+  }
+  await api.post('/user/addShippingAddress', body);
 
+} catch (error) {
+  console.log(error)
+} finally{
+  handleToggle(1);
+  setIsEditing(false)
+}
+
+
+}
   const handleSaveClick = async () => {
-    const validationErrors = {};
+    setIsEditing(true)
+    let isallow=true;
     Object.keys(data).forEach((key) => {
       if (key === 'mobile' && !isValidMobileNumber(data[key])) {
-        validationErrors[key] = 'Invalid mobile number. Please enter a valid 10-digit number.';
+        isallow=false
       } else if (key === 'pincode' && !isValidPincode(data[key])) {
-        validationErrors[key] = 'Invalid PIN code. Please enter a valid 6-digit PIN.';
+       isallow=false
       } else if (key !== 'mobile' && key !== 'pincode' && data[key].trim().length < 3) {
-        validationErrors[key] = 'Field should have at least 3 characters.';
+        isallow=false
       }
     });
-
-    if (Object.keys(validationErrors).length > 0) {
-      setData((prevData) => ({ ...prevData, ...validationErrors }));
-      return;
-    }
 
     setPincodeError('');
     const changedFields = Object.keys(data).reduce((changed, key) => {
@@ -85,13 +116,14 @@ const AddressForm = ({ handleToggle }) => {
       }
       return changed;
     }, {});
-
     if (Object.keys(changedFields).length === 0) {
       console.log('No changes to save.');
       setEdit(false);
       return;
     }
-
+if(!isallow){
+  return
+}
     try {
       let body = {
         filter: {
@@ -144,7 +176,7 @@ const AddressForm = ({ handleToggle }) => {
           onChange={handleChange}
           placeholder="Enter your name"
           disabled={!edit}
-          error={data.name.trim().length < 3}
+          error={isediting&&data.name.trim().length < 3}
           helperText={data.name.trim().length < 3 ? 'Field should have at least 3 characters.' : ''}
         />
 
@@ -155,7 +187,7 @@ const AddressForm = ({ handleToggle }) => {
           onChange={handleChange}
           placeholder="Enter your mobile number"
           disabled={!edit}
-          error={Boolean(data.mobile.trim() && !isValidMobileNumber(data.mobile))}
+          error={isediting&&Boolean(data.mobile.trim() && !isValidMobileNumber(data.mobile))}
           helperText={data.mobile.trim() && !isValidMobileNumber(data.mobile) ? 'Invalid mobile number.' : ''}
         />
 
@@ -168,7 +200,7 @@ const AddressForm = ({ handleToggle }) => {
               onChange={handleChange}
               placeholder="Enter your H.no"
               disabled={!edit}
-              error={data.housenumber.trim().length < 3}
+              error={isediting&&data.housenumber.trim().length < 3}
               helperText={data.housenumber.trim().length < 3 ? 'Field should have at least 3 characters.' : ''}
             />
           </Grid>
@@ -180,7 +212,7 @@ const AddressForm = ({ handleToggle }) => {
               onChange={handleChange}
               placeholder="Enter your street"
               disabled={!edit}
-              error={data.street.trim().length < 3}
+              error={isediting&&data.street.trim().length < 3}
               helperText={data.street.trim().length < 3 ? 'Field should have at least 3 characters.' : ''}
             />
           </Grid>
@@ -195,7 +227,7 @@ const AddressForm = ({ handleToggle }) => {
               onChange={handleChange}
               placeholder="Enter your Village"
               disabled={!edit}
-              error={data.village.trim().length < 3}
+              error={isediting&&data.village.trim().length < 3}
               helperText={data.village.trim().length < 3 ? 'Field should have at least 3 characters.' : ''}
             />
           </Grid>
@@ -207,7 +239,7 @@ const AddressForm = ({ handleToggle }) => {
               onChange={handleChange}
               placeholder="Enter your Landmark"
               disabled={!edit}
-              error={data.landmark.trim().length < 3}
+              error={isediting&&data.landmark.trim().length < 3}
               helperText={data.landmark.trim().length < 3 ? 'Field should have at least 3 characters.' : ''}
             />
           </Grid>
@@ -222,7 +254,7 @@ const AddressForm = ({ handleToggle }) => {
               onChange={handleChange}
               placeholder="Enter your City"
               disabled={!edit}
-              error={data.city.trim().length < 3}
+              error={isediting&&data.city.trim().length < 3}
               helperText={data.city.trim().length < 3 ? 'Field should have at least 3 characters.' : ''}
             />
           </Grid>
@@ -255,7 +287,7 @@ const AddressForm = ({ handleToggle }) => {
               onChange={handleChange}
               placeholder="Enter your Pincode"
               disabled={!edit}
-              error={Boolean(pincodeError || (data.pincode.trim() && !isValidPincode(data.pincode)))}
+              error={isediting&&Boolean(pincodeError || (data.pincode.trim() && !isValidPincode(data.pincode)))}
               helperText={
                 pincodeError || (data.pincode.trim() && !isValidPincode(data.pincode))
                   ? pincodeError || 'Invalid PIN code.'
@@ -287,12 +319,16 @@ const AddressForm = ({ handleToggle }) => {
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
         {edit ? (
           <>
-            <Button variant="outlined" color="success" onClick={handleSaveClick} sx={{ width: '120px', mr: 2 }}>
+          { prefilledDetails?<><Button variant="outlined" color="success" onClick={handleSaveClick} sx={{ width: '120px', mr: 2 }}>
               Save
             </Button>
             <Button variant="outlined" color="error" onClick={handleDiscardClick} sx={{ width: '120px' }}>
               Discard Changes
+            </Button></>:<>
+            <Button variant="outlined" color="success" onClick={handleAddAdress} sx={{ width: '120px', mr: 2 }}>
+              ADD 
             </Button>
+            </>}
           </>
         ) : (
           <Button variant="outlined" color="success" onClick={handleEditClick} sx={{ width: '120px' }}>
@@ -304,4 +340,4 @@ const AddressForm = ({ handleToggle }) => {
   );
 };
 
-export default AddressForm;
+export default EditAddressForm;

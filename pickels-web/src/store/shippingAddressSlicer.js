@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  address: null, // You can store a single address object here
+  address: null,
 };
 
 const addressSlice = createSlice({
@@ -11,7 +11,9 @@ const addressSlice = createSlice({
     setAddress: (state, action) => {
       state.address = action.payload;
     },
-   
+    clearAddress: (state) => {
+      state.address = null;
+    },
   },
 });
 
