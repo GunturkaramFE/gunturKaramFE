@@ -6,7 +6,7 @@ import { bestSellers } from '../asserts/benifits';
 import StarIcon from '@mui/icons-material/Star';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import wishlist from '../asserts/wishlist.png'
+
 import { useNavigate } from 'react-router-dom';
 const Bestseller = () => {
   const navigate=useNavigate()

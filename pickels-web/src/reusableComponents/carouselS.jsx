@@ -96,7 +96,7 @@ const CarouselSmall = ({ data, Component }) => {
       />
     </div>
     {pop&& (
-      <AddToCartPopUp ispop={pop} formData={<AddToCart data={popUpData} />} fun={HandlePopup}  />
+      <AddToCartPopUp ispop={pop} formData={<AddToCart data={popUpData} fun={HandlePopup}/>} fun={HandlePopup}  />
     )}
     </>
   );

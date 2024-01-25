@@ -5,7 +5,7 @@ import { addProduct } from '../store/trendingProductsSlicer';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import api from '../api';
-import {trending} from '../asserts/trending'
+
 
 const TopProducts = () => {
   const dispatch = useDispatch();
