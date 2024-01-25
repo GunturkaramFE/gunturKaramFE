@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { parseProduct, parseShoppingData } from '../helpers/parser';
 import { setShoppingData } from '../store/shoppingSlicer';
 import api from '../api';
-const AddToCart = ({ data }) => {
-
+import { useNavigate } from 'react-router-dom';
+const AddToCart = ({ data,fun }) => {
+const navigate= useNavigate()
   const [selectedQuantity, setSelectedQuantity] = useState(0);
   const [count, setCount] = useState(1)
   const[err,setErr]=useState('')
   const dispatch=useDispatch()
-
+const [isAdded,setIsAdded]=useState(false)
 let parsedData;
   const shoppingData = useSelector((state) => state.shopping);
   const handleDecrease = (e) => {
@@ -23,6 +24,23 @@ let parsedData;
     setCount(count + 1)
 
   };
+  const checkProductInCart= async()=>{
+    let parsedData=await parseShoppingData(shoppingData)
+    let filtered=parsedData?.cart.filter((x)=>x.id==data.id)
+        if(filtered.length){
+        let isSameCart=filtered.find((x)=>x.selectedQuantity.price==data.pricelist[selectedQuantity].price)
+   
+        if(isSameCart){
+       
+           setIsAdded(true)
+      }else{     
+    setIsAdded(false)
+      }
+    }else{
+      setIsAdded(false)
+    }
+  }
+ useEffect(()=>{checkProductInCart()},[selectedQuantity])
   const updateCart=async(data)=>{
     let response= await api.put('/user/updateUserShoppingList',{document:{cart:data}});
     if(response.success){
@@ -31,6 +49,7 @@ let parsedData;
          dispatch(setShoppingData(obj))
          
         }
+        fun()
   }
   
   const selectedPrice = data.pricelist[selectedQuantity]?.price || 0;
@@ -51,23 +70,12 @@ const HandleAddToCart= async()=>{
   cartitem.quantity=count
   cartitem.selectedQuantity=data.pricelist[selectedQuantity]
   parsedData=await parseShoppingData(shoppingData)
-  cartitem.cartId=parsedData.cart.length+1;
-  let filtered=parsedData?.cart.filter((x)=>x.id==cartitem.id)
-  if(filtered.length){
-   let isSameCart=filtered.find((x)=>x.selectedQuantity.price==cartitem.selectedQuantity.price)
-    if(isSameCart==undefined){
-      let jsonobj=JSON.stringify([cartitem,...parsedData.cart])  
-      await updateCart(jsonobj)
-    }else{
-   
-      setErr('product already added to cart')
-    }
-  
-  }else{
-     let jsonobj=JSON.stringify([cartitem,...parsedData.cart])  
-await updateCart(jsonobj)
 
-  }
+  cartitem.cartId=parsedData.cart.length+1;
+     let jsonobj=JSON.stringify([cartitem,...parsedData.cart])  
+       await updateCart(jsonobj)
+
+  
 }
   return (
     <>
@@ -171,6 +179,7 @@ await updateCart(jsonobj)
                   <button
                     className="btn btn-success btn-block "
                     type="button"
+                    onClick={()=>{ navigate(`/ViewProduct/${data.id}`)}}
                     style={{ backgroundColor: 'green', color: 'white', width: '35%' }}  >
                     View
                   </button>
@@ -178,10 +187,9 @@ await updateCart(jsonobj)
                     className="btn btn-success btn-block "
                     type="button"
                     style={{ backgroundColor: 'green', color: 'white', width: '35%' }} 
-                    onClick={HandleAddToCart}
-                    >
-                    
-                    ADD+
+                    onClick={()=>{!isAdded&&HandleAddToCart()}}
+                    >                    
+                    {!isAdded?"ADD":"Added"}
                   </button>
                 </div>
               </div>

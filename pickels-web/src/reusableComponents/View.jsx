@@ -10,42 +10,136 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import { useParams } from 'react-router-dom';
 import api from '../api';
-
+import { parseProduct, parseShoppingData } from '../helpers/parser';
+import { green } from '@mui/material/colors';
+import { useSelector, useDispatch } from 'react-redux';
+import { setShoppingData } from '../store/shoppingSlicer';
+import { AddProductToCart } from '../helpers/AddToCartModule';
 const View = () => {
   const [count, setCount] = useState(1);
-  const [selectedQuantity, setSelectedQuantity] = useState();
-  const [showClearButton, setShowClearButton] = useState(false);
   const [price, setPrice] = useState(0);
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState({});
-
+  const [selectedQuantity, setSelectedQuantity] = useState();
+  const[cartLoading,setCartLoading]=useState(false)
+  const [isadded,setisadded]=useState(false)
+  const dispatch= useDispatch()
+  const shoppingData = useSelector((state) => state.shopping);
+  const checkProductInCart= async()=>{
+    let parsedData=await parseShoppingData(shoppingData)
+    let filtered=parsedData?.cart.filter((x)=>x.id==product.id)
+       if(filtered.length){
+      let isSameCart=filtered.find((x)=>JSON.stringify(x.selectedQuantity)==selectedQuantity)
+      if(isSameCart){
+               setisadded(true)
+      }else{
+     
+    setisadded(false)
+      }
+    }else{
+      setisadded(false)
+    }
+  }
+ 
   useEffect(() => {
-     if (selectedQuantity) {
+    if (selectedQuantity) {
       const parsedQuantity = JSON.parse(selectedQuantity);
       const calculatedPrice = parsedQuantity.price * count;
       setPrice(calculatedPrice);
-    }  }, [selectedQuantity, count]);
+    }
+    checkProductInCart()
+  }, [selectedQuantity, count]);
 
   const { id } = useParams();
+  const buttonSx = {
+    ...(isadded&& {
+      bgcolor: green[500],
+      '&:hover': {
+        bgcolor: green[700],
+      },
+    }),
+  };
+  useEffect(() => {
+    fetchProduct();
+  }, []);
+  const updateCart=async(data)=>{
+    setCartLoading(true)
+    try {
+      let response= await api.put('/user/updateUserShoppingList',{document:{cart:data}});
+    if(response.success){
+         let obj={...shoppingData}
+         obj.cart=data
+         dispatch(setShoppingData(obj))
+         
+        }
+    } catch (error) {
+      
+    }finally{
+setCartLoading(false)
+setisadded(true)
+    }
+    
+  }
+const HandleAddToCart=async()=>{
+  let cartitem={
+    id:product.id,
+    category:product.category,
+    rating:product.rating,
+    subCategory:product.subCategory,
+    title:product.title,
+    url:product.url,
+    price:price,
+    quantity:count,
+    selectedQuantity:JSON.parse(selectedQuantity)
+   }
+ 
+   let parsedData=await parseShoppingData(shoppingData)
+   cartitem.cartId=parsedData.cart.length+1;
+   let filtered=parsedData?.cart.filter((x)=>x.id==cartitem.id)
+   if(filtered.length){
+    let isSameCart=filtered.find((x)=>x.selectedQuantity.price==cartitem.selectedQuantity.price)
+
+    if(isSameCart==undefined){
+       let jsonobj=JSON.stringify([cartitem,...parsedData.cart])  
+   
+       let obj={...shoppingData}
+       obj.cart=jsonobj
+       await updateCart(jsonobj) 
+
+     }else{
+    alert("alres")
+      
+     }
+   
+   }else{
+      let jsonobj=JSON.stringify([cartitem,...parsedData.cart])  
+            let obj={...shoppingData}
+      obj.cart=jsonobj
+     await updateCart(jsonobj)
+ 
+   }
+}
+  useEffect(() => {
+    if (Array.isArray(product?.pricelist) && product?.pricelist.length > 0) {
+    
+      setSelectedQuantity(JSON.stringify(product.pricelist[0]));
+    }
+  }, [product.pricelist,product]);
 
   const fetchProduct = async () => {
     setLoading(true);
     try {
       const response = await api.get(`/user/get-items/${id}`);
       if (response.success) {
-        setProduct(response.items);
-
-        
+        setProduct(parseProduct(response.items));
+      
       }
     } catch (error) {
+      // Handle error if needed
     } finally {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchProduct();
-  }, []);
 
   const handleDecrementCount = () => {
     if (count > 1) {
@@ -57,11 +151,7 @@ const View = () => {
     setCount(count + 1);
   };
 
-
-  const handleClearSelection = () => {
-    setSelectedQuantity('');
-    setShowClearButton(false);
-  };
+ 
 
   return (
     <>
@@ -78,36 +168,25 @@ const View = () => {
             </Grid>
             <Grid item xs={12} sm={6} style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <Typography variant="h4">{product.title}</Typography>
-                           <Typography variant="h5">
+              <Typography variant="h5">
                 <del style={{ color: 'red', marginRight: '5px' }}>${product.discountedPrice}</del>${price.toFixed(2)}
               </Typography>
               <div>
                 <label style={{ marginRight: '10px', fontWeight: 'bold', fontSize: 14 }}>Weight :</label>
                 <Select
-                  style={{ width: '40%', height: '40px' }}
-                  value={selectedQuantity}
-                  onChange={(e) => setSelectedQuantity(e.target.value)}
-                >
-                  {product.pricelist &&
-                    JSON.parse(product.pricelist).map((x, index) => (
-                      <MenuItem key={index} value={JSON.stringify(x)}>
-                        {`price: ${x.price} ---- quantity: ${x.quantity}`}
-                      </MenuItem>
-                    ))}
-                </Select>
-                {showClearButton && (
-                  <Button
-                    variant="outlined"
-                    color="error"
-                    style={{ marginLeft: '10px', border: 'none' }}
-                    onClick={handleClearSelection}
-                    startIcon={<ClearIcon />}
-                  >
-                    Clear
-                  </Button>
-                )}
-              </div>
-             
+  style={{ width: '40%', height: '40px' }}
+  value={selectedQuantity || (product.pricelist && JSON.stringify(product.pricelist[0]))}
+  onChange={(e) => setSelectedQuantity(e.target.value)}
+>
+  {product.pricelist &&
+    product.pricelist.map((x, index) => (
+      <MenuItem key={index} value={JSON.stringify(x)}>
+        {`price: ${x.price} ---- quantity: ${x.quantity}`}
+      </MenuItem>
+    ))}
+</Select>
+ </div>
+
               <Grid sx={{ width: '100%', display: 'flex', gap: '30px', flexDirection: ['column', 'row'] }}>
                 <Grid>
                   <Grid sx={{ width: '140px', display: 'flex', alignItems: 'center' }}>
@@ -132,10 +211,29 @@ const View = () => {
                       <AddIcon />
                     </IconButton>
                   </Grid>
-                </Grid>
-                <Button variant="contained" color="primary" sx={{ fontSize: 12 }}>
-                  Add to Cart
-                </Button>
+                </Grid> <Box sx={{ m: 1, position: 'relative' }}>
+        <Button
+          variant="contained"
+          sx={buttonSx}
+          disabled={cartLoading}
+         onClick={()=>{!isadded&&HandleAddToCart()}}
+        >
+         {isadded?'Added TO Cart':"Add To Cart"}
+        </Button>
+        {cartLoading&& (
+          <CircularProgress
+            size={24}
+            sx={{
+              color: green[500],
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              marginTop: '-12px',
+              marginLeft: '-12px',
+            }}
+          />
+        )}
+      </Box>
               </Grid>
               <div style={{ display: 'flex', width: '100%', gap: '10px' }}>
                 <FavoriteBorderIcon style={{ color: 'red', cursor: 'pointer' }} />
@@ -144,28 +242,30 @@ const View = () => {
               <RatingComponent initialRating={product.rating} sx={{ margin: 0 }} />
               <hr />
               <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '15px' }}>
-  <Box sx={{ display: 'flex' }}>
-    <Typography variant="subtitle1"><b>SKU :  </b></Typography>
-    <Typography color="grey">MIXUP967</Typography>
-  </Box>
+                <Box sx={{ display: 'flex' }}>
+                  <Typography variant="subtitle1"><b>Product Code:  </b></Typography>
+                  <Typography color="grey">{product.id}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex' }}>
+                  <Typography variant="subtitle1"><b>Brand : </b></Typography>
+                  <Typography color="grey">Guntur Karam</Typography>
+                </Box>
+                <Box sx={{ display: 'flex' }}>
+                  <Typography variant="subtitle1"><b>Category : </b></Typography>
+                  <Typography color="grey">{product.category}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex' }}>
+                  <Typography variant="subtitle1"><b>sub Category : </b></Typography>
+                  <Typography color="grey">{product.subCategory}</Typography>
+                </Box>
 
-  <Box sx={{ display: 'flex' }}>
-    <Typography variant="subtitle1"><b>Category : </b></Typography>
-    <Typography color="grey">NAMKEEN</Typography>
-  </Box>
-
-  <Box sx={{ display: 'flex' }}>
-    <Typography variant="subtitle1"><b>Brand : </b></Typography>
-    <Typography color="grey">Guntur Karam</Typography>
-  </Box>
-
-  <Box sx={{ display: 'flex' }}>
-    <Typography variant="subtitle1"><b>Share : </b></Typography>
-    <div style={{ width: '30%','@media (max-width:600px)': { width: '100%' }}}>
-      <Socailmedia/>
-    </div>
-  </Box>
-</Box>
+                        <Box sx={{ display: 'flex' }}>
+                  <Typography variant="subtitle1"><b>Share : </b></Typography>
+                  <div style={{ width: '30%', '@media (max-width:600px)': { width: '100%' } }}>
+                    <Socailmedia />
+                  </div>
+                </Box>
+              </Box>
             </Grid>
           </Grid>
         </Container>
