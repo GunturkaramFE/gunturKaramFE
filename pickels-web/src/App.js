@@ -14,6 +14,7 @@ import EditProfile from './navComponents/EditProfile';
 import Trendremove from './dev/Trendremove';
 import View from './reusableComponents/View';
 import OfflineMessage from './helpers/nointernet'; 
+import Wishlist from './ProductStore/WishList';
 const ProductLayout = ({ children }) => {
   return (
     <>
@@ -52,6 +53,7 @@ function App() {
             <Route path="/Edit" element={<EditAddress />} />
             <Route path="/Checkout" element={<CheckoutPage />} />
             <Route path='/ViewProduct/:id' element={<View />} />
+            <Route path='/Wishlist' element={<Wishlist/>} />
 
             {/* Admin Routes */}
             <Route

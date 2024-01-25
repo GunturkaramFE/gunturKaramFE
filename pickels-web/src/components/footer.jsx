@@ -13,6 +13,7 @@ const Footer = () => {
   return (
     <Grid container className="mt-5 w-100 h-auto">
       <Grid item xs={12} md={12} className="contact-container">
+        <Grid container sm={4}>
         <Box>
           <Typography variant="h6" className="fw-bold text-white">
             GET IN TOUCH
@@ -21,6 +22,7 @@ const Footer = () => {
             With Our Team
           </Typography>
         </Box>
+        </Grid>
         <Grid container id="contact-details" spacing={2}>
           <Grid item xs={12} sm={6}>
             <Box display="flex"  alignItems="center">
@@ -64,8 +66,8 @@ const Footer = () => {
       </Grid>
 
       <Grid item xs={12} md={12} className="foot-ter">
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={4}>
+      <Grid container spacing={2} style={{ justifyContent: 'space-evenly' }}>
+      <Grid item xs={12} md={3}>
             <Box>
               <Typography variant="h6" className="fw-bold text-white">
                 Policies
@@ -99,7 +101,7 @@ const Footer = () => {
               </ul>
             </Box>
           </Grid>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={3}>
             <Box>
               <Typography variant="h6" className="fw-bold text-white">
                 Quick Links
@@ -133,7 +135,7 @@ const Footer = () => {
               </ul>
             </Box>
           </Grid>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={3}>
             <Box>
               <Typography variant="h6" className="fw-bold text-white">
                 Location
@@ -149,8 +151,7 @@ const Footer = () => {
               </address>
             </Box>
           </Grid>
-        </Grid>
-        <Box>
+          <Box>
           <Typography variant="h6" className="fw-bold text-white">
             Subscribe
           </Typography>
@@ -161,6 +162,8 @@ const Footer = () => {
             </button>
           </div>
         </Box>
+        </Grid>
+       
       </Grid>
 
       <Grid item xs={12} className="outer-div pb-4 vh-20">
@@ -169,16 +172,16 @@ const Footer = () => {
             FOLLOW US
           </Typography>
           <div className="social-icons mt-2">
-            <IconButton href="#" className="btn btn-outline-light mx-1">
-              <WhatsAppIcon />
-            </IconButton>
-            <IconButton href="#" className="btn btn-outline-light mx-1">
-              <FacebookIcon />
-            </IconButton>
-            <IconButton href="#" className="btn btn-outline-light mx-1">
-              <InstagramIcon />
-            </IconButton>
-          </div>
+      <IconButton href="#" className="btn btn-outline-light mx-1" style={{ color: 'white' }}>
+        <WhatsAppIcon />
+      </IconButton>
+      <IconButton href="#" className="btn btn-outline-light mx-1" style={{ color: 'white' }}>
+        <FacebookIcon />
+      </IconButton>
+      <IconButton href="#" className="btn btn-outline-light mx-1" style={{ color: 'white' }}>
+        <InstagramIcon />
+      </IconButton>
+    </div>
         </Box>
       </Grid>
     </Grid>
