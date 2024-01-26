@@ -176,13 +176,16 @@ const HandleAddToCart= async()=>{
                 </div>
                 <h2 style={{color:'red'}}>{err}</h2>
                 <div style={{ display: 'flex', width: '100%', justifyContent: 'space-evenly', paddingTop: '20px' }}>
-                  <button
-                    className="btn btn-success btn-block "
-                    type="button"
-                    onClick={()=>{ navigate(`/ViewProduct/${data.id}`)}}
-                    style={{ backgroundColor: 'green', color: 'white', width: '35%' }}  >
-                    View
-                  </button>
+               <button
+    className="btn btn-success btn-block "
+    type="button"
+    onClick={() => {
+        window.open(`/ViewProduct/${data.id}`, '_blank');
+    }}
+    style={{ backgroundColor: 'green', color: 'white', width: '35%' }}
+>
+    View
+</button>
                   <button
                     className="btn btn-success btn-block "
                     type="button"
