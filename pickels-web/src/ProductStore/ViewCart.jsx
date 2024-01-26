@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import PopupForm from '../Pop-up/PopupForm';
 import AddressPopup from './AddressPopup';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,208 +7,262 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { setShoppingData } from '../store/shoppingSlicer';
 import api from '../api';
 import AdressCard from '../reusableComponents/addressCard';
-
+import { Button, Card, CardContent, Grid, IconButton, Input, TextField, Typography } from '@mui/material';
+import { List, ListItem} from '@mui/material';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import CloseIcon from '@mui/icons-material/Close';
+import { X } from '@mui/icons-material';
 const ViewCart = () => {
-  const[isaddressPopup,setIsAddressPopup]=useState(false);
-  const[totalPrice,setTotalPrice]=useState(0)
-  const [address,setAddress]=useState([])
-  const[defaultAddress,setDefaultAddress]=useState(false)
-  const HandleChangeAddress=()=>{
-    setIsAddressPopup(!isaddressPopup)
-  }  
-  let dispatch =useDispatch()
-const fetchAddress=async ()=>{
- const response= await api.get('/user/getShippingAddress');
- if(response.success){
-  setAddress(response?.shippingAddresses)
-const defaultAddress = response?.shippingAddresses?.find((x) => x.is_default) || response?.shippingAddresses?.[0];
-setDefaultAddress(defaultAddress)
-
-}else{
-  setAddress([])
-}
-
-}
-const shoppingData = useSelector((state) => state.shopping);
-const[parsedData,setParsedData]=useState()
-useEffect(()=>{
- setTotalPrice(0)
- setParsedData(parseShoppingData(shoppingData)) 
-},[shoppingData])
-useEffect(()=>{
-fetchAddress()
-},[])
-useEffect(() => {
-  let total = 0;
-  if (parsedData?.cart) {
-    parsedData?.cart.forEach((item) => {
-      total += item.price;
-    });
+  const [isaddressPopup, setIsAddressPopup] = useState(false);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [defaultAddress, setDefaultAddress] = useState(false);
+  const [couponCode,setCouponCode]=useState('')
+  const[isCouponVerified,setIsCouponVerified]=useState(false)
+const[iscoupon,setIsCoupon]=useState(true)
+  let dispatch = useDispatch();
+const handleCoupouns=()=>{
+  if(isCouponVerified){
+setCouponCode('')
+setIsCouponVerified(false)
+setIsCoupon(true)
+return
   }
-  setTotalPrice(total);
-}, [parsedData]);
-const updateCart=async(data)=>{
-  try {
-    let response= await api.put('/user/updateUserShoppingList',{document:{cart:data}});
+   if(couponCode){
+    setIsCouponVerified(true)
+  }else{
+    setIsCoupon(true)
+  }
 
+}
 
-  } catch (error) {
-    console.log(error)
+  const fetchAddress = async () => {
+    const response = await api.get('/user/getShippingAddress');
+    if (response.success) {
+  
+      const defaultAddress = response?.shippingAddresses?.find((x) => x.is_default) || response?.shippingAddresses?.[0];
+      setDefaultAddress(defaultAddress);
+    }
+  };
+
+  const shoppingData = useSelector((state) => state.shopping);
+  const [parsedData, setParsedData] = useState();
+
+  useEffect(() => {
+    setTotalPrice(0);
+    setParsedData(parseShoppingData(shoppingData));
+    console.log(shoppingData)
+  }, [shoppingData]);
+
+  useEffect(() => {
+    fetchAddress();
+  }, []);
+
+  useEffect(() => {
+    let total = 0;
+    if (parsedData?.cart) {
+      parsedData?.cart.forEach((item) => {
+        total += item.price*item.quantity;
+      });
+    }
+    setTotalPrice(total);
+  }, [parsedData]);
+
+  const updateCart = async (data) => {
+    try {
+      let response = await api.put('/user/updateUserShoppingList', { document: { cart: data } });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const HandleChange = async (property, cartId) => {
+    var shoppingdataobj = { ...shoppingData };
+    if (property === 'delete') {
+      let otherItems = parsedData?.cart.filter((x) => cartId !== x.cartId);
+      let jsonobj = JSON.stringify(otherItems);
+      await updateCart(jsonobj);
+      shoppingdataobj.cart = jsonobj;
+    }else if(property === 'Add'|| property === '-'){
+      
+
+let modifiedArray=parsedData?.cart.map((x)=>{
+
+  if(x.cartId==cartId){
+let count=property=='Add'?x.quantity+1:x.quantity-1
+return {...x,quantity:count}
+  }else{
+    return x
   }  
-}
-const HandleChange=async(property,cartId)=>{
-  var shoppingdataobj={...shoppingData}
-if(property=='delete'){
-  let otherItems= parsedData?.cart.filter((x)=>cartId!==x.cartId)
-  let jsonobj=JSON.stringify(otherItems)
-  await  updateCart(jsonobj)
-  shoppingdataobj.cart=jsonobj
-}
-dispatch(setShoppingData(shoppingdataobj))
-}
+})
+let jsonobj = JSON.stringify(modifiedArray);
+await updateCart(jsonobj);
+shoppingdataobj.cart = jsonobj;
 
-const handleSelectAdressFromPopUp=(data)=>{
-setDefaultAddress(data)
-}
+    }
+    dispatch(setShoppingData(shoppingdataobj));
+  };
+
+  const handleSelectAdressFromPopUp = (data) => {
+    setDefaultAddress(data);
+  };
+
+  const HandleChangeAddress = () => {
+    setIsAddressPopup(!isaddressPopup);
+  };
 
   return (
-<div style={{width:'100%',height:"100vh",display:'flex'}}>
-<div style={{width:'70%',height:'100vh',display:'flex',flexDirection:'column'}}>
-<section  style={{ width:'100%',height:"85%" }}>
-    <div className="container py-3">
-      <div className="row d-flex justify-content-center align-items-center h-100">
-        <div className="col-11">
-          <div className="d-flex justify-content-between align-items-center mb-4">
-         </div>
-          <div style={{ overflowY: 'scroll', overflowX: 'hidden', width: '100%',height:"72vh" }}>
-        
-{parsedData?.cart.length ? (
-  parsedData.cart.map((item, index) =>{
-   
-    return (
-    <div key={index} className="card rounded-3 mb-1">
-       <div className="card rounded-3 mb-1">
-            <div className="card-body p-2">
-              <div className="row d-flex justify-content-between align-items-center">
-                <div className="col-md-2 col-lg-2 col-xl-2">
-                  <img
-                    src={item.url}
-                    className="img-fluid rounded-3" alt="Cotton T-shirt" style={{width:'60px'}}
-                  />
-                </div>
-                <div className="col-md-3 col-lg-3 col-xl-3">
-                  <p className="lead fw-normal mb-2">{item.title}</p>
-                  <p><span className="text-muted">Size: </span>M <span className="text-muted">Color: </span>Grey</p>
-                </div>
-                <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
-                  <button className="btn btn-link px-2" onClick={() => document.getElementById('form1').stepDown()}>
-                    <i className="fas fa-minus"></i>
-                  </button>
-                  <DeleteForeverIcon style={{color:'red',marginTop:'15px'}} onClick={()=>{HandleChange('delete',item.cartId)}}/>
-                  <input
-                    id="form1"
-                    min="0"
-                    name="quantity"
-                    value={item.quantity}
-                    type="number"
-                    className="form-control form-control-sm"
-                  />
-
-                  <button className="btn btn-link px-2" onClick={() => document.getElementById('form1').stepUp()}>
-                    <i className="fas fa-plus"></i>
-                  </button>
-                </div>
+    <>
+      {parsedData?.cart.length ? (
+       <div style={{ width: '100%', display: 'flex', flexDirection: 'column'}} id='main'>
+            <div style={{ flex: 1,minWidth:"50%" }}>
+            <div className="container py-3">
+              <div className="row d-flex justify-content-center align-items-center h-100">
+                <div className="col-11">
+                  <div className="d-flex justify-content-center align-items-center">
+                    <Typography variant="h6" gutterBottom>Product Summary</Typography></div>
               
-                <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                  <h5 className="mb-0"> &#x20B9;{item.price}</h5>
-                  
+                  <div style={{ overflowY: 'scroll', overflowX: 'hidden', width: '100%', height: '58vh' }}>
+                    {parsedData.cart.map((item, index) => (
+                      <Card key={index} className="mb-1">
+                        <CardContent>
+                          <Grid container justifyContent="space-between" alignItems="center">
+                            <Grid item xs={2}>
+                              <img src={item.url} alt="Cotton T-shirt" style={{ width: '60px' }} />
+                            </Grid>
+                            <Grid item xs={5}>
+                              <Typography variant="h6" gutterBottom>
+                                {item.title}
+                              </Typography>
+                              <Typography variant="body2" color="textSecondary">
+                                <span className="text-muted">Item: </span>{item.subCategory}{' '}                            
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={3} className="d-flex" style={{ alignItems: 'center' }}>
+                              <button
+                                type="button"
+                                className="btn btn-link px-2"
+                                onClick={() => {
+                                  if(item.quantity>1){
+                                    HandleChange('-', item.cartId)
+                                  }}                                 
+                                  }
+                                style={{ textDecoration: 'none' }}
+                              >
+                                <i className="fas fa-minus">-</i>
+                              </button>
+                              <input
+                                id="form1"
+                                min="1"
+                                name="quantity"
+                                value={item.quantity}
+                                className="form-control form-control-sm"
+                                style={{ height: '20px', width: '40px', textAlign: 'center' }}
+                              />
+                              <button
+                                type="button"
+                                className="btn btn-link px-2"
+                                onClick={() =>  HandleChange('Add', item.cartId)}
+                                style={{ textDecoration: 'none' }}
+                              >
+                                <i className="fas fa-plus">+</i>
+                              </button>
+                            </Grid>
+                            <Grid item xs={1} container justifyContent="flex-end">
+                              <Typography variant="h6" gutterBottom>
+                                &#x20B9;{item.price*item.quantity}
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={1} container justifyContent="center" alignItems="center">
+                              <IconButton onClick={() => HandleChange('delete', item.cartId)} size="small">
+                                <DeleteForeverIcon style={{ color: 'red' }} />
+                              </IconButton>
+                            </Grid>
+                          </Grid>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
                 </div>
-               
-                <div className="col-md-1 col-lg-1 col-xl-1 text-end">
-                  <a href="#!" className="text-danger"><i className="fas fa-trash fa-lg"></i></a>
-                </div>
-            
               </div>
             </div>
           </div>
-    </div>
-  )})
-) : (
-  <>"emptycart"</>
-)}
 
-
-          </div>         
-
+          {/* Cart summary section */}
+          <div style={{ flex: 1, marginTop: '20px',minWidth:"50%" }}>
+            <div className="card" style={{ border: 'none' }}>       
+               <div className="card shadow" style={{ width: '100%', margin: 'auto', minHeight: '32vh', height: 'auto', }}>
+              <div style={{width:"100",display:"flex",flexDirection:"row",justifyContent:"space-between",backgroundColor:"white"}}>                 
+                  <div style={{ width:"40%",display: 'flex',alignItems:"center", flexDirection:"column", marginLeft:"5%"}}>
+                    <Typography variant="h6" gutterBottom>Shipping Address</Typography>
+                    <AdressCard data={defaultAddress} pop={HandleChangeAddress}/>
+                  </div>
+              
+      <div style={{ width: "100%", maxWidth: "40%", marginRight: "5%", display: 'flex', alignItems: "center", flexDirection: "column" }}>
+        <Typography variant="h6" gutterBottom>
+          Payment Summary
+        </Typography>
+        <List sx={{ width: '100%', minHeight: "230px", maxWidth: 360, display: "flex", alignItems: "center", flexDirection: "column", justifyContent: "center" }}>
+  <ListItem disablePadding sx={{ display: 'flex', justifyContent: 'space-between' }}>
+    <Typography>Sub-total</Typography>
+    <Typography>₹{totalPrice}</Typography>
+  </ListItem>
+  <ListItem disablePadding sx={{ display: 'flex', justifyContent: 'space-between' }}>
+    <Typography>Discount</Typography>
+    <Typography>₹0</Typography>
+  </ListItem>
+  <ListItem disablePadding sx={{ display: 'flex', justifyContent: 'space-between' }}>
+    <Typography>Shipping charges</Typography>
+    <Typography>Free</Typography>
+  </ListItem>
+  <ListItem disablePadding sx={{ display: 'flex', justifyContent: 'space-between' }}>
+    <Typography>Grand Total</Typography>
+    <Typography>1000</Typography>
+  </ListItem>
+  <ListItem disablePadding sx={{ display: 'flex', justifyContent: 'space-between' }}>
+  {iscoupon&&(!isCouponVerified) ? (
+        <a onClick={()=>{setIsCoupon(false)}} style={{ font: 'menu' }}>Do You Have a Coupon?</a>)
+       : (
+        <div style={{marginTop:"15px"}}>
+          <TextField
+            variant="outlined"
+            placeholder="Enter Coupon Code"
+            size="small" 
+            disabled={isCouponVerified}
+            onChange={(e)=>setCouponCode(e.target.value)}           
+          />
+          <Button onClick={handleCoupouns}color="primary">
+           {!isCouponVerified?"Apply":<CloseIcon/>}
+          </Button>
         </div>
-      </div>
-    </div>
-  </section>
-  <div style={{width:'100%'}}>
-  <div className="card px-12 " style={{border:'none'}}>
-      <div className="card-body p-1 d-flex flex-row  " style={{ width: '100%' }}>
-        <div className="form-outline flex-fill">
-          <input type="text" id="form1" placeholder='APPLY COUPON CODE HERE' className="form-control form-control-lg"  style={{width:'60%',height:"auto"}} />
-          <label className="form-label" htmlFor="form1" style={{color:'red'}}>Discount code</label>
-        </div>
-        <button type="button" className="btn btn-outline-success" style={{width:'100px',height:"50px"}}>Apply</button>
-      </div>
-    </div>
+      )}
+  </ListItem>
+  {isCouponVerified&&<> <ListItem  disablePadding sx={{ display: 'flex',Color:'green',fontSize:"10px", justifyContent: 'space-between' }}>
+    <Typography>$20000 Applied Successfully</Typography>
+     </ListItem></>}
+  <div style={{ display: 'flex', justifyContent: 'center', marginTop: "30px", width: '100%' }}>
+    <Button variant="outlined" color="success" size="small" disabled={!defaultAddress}>
+      Checkout
+    </Button>
   </div>
-</div> 
-<div style={{  width: '30%', height: '100vh',display:'flex',justifyContent:'center',alignItems:'center' }}>
-        <div className="card shadow" style={{width:'90%',minHeight:"82vh",height:'auto'}}>
-          <div className="card-header py-3">
-            <h5 className="mb-0" style={{ fontWeight: 'bold', fontSize: 'larger', textAlign: 'center' }}>
-              Summary
-            </h5>
-          </div>
-          <div className="card-body">
-            <ul className="list-group list-group-flush">
-            <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                Name
-                <span>Chicken Pickle</span>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                Products
-                <span>$53.98</span>
-              </li>
-               <li className="list-group-item d-flex justify-content-between align-items-center px-0">
-                Shipping
-                <span >Free</span>
-              </li>
-    <div style={{display:'flex',alignItems:'center'}}>
-   <AdressCard data={defaultAddress}/>       
-    </div>{defaultAddress?
-    <div style={{display:"flex",justifyContent:'space-between',width:"100%"}}>
-    <a href="#" onClick={HandleChangeAddress} className="card-link">Change Address</a>
-    </div> :<div style={{display:"flex",justifyContent:'space-between',width:"100%"}}>
-    <a href="#" onClick={HandleChangeAddress} className="card-link">Add Address</a>
-    </div> }
-    <PopupForm ispop={isaddressPopup} selectAddress={handleSelectAdressFromPopUp} fun={HandleChangeAddress} width='600px'/>  
-    <hr/>
-              <li className="d-flex justify-content-between align-items-center border-0 px-0 mb-3">
-                <div>
-                  <strong>Total amount</strong>
-                  <strong>
-                    <p className="mb-0">(including VAT)</p>
-                  </strong>
+</List>
+
+      </div>
+        
                 </div>
-                <span>
-                  <strong> &#x20B9;{totalPrice}</strong>
-                </span>
-              </li>
-            </ul>
-            <div style={{display:'flex',justifyContent:'center' ,width:'100%'}}>
-            <button type="button" className="btn btn-outline-success btn-lg btn-block">
-              Proceed to Checkout
-            </button>
+                <PopupForm ispop={isaddressPopup} selectAddress={handleSelectAdressFromPopUp} fun={HandleChangeAddress} width="90%" />
+                <hr />             
+              
+              </div>
+            
             </div>
-           
           </div>
         </div>
-      </div>
-</div>   
-  )
-}
-export default ViewCart
+      ) : (
+        <>--- Empty Cart ----</>
+      )}
+    </>
+  );
+};
+
+export default ViewCart;
