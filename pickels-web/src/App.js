@@ -15,6 +15,7 @@ import Trendremove from './dev/Trendremove';
 import View from './reusableComponents/View';
 import OfflineMessage from './helpers/nointernet'; 
 import Wishlist from './ProductStore/WishList';
+import EmptyData from './reusableComponents/EmptyData';
 const ProductLayout = ({ children }) => {
   return (
     <>
@@ -53,7 +54,8 @@ function App() {
             <Route path="/Edit" element={<EditAddress />} />
             <Route path="/Checkout" element={<CheckoutPage />} />
             <Route path='/ViewProduct/:id' element={<View />} />
-            <Route path='/Wishlist' element={<Wishlist/>} />
+            <Route path='/WishlistProduct' element={<Wishlist/>} />
+            <Route path='/empty' element={<EmptyData/>} />
 
             {/* Admin Routes */}
             <Route

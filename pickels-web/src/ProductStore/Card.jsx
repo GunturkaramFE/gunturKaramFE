@@ -4,10 +4,7 @@ import PopupForm from '../Pop-up/PopupForm'
 import AddToCart from './AddToCart'
 import RatingComponent from './RatingComponent'
 const Card = ({data}) => {
-  const[pop,setPopUp]=useState(false)
-  const HandlePopup=()=>{
-    setPopUp(!pop)
-    }    
+ 
 
     console.log('data',data)
   return (
@@ -52,13 +49,11 @@ const Card = ({data}) => {
         <button
         className="btn btn-success btn-block "
         type="button"
-        style={{backgroundColor: 'green', color: 'white', width:'35%'  }} 
-        onClick={HandlePopup}>
+        style={{backgroundColor: 'green', color: 'white', width:'35%'  }} >
         ADD+
         </button>
         </div>
         <div style={{width:'100%',height:'auto'}}>
-        <PopupForm ispop={pop} formData={<AddToCart/>} fun={HandlePopup} width='460px'/>
         </div>
         </div>
        </div>

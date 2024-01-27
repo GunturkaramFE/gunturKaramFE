@@ -68,8 +68,8 @@ const ProductTab = () => {
 
   return (
     <>
-      <Box sx={{ width: '100%', position: 'relative', zIndex: 1 }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%',position:'fixed',height:'7.8vh',backgroundColor:'white' }}>
+      <Box sx={{ width: '100%' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%',backgroundColor:'white' }}>
           <Tabs
             value={value}
             onChange={handleChange}
@@ -85,52 +85,52 @@ const ProductTab = () => {
           </Tabs>
         </Box>
 
-  <Grid container justifyContent="center" zIndex="-3" position="absolute"  >
- <CustomTabPanel value={value} index={0}  height="84vh" width="100%"  style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
-  <Grid container spacing={3} justifyContent="center" marginTop={2.5}>
+<Grid  container justifyContent="center"  sx={{height:{xs:'91vh',sm:'75vh'}}}  >
+ <CustomTabPanel value={value} index={0}  sx={{height:{xs:'91vh',sm:'75vh'}}} width="100%"  style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
+  <Grid container  justifyContent="center"  rowGap='26px' >
     {allproducts?.map((product, index) => (
-      <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
-        <Card data={product} />
+      <Grid item key={index} xs={12} sm={6} md={4} lg={3}  sx={{paddingLeft:{xs:'30px',sm:'13px'}}}>
+        <Card data={product} width='100%'/>
       </Grid>
     ))}
   </Grid>
 </CustomTabPanel>
-       <CustomTabPanel value={value} index={1} overflow="scroll" height="84vh" width="100%"  style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
-              <Grid container spacing={3} justifyContent="center" marginTop={2.5}  >
-                {allproducts?.map((product, index) => (
-                  <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
-                    <Card data={product} />
-                  </Grid>
-                ))}
-         </Grid>
-       </CustomTabPanel>
-       <CustomTabPanel value={value} index={2} overflow="scroll" height="84vh" width="100%" style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
-              <Grid container spacing={3} justifyContent="center"  marginTop={2.5}  >
-                {allproducts?.map((product, index) => (
-                  <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
-                    <Card data={product} />
-                  </Grid>
-                ))}
-     </Grid>
-       </CustomTabPanel>
-       <CustomTabPanel value={value} index={3} overflow="scroll" height="84vh" width="100%" style={{ overflowY: 'scroll', overflowX: 'hidden' }} >
-              <Grid container spacing={3} justifyContent="center"  marginTop={2.5}  >
-                {allproducts?.map((product, index) => (
-                  <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
-                    <Card data={product} />
-                  </Grid>
-                ))}
-     </Grid>
-       </CustomTabPanel>
-       <CustomTabPanel value={value} index={4} overflow="scroll" height="84vh" width="100%" style={{ overflowY: 'scroll', overflowX: 'hidden' }} >
-              <Grid container spacing={3} justifyContent="center"  marginTop={2.5}  >
-                {allproducts?.map((product, index) => (
-                  <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
-                    <Card data={product} />
-                  </Grid>
-                ))}
-     </Grid>
-       </CustomTabPanel>
+<CustomTabPanel value={value} index={1}  sx={{height:{xs:'91vh',sm:'75vh'}}} width="100%"  style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
+  <Grid container  justifyContent="center"  rowGap='26px' >
+    {allproducts?.map((product, index) => (
+      <Grid item key={index} xs={12} sm={6} md={4} lg={3}  sx={{paddingLeft:{xs:'30px',sm:'13px'}}}>
+        <Card data={product} width='100%'/>
+      </Grid>
+    ))}
+  </Grid>
+</CustomTabPanel>
+<CustomTabPanel value={value} index={2}  sx={{height:{xs:'91vh',sm:'75vh'}}} width="100%"  style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
+  <Grid container  justifyContent="center"  rowGap='26px' >
+    {allproducts?.map((product, index) => (
+      <Grid item key={index} xs={12} sm={6} md={4} lg={3}  sx={{paddingLeft:{xs:'30px',sm:'13px'}}}>
+        <Card data={product} width='100%'/>
+      </Grid>
+    ))}
+  </Grid>
+</CustomTabPanel>
+<CustomTabPanel value={value} index={3}  sx={{height:{xs:'91vh',sm:'75vh'}}} width="100%"  style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
+  <Grid container  justifyContent="center"  rowGap='26px' >
+    {allproducts?.map((product, index) => (
+      <Grid item key={index} xs={12} sm={6} md={4} lg={3}  sx={{paddingLeft:{xs:'30px',sm:'13px'}}}>
+        <Card data={product} width='100%'/>
+      </Grid>
+    ))}
+  </Grid>
+</CustomTabPanel>
+<CustomTabPanel value={value} index={4}  sx={{height:{xs:'91vh',sm:'75vh'}}} width="100%"  style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
+  <Grid container  justifyContent="center"  rowGap='26px' >
+    {allproducts?.map((product, index) => (
+      <Grid item key={index} xs={12} sm={6} md={4} lg={3}  sx={{paddingLeft:{xs:'30px',sm:'13px'}}}>
+        <Card data={product} width='100%'/>
+      </Grid>
+    ))}
+  </Grid>
+</CustomTabPanel>
           {/* Other CustomTabPanel components */}
     </Grid>
       </Box>

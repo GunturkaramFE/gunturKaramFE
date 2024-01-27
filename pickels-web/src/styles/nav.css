@@ -2,37 +2,19 @@
     width: 100%;
     height: auto;    
     background-color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    gap: 1%;
     border-bottom: 1px solid lightgrey;
     position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 101;
 }
-
 .carts{
-    width: 40%;
     height: 100%;
     display: flex;
     align-items: center;
     gap: 10%;
     justify-content: end;
-    padding-right: 2%;
-    
-}
-.carts :hover{
-    color:green;
-    
-}
-.image-container{
-    width: 10%;
-    height: auto;
-}
-.filter-container{
-    width: 45%;
+    padding-right: 2%;    
 }
 .Drawer{
     width: 40%;
