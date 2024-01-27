@@ -44,13 +44,21 @@ const Footer = () => {
               <Box className="rounded-circle bg-white p-3">
                 <MailIcon color="primary" />
               </Box>
-              <Box>
+              <Box sx={{width:"65%"}}>
                 <Typography variant="h6" className="fw-bold text-white">
                   Mail
                 </Typography>
-                <Typography variant="subtitle1" className="fw-semibold text-white">
-                  subhashvarma@gmail.com
-                </Typography>
+                <Typography
+  variant="subtitle1"
+  className="fw-semibold text-white"
+  sx={{
+    wordWrap: 'break-word',
+    overflowWrap: 'break-word'
+  }}
+>
+  subhashvarma@gmail.com
+</Typography>
+
               </Box>
             </Box>
           </Grid>
@@ -65,9 +73,9 @@ const Footer = () => {
         </div>
       </Grid>
 
-      <Grid item xs={12} md={12} className="foot-ter">
-      <Grid container spacing={2} style={{ justifyContent: 'space-evenly' }}>
-      <Grid item xs={12} md={3}>
+      <Grid item xs={12} md={12}  className="foot-ter">
+      <Grid container spacing={2} sx={{ justifyContent: 'space-evenly' }}>
+      <Grid item xs={4} md={3}>
             <Box>
               <Typography variant="h6" className="fw-bold text-white">
                 Policies
@@ -101,7 +109,7 @@ const Footer = () => {
               </ul>
             </Box>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={4} md={3}>
             <Box>
               <Typography variant="h6" className="fw-bold text-white">
                 Quick Links
@@ -135,7 +143,7 @@ const Footer = () => {
               </ul>
             </Box>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={4} md={3}>
             <Box>
               <Typography variant="h6" className="fw-bold text-white">
                 Location
