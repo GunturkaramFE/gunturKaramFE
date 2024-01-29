@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -8,7 +8,9 @@ import Card from './Card';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAllProducts } from '../store/allProductsSlicer';
 import api from '../api';
-import { Grid } from '@mui/material';
+import { CircularProgress, Grid } from '@mui/material';
+import AddToCartPopUp from '../reusableComponents/addToCartPopUp';
+import AddToCart from './AddToCart';
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -46,18 +48,23 @@ const ProductTab = () => {
   const [value, setValue] = React.useState(0);
   const dispatch = useDispatch();
   const allproducts = useSelector(state => state.allProducts);
-
+  const [pop, setPopUp] = useState(false);
+  const [popUpData, setPopUpData] = useState({});
   const fetchAllProducts = async () => {
     const products = await api.get('/user/get-all-products');
     dispatch(setAllProducts(products?.items || []));
   };
-
+  const HandlePopup = (data) => {
+    console.log(data, 'parsed');
+    setPopUpData(data);
+    setPopUp(!pop);
+  };
   useEffect(() => {
     fetchAllProducts();
   }, []);
 
   useEffect(() => {
-    console.log(allproducts);
+    console.log(allproducts, "all");
   }, [allproducts]);
 
   const handleChange = (event, newValue) => {
@@ -65,75 +72,64 @@ const ProductTab = () => {
   };
 
   const isMobile = window.innerWidth <= 600;
+  const subcategories = ["chicken", "mutton", "fish", "prawn"];
 
   return (
     <>
-      <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%',backgroundColor:'white' }}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="basic tabs example"
-            variant={isMobile ? 'scrollable' : 'standard'}
-            scrollButtons={isMobile ? 'auto' : 'off'}
-          >
-            <Tab label="All PRODUCTS" {...a11yProps(0)} />
-            <Tab label="CHICKEN PICKLES" {...a11yProps(1)} />
-            <Tab label="MUTTON PICKLES" {...a11yProps(2)} />
-            <Tab label="FISH PICKLES" {...a11yProps(3)} />
-            <Tab label="PRAWN PICKLES" {...a11yProps(4)} />
-          </Tabs>
-        </Box>
+      {allproducts.length ? (
+        <Box sx={{ width: '100%'}}>
+          {pop && (
+            <div>
+              <AddToCartPopUp
+                ispop={pop}
+                fun={HandlePopup}
+                formData={<AddToCart data={popUpData} fun={HandlePopup} />}
+              />
+            </div>
+          )}
+          <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%', backgroundColor: 'white' }}>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="basic tabs example"
+              variant={isMobile ? 'scrollable' : 'standard'}
+              scrollButtons={isMobile ? 'auto' : 'off'}
+            >
+              <Tab label="All PRODUCTS" {...a11yProps(0)} />
+              {subcategories.map((subcategory, index) => (
+                <Tab key={index} label={subcategory.toUpperCase() + " PICKLES"} {...a11yProps(index + 1)} />
+              ))}
+            </Tabs>
+          </Box>
 
-<Grid  container justifyContent="center"  sx={{height:{xs:'91vh',sm:'75vh'}}}  >
- <CustomTabPanel value={value} index={0}  sx={{height:{xs:'91vh',sm:'75vh'}}} width="100%"  style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
-  <Grid container  justifyContent="center"  rowGap='26px' >
-    {allproducts?.map((product, index) => (
-      <Grid item key={index} xs={12} sm={6} md={4} lg={3}  sx={{paddingLeft:{xs:'30px',sm:'13px'}}}>
-        <Card data={product} width='100%'/>
-      </Grid>
-    ))}
-  </Grid>
-</CustomTabPanel>
-<CustomTabPanel value={value} index={1}  sx={{height:{xs:'91vh',sm:'75vh'}}} width="100%"  style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
-  <Grid container  justifyContent="center"  rowGap='26px' >
-    {allproducts?.map((product, index) => (
-      <Grid item key={index} xs={12} sm={6} md={4} lg={3}  sx={{paddingLeft:{xs:'30px',sm:'13px'}}}>
-        <Card data={product} width='100%'/>
-      </Grid>
-    ))}
-  </Grid>
-</CustomTabPanel>
-<CustomTabPanel value={value} index={2}  sx={{height:{xs:'91vh',sm:'75vh'}}} width="100%"  style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
-  <Grid container  justifyContent="center"  rowGap='26px' >
-    {allproducts?.map((product, index) => (
-      <Grid item key={index} xs={12} sm={6} md={4} lg={3}  sx={{paddingLeft:{xs:'30px',sm:'13px'}}}>
-        <Card data={product} width='100%'/>
-      </Grid>
-    ))}
-  </Grid>
-</CustomTabPanel>
-<CustomTabPanel value={value} index={3}  sx={{height:{xs:'91vh',sm:'75vh'}}} width="100%"  style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
-  <Grid container  justifyContent="center"  rowGap='26px' >
-    {allproducts?.map((product, index) => (
-      <Grid item key={index} xs={12} sm={6} md={4} lg={3}  sx={{paddingLeft:{xs:'30px',sm:'13px'}}}>
-        <Card data={product} width='100%'/>
-      </Grid>
-    ))}
-  </Grid>
-</CustomTabPanel>
-<CustomTabPanel value={value} index={4}  sx={{height:{xs:'91vh',sm:'75vh'}}} width="100%"  style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
-  <Grid container  justifyContent="center"  rowGap='26px' >
-    {allproducts?.map((product, index) => (
-      <Grid item key={index} xs={12} sm={6} md={4} lg={3}  sx={{paddingLeft:{xs:'30px',sm:'13px'}}}>
-        <Card data={product} width='100%'/>
-      </Grid>
-    ))}
-  </Grid>
-</CustomTabPanel>
-          {/* Other CustomTabPanel components */}
-    </Grid>
-      </Box>
+          <Grid container justifyContent="center" sx={{ height: { xs: '91vh', sm: '75vh' } }}>
+            <CustomTabPanel value={value} index={0} sx={{ height: { xs: '91vh', sm: '75vh' } }} width="100%" style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
+              <Grid container justifyContent="center" rowGap='26px'>
+                {allproducts?.map((product, index) => (
+                  <Grid item key={index} xs={12} sm={6} md={4} lg={3} sx={{ paddingLeft: { xs: '30px', sm: '13px' } }}>
+                    <Card data={product} PopUpHandler={HandlePopup} width='100%'/>
+                  </Grid>
+                ))}
+              </Grid>
+            </CustomTabPanel>
+            {subcategories.map((subcategory, index) => (
+              <CustomTabPanel key={index} value={value} index={index + 1} sx={{ height: { xs: '91vh', sm: '75vh' } }} width="100%" style={{ overflowY: 'scroll', overflowX: 'hidden' ,zIndex:0 }}>
+                <Grid container justifyContent="center" rowGap='26px'>
+                  {allproducts?.filter(product => product.subCategory === subcategory).map((product, index) => (
+                    <Grid item key={index} xs={12} sm={6} md={4} lg={3} sx={{ paddingLeft: { xs: '30px', sm: '13px' } }}>
+                      <Card data={product} PopUpHandler={HandlePopup} width='100%' />
+                    </Grid>
+                  ))}
+                </Grid>
+              </CustomTabPanel>
+            ))}
+          </Grid>
+        </Box>
+      ) : (
+        <div style={{ width: '100%', height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <CircularProgress />
+        </div>
+      )}
     </>
   );
 };

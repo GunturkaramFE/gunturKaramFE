@@ -53,6 +53,7 @@ const CarouselSmall = ({ data, Component }) => {
     }
   };
   const HandlePopup=(data)=>{
+    console.log(data)
     setPopUpData(data)
     setPopUp(!pop)
     }
