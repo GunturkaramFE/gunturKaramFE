@@ -83,11 +83,21 @@ const NavBar = () => {
   );
 
   return (
-    <Box className="nav">
+    <Box className="nav" >
       <Grid container>
-        <Grid item xs={2} sm={3} md={3}  className="image-container" >
-          <img  src={logo} alt="" style={{ width: '42%',height:'auto', objectFit: 'contain' }} />
-        </Grid>
+      <Grid item xs={2}  sm={3} sx={{ width: '100%',height: { xs: 'auto', sm: '17vh' },display: 'flex',alignItems:{sm:"start"}
+  }}
+>
+  <img
+    src={logo}
+    alt=""
+    style={{ width:{xs:"100%",sm:"70%"}, height: '100%', objectFit: 'contain' }}
+  />
+</Grid>
+
+
+
+
         <Grid item sm={6} xs={6} className="filter-container" sx={{display:'flex',alignItems:'center'}}>
           <SearchFilter />
         </Grid>

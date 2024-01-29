@@ -12,7 +12,7 @@ const Landing_page=()=>{
     return(
     <div style={{ width: "100%", height: "auto", backgroundColor: "#eeeee4" }}>
     {/* <DisplayAdsOnNav/> */}
-    <NavBar/> 
+    <NavBar  /> 
     <div style={{width:'100%',position:'relative'}}>
     <div className="carousel-container" style={{width:"100%",height:"auto"}}>
     <Carousel/>

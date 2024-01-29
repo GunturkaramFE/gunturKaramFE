@@ -10,10 +10,26 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import '../styles/foot.css';
 
 const Footer = () => {
+  const containerStyle = {
+    backgroundImage: `url('https://www.pikpng.com/pngl/m/176-1765669_5000-x-1358-0-farm-footer-png-clipart.png')`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    position: 'relative',
+  };
+  
+  const shadeStyle = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    background: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5))',
+  };
   return (
     <Grid container className="mt-5 w-100 h-auto">
-      <Grid item xs={12} md={12} className="contact-container">
-        <Grid container sm={4}>
+      <Grid item xs={12} sm={11} md={12} className="contact-container" sx={{paddingTop:'10px 0'}} >
+        <Grid container sm={4} xs={5} sx={{paddingLeft:{xs:'10px',sm:'20px'},marginTop:'10px'}}>
         <Box>
           <Typography variant="h6" className="fw-bold text-white">
             GET IN TOUCH
@@ -23,7 +39,7 @@ const Footer = () => {
           </Typography>
         </Box>
         </Grid>
-        <Grid container id="contact-details" spacing={2}>
+        <Grid container id="contact-details" xs={7}  sx={{marginTop:'10px'}}>
           <Grid item xs={12} sm={6}>
             <Box display="flex"  alignItems="center">
               <Box className="rounded-circle bg-white p-3">
@@ -44,7 +60,7 @@ const Footer = () => {
               <Box className="rounded-circle bg-white p-3">
                 <MailIcon color="primary" />
               </Box>
-              <Box sx={{width:"65%"}}>
+              <Box sx={{width:"70%"}}>
                 <Typography variant="h6" className="fw-bold text-white">
                   Mail
                 </Typography>
@@ -64,7 +80,6 @@ const Footer = () => {
           </Grid>
         </Grid>
       </Grid>
-
       <Grid item xs={12} className="container">
         <div className="row">
           <div className="col-12 text-center">
@@ -74,8 +89,8 @@ const Footer = () => {
       </Grid>
 
       <Grid item xs={12} md={12}  className="foot-ter">
-      <Grid container spacing={2} sx={{ justifyContent: 'space-evenly' }}>
-      <Grid item xs={4} md={3}>
+      <Grid container sm={11} xs={11} spacing={2} sx={{ justifyContent: 'space-evenly' }}>
+          <Grid item xs={4} md={3}>
             <Box>
               <Typography variant="h6" className="fw-bold text-white">
                 Policies
@@ -159,7 +174,7 @@ const Footer = () => {
               </address>
             </Box>
           </Grid>
-          <Box>
+        <Box>
           <Typography variant="h6" className="fw-bold text-white">
             Subscribe
           </Typography>
