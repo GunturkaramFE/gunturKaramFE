@@ -89,7 +89,7 @@ const Footer = () => {
       </Grid>
 
       <Grid item xs={12} md={12}  className="foot-ter">
-      <Grid container sm={11} xs={11} spacing={2} sx={{ justifyContent: 'space-evenly' }}>
+          <Grid container sm={11} xs={11} spacing={2} sx={{ justifyContent: 'space-evenly' }}>
           <Grid item xs={4} md={3}>
             <Box>
               <Typography variant="h6" className="fw-bold text-white">
