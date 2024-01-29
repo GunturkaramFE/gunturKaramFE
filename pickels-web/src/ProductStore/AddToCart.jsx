@@ -120,7 +120,7 @@ const HandleAddToCart= async()=>{
                           </select>
                         </div>
                         <p style={{ display: 'flex', flexDirection: 'column' }}>
-                          <span className="text-muted">{priceperkg}/KG</span>
+                          <span className="text-muted">{priceperkg.toFixed(2)}/KG</span>
                           <span className="text-muted">category: {data.subCategory}</span>
                         </p>
                       </div>
