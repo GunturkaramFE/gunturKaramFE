@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import PopupForm from '../Pop-up/PopupForm';
-import AddressPopup from './AddressPopup';
+import { setOrderDetails } from '../store/orderDetailsSlicer';
 import { useDispatch, useSelector } from 'react-redux';
 import { parseShoppingData } from '../helpers/parser';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { setShoppingData } from '../store/shoppingSlicer';
+import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import AdressCard from '../reusableComponents/addressCard';
 import { Button, Card, CardContent, Grid, IconButton, Input, TextField, Typography } from '@mui/material';
 import { List, ListItem} from '@mui/material';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import CloseIcon from '@mui/icons-material/Close';
-import { X } from '@mui/icons-material';
 import EmptyData from '../reusableComponents/EmptyData';
 const ViewCart = () => {
   const [isaddressPopup, setIsAddressPopup] = useState(false);
@@ -23,6 +21,7 @@ const ViewCart = () => {
   const [couponCode,setCouponCode]=useState('')
   const[isCouponVerified,setIsCouponVerified]=useState(false)
 const[iscoupon,setIsCoupon]=useState(true)
+const navigate =useNavigate()
   let dispatch = useDispatch();
 const handleCoupouns=()=>{
   if(isCouponVerified){
@@ -38,7 +37,18 @@ return
   }
 
 }
+const handleCheckout=()=>{
+let obj={
+  ShippingAddress:JSON.stringify(defaultAddress),
+  TotalAmount:totalPrice-shippingCharges-discount,
+  DiscountAmount:discount,
+  PromoCode:couponCode,
+  items:JSON.stringify(parsedData.cart)
 
+}
+dispatch(setOrderDetails(obj))
+navigate('/Confirm-order/')
+}
   const fetchAddress = async () => {
     const response = await api.get('/user/getShippingAddress');
     if (response.success) {
@@ -211,13 +221,15 @@ return
                   <div style={{ width:"40%",display: 'flex',alignItems:"center", flexDirection:"column", marginLeft:"5%"}}>
                     <Typography variant="h6" gutterBottom>Shipping Address</Typography>
                     <AdressCard data={defaultAddress} pop={HandleChangeAddress}/>
+                    {/* <Typography variant="h6" gutterBottom>Billing-Address</Typography>
+                    <AdressCard data={defaultAddress} pop={HandleChangeAddress}/> */}
                   </div>
               
       <div style={{ width: "100%", maxWidth: "40%", marginRight: "5%", display: 'flex', alignItems: "center", flexDirection: "column" }}>
         <Typography variant="h6" gutterBottom>
           Payment Summary
         </Typography>
-        <List sx={{ width: '100%', minHeight: "230px", maxWidth: 360, display: "flex", alignItems: "center", flexDirection: "column", justifyContent: "center" }}>
+  <List sx={{ width: '100%', minHeight: "230px", maxWidth: 360, display: "flex", alignItems: "center", flexDirection: "column", justifyContent: "center" }}>
   <ListItem disablePadding sx={{ display: 'flex', justifyContent: 'space-between' }}>
     <Typography>Sub-total</Typography>
     <Typography>₹{totalPrice}</Typography>
@@ -256,7 +268,7 @@ return
     <Typography>$20000 Applied Successfully</Typography>
      </ListItem></>}
   <div style={{ display: 'flex', justifyContent: 'center', marginTop: "30px", width: '100%' }}>
-    <Button variant="outlined" color="success" size="small" disabled={!defaultAddress}>
+    <Button variant="outlined" color="success" size="small" disabled={!defaultAddress} onClick={handleCheckout} >
       Checkout
     </Button>
   </div>

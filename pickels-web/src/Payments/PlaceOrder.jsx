@@ -1,0 +1,209 @@
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { Card, CardContent, Typography, Button, Grid, TextField } from "@mui/material";
+
+const PlaceOrder = () => {
+  const selectOrderDetails = useSelector((state) => state.order.orderDetails);
+  const navigate = useNavigate();
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [showBillingAddress, setShowBillingAddress] = useState(true);
+  const [billingAddress,setBillingAddress]=useState({origin:'redux'})
+    const[isticked,setIsTicked]=useState(true)
+  const [billingDetails, setBillingDetails] = useState({
+    name: "",
+    address: "",
+    mobile: "",
+    pincode: "",
+    origin:"redux"
+  });
+
+  
+  useEffect(() => {
+    if (!selectOrderDetails) {
+      navigate(-1);
+    } else {
+      const parsedShippingAddress = JSON.parse(selectOrderDetails.ShippingAddress);
+      const address = `${parsedShippingAddress.housenumber},${parsedShippingAddress.street},${parsedShippingAddress.village},${parsedShippingAddress.city},${parsedShippingAddress.state}`;
+      setBillingAddress({
+        ...parsedShippingAddress,
+        address: address,
+        origin: "redux"
+      });
+    }
+  }, [selectOrderDetails, navigate]);
+  
+
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
+  };
+
+  const handleAdd = () => {
+      setShowBillingAddress(true)
+    setIsTicked(false)
+    setBillingAddress({...billingDetails, origin:"manual"})
+  };
+const HandleProceed=()=>{
+    let obj={
+        BillingAddress: JSON.stringify(billingAddress),
+        ShippingAddress:selectOrderDetails.ShippingAddress,
+        Items:selectOrderDetails.items,
+        PaymentMethod:selectedOption,
+       OrderStatus: "Placed",
+      TotalAmount: selectOrderDetails.TotalAmount,
+       DiscountAmount:selectOrderDetails.DiscountAmount,
+       PromoCode: selectOrderDetails.PromoCode,
+        TransactionID: "TRANS123",
+        IsDeleted: false
+    }
+console.log(obj)
+}
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setBillingDetails({
+      ...billingDetails,
+      [name]: value,
+    });
+  };
+
+  const isFormValid = () => {
+    return Object.values(billingDetails).every(value => value.trim() !== '');
+  };
+
+  const handleCheckboxChange = (e) => {
+    setIsTicked(!isticked);
+    setShowBillingAddress(!showBillingAddress);
+    const parsedShippingAddress = JSON.parse(selectOrderDetails.ShippingAddress);
+    const address = `${parsedShippingAddress.housenumber},${parsedShippingAddress.street},${parsedShippingAddress.village},${parsedShippingAddress.city},${parsedShippingAddress.state}`;
+    setBillingAddress({
+      ...parsedShippingAddress,
+      address: address,
+      origin: "redux"
+    });
+  };
+  
+  useEffect(() => {
+    
+    if (billingAddress.origin === "redux"&&showBillingAddress) {
+       setIsTicked(true);
+    }else{
+        setIsTicked(false)
+    }
+  }, [showBillingAddress]);
+  
+  // Define options array
+  const options = ["Debit Card", "Net Banking", "Credit card", "Pay with UPI", "Cash on Delivery"];
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        background: "#f0f0f0", // Matched background color
+      }}
+    >
+      <Card style={{ maxWidth: 800, width: "100%", padding: 20 }}>
+        <CardContent>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "20px",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                gap: "20px",
+                flexWrap: "wrap",
+              }}
+            >
+              {/* Billing Address */}
+              <div style={{ flex: "1 1 50%", minWidth: 0 }}>
+                <Typography variant="h5" gutterBottom align="center">
+                  Billing Address
+                </Typography>
+                <label style={{marginBottom:"10px"}}>
+                  <input type="checkbox" checked={isticked} onChange={handleCheckboxChange} /> Billing Address same as Shipping Address
+                </label>
+                {showBillingAddress? (
+          <Card style={{ maxWidth: '100%', width: 'auto' }}>
+          <CardContent style={{ wordWrap: 'break-word' }}>
+            <Typography gutterBottom>{billingAddress?.name}</Typography>
+            <Typography gutterBottom>Mobile: {billingAddress?.mobile}</Typography>
+            <Typography gutterBottom>Address: {billingAddress?.address}</Typography>
+            <Typography gutterBottom>Pincode: {billingAddress?.pincode}</Typography>
+          </CardContent>
+        </Card>
+        
+              
+               
+                ) : (
+                  <form>
+                    <Grid container spacing={2}>
+                      <Grid item xs={6}>
+                        <TextField name="name" label="Name" fullWidth size="small" onChange={handleInputChange} />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <TextField name="mobile" label="Mobile" fullWidth size="small" onChange={handleInputChange} />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField name="address" label="Address" fullWidth size="small" onChange={handleInputChange} />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <TextField name="pincode" label="Pincode" fullWidth size="small" onChange={handleInputChange} />
+                      </Grid>
+                    </Grid>
+                    <Button
+                      variant="contained"
+                      color="success"
+                      disabled={!isFormValid()}
+                      style={{ marginTop: "10px" }}
+                      onClick={handleAdd}
+                    >
+                      Add
+                    </Button>
+                  </form>
+                )}
+              </div>
+              {/* Payment Options */}
+              <div style={{ flex: "1 1 50%", minWidth: 0 }}>
+                <Typography variant="h5" gutterBottom align="center">
+                  Select Payment Option
+                </Typography>
+                <Grid container spacing={2}>
+                  {options.map((option) => (
+                    <Grid item xs={12} key={option}>
+                      <Button
+                        variant={selectedOption === option ? "contained" : "outlined"}
+                        onClick={() => handleOptionSelect(option)}
+                        fullWidth
+                      >
+                        {option}
+                      </Button>
+                    </Grid>
+                  ))}
+                </Grid>
+                {/* Proceed Button */}
+                <Grid container justifyContent="center" style={{ marginTop: "20px" }}>
+                  <Button
+                    variant="contained"
+                    color="success"
+                    onClick={HandleProceed}
+                    disabled={!selectedOption}
+                  >
+                    Proceed
+                  </Button>
+                </Grid>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default PlaceOrder;
