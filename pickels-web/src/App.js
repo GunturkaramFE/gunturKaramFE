@@ -16,6 +16,7 @@ import View from './reusableComponents/View';
 import OfflineMessage from './helpers/nointernet'; 
 import Wishlist from './ProductStore/WishList';
 import EmptyData from './reusableComponents/EmptyData';
+import OrderConfirm from './ProductStore/OrderConfirm';
 const ProductLayout = ({ children }) => {
   return (
     <>
@@ -56,6 +57,7 @@ function App() {
             <Route path='/ViewProduct/:id' element={<View />} />
             <Route path='/WishlistProduct' element={<Wishlist/>} />
             <Route path='/empty' element={<EmptyData/>} />
+            <Route path='/OrderStatus' element={<OrderConfirm/>} />
 
             {/* Admin Routes */}
             <Route

@@ -9,7 +9,7 @@ const EmptyData = ({text,buttonText,navlink}) => {
     <>
       <Grid
         container
-        sx={{ width: '100%', height: '100%',display:'flex', alignItems: 'center', justifyContent: 'center' }}
+        sx={{ width: '100%', height: '100vh',display:'flex', alignItems: 'center', justifyContent: 'center' }}
       >
         <Grid item sx={{display:'flex',justifyContent:'center',alignItems:'center',flexDirection:'column',gap:'20px'}}>
           <img src="https://png.pngtree.com/png-vector/20221121/ourmid/pngtree-comicstyle-wishlist-icon-with-splash-effect-health-sign-add-vector-png-image_41870708.jpg" alt="Empty" style={{ width: '50%', height: 'auto' }} />
