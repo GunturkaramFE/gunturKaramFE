@@ -10,14 +10,14 @@ const navigate= useNavigate()
   const [count, setCount] = useState(1)
   const[err,setErr]=useState('')
   const dispatch=useDispatch()
-const [isAdded,setIsAdded]=useState(false)
+  const [isAdded,setIsAdded]=useState(false)
 let parsedData;
   const shoppingData = useSelector((state) => state.shopping);
   const handleDecrease = (e) => {
     if (count > 1) {
       e.preventDefault()
       setCount(count - 1)
-    }
+        }
   };
   const handleIncrease = (e) => {
     e.preventDefault();
@@ -28,8 +28,7 @@ let parsedData;
     let parsedData=await parseShoppingData(shoppingData)
     let filtered=parsedData?.cart.filter((x)=>x.id==data.id)
         if(filtered.length){
-        let isSameCart=filtered.find((x)=>x.selectedQuantity.price==data.pricelist[selectedQuantity].price)
-   
+        let isSameCart=filtered.find((x)=>x.selectedQuantity.price==data.pricelist[selectedQuantity].price)   
         if(isSameCart){
        
            setIsAdded(true)
@@ -66,7 +65,7 @@ const HandleAddToCart= async()=>{
    title:data.title,
    url:data.url,
   }
-  cartitem.price=selectedPrice*count
+  cartitem.price=selectedPrice
   cartitem.quantity=count
   cartitem.selectedQuantity=data.pricelist[selectedQuantity]
   parsedData=await parseShoppingData(shoppingData)

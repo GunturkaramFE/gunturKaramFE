@@ -2,7 +2,9 @@ import React from 'react';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-const EmptyData = () => {
+import { useNavigate } from 'react-router-dom';
+const EmptyData = ({text,buttonText,navlink}) => {
+  const navigate=useNavigate()
   return (
     <>
       <Grid
@@ -13,12 +15,13 @@ const EmptyData = () => {
           <img src="https://png.pngtree.com/png-vector/20221121/ourmid/pngtree-comicstyle-wishlist-icon-with-splash-effect-health-sign-add-vector-png-image_41870708.jpg" alt="Empty" style={{ width: '50%', height: 'auto' }} />
 
           <Typography variant="h4" gutterBottom sx={{width:'100%',textAlign:{xs:"center",sm:'initial',color:"#D3D3D3"}}}>
-            You haven't saved anything yet.
+            {text}
           </Typography>
 
-          <Button variant="contained" color="success" sx={{fontFamily:'sans-serif'}}>
-            Save Now
-          </Button>
+          <Button variant="contained" color="success" sx={{ fontFamily: 'sans-serif' }} onClick={() => navigate(navlink)}>
+  {buttonText}
+</Button>
+
         </Grid>
       </Grid>
     </>

@@ -5,12 +5,10 @@ import '../styles/productCard.css';
 import PopupForm from '../Pop-up/PopupForm';
 import AddToCart from '../ProductStore/AddToCart';
 import { parseProduct } from '../helpers/parser';
-import { useNavigate } from 'react-router-dom';
 const ProductCard = ({productdetails,PopUpHandler }) => {
   const [isHovered, setIsHovered] = useState(false);
- const navigate=useNavigate()
-  return (<>
-  
+  console.log(productdetails)
+  return (<>  
     <div
       className="card"
       style={{ width: '14rem', height: '38vh', marginTop: '10px', marginLeft: '12px', position: 'relative' }}
@@ -21,7 +19,9 @@ const ProductCard = ({productdetails,PopUpHandler }) => {
         <div className="overlay">
           <div className="overlay-content">
             <span className="animate__animated animate__headShake" onClick={()=>{PopUpHandler(parseProduct(productdetails))}}> <AddShoppingCart className="icon" /><h6>Add</h6></span>
-            <span className="animate__animated animate__headShake" onClick={()=>{ navigate(`/ViewProduct/${productdetails.id}`);}}>
+            <span className="animate__animated animate__headShake"  onClick={() => {
+            window.open(`/ViewProduct/${productdetails.id}`, '_blank');
+  }}>
       <VisibilityIcon className="icon"/>
         <h6>View</h6>
       </span>            
@@ -51,7 +51,7 @@ const ProductCard = ({productdetails,PopUpHandler }) => {
         }}
       >
        <h5 className="card-title">{productdetails.title}</h5>
-        <p className="card-text">Price: &#x20B9;{productdetails.startingPrice} </p>
+        <p className="card-text">From: &#x20B9;{productdetails.startingPrice} </p>
       </div>
    
     </div>

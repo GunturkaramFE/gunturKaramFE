@@ -13,9 +13,12 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import CloseIcon from '@mui/icons-material/Close';
 import { X } from '@mui/icons-material';
+import EmptyData from '../reusableComponents/EmptyData';
 const ViewCart = () => {
   const [isaddressPopup, setIsAddressPopup] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [shippingCharges,setShippingCharges] = useState(0)
+  const [discount,setdiscount]=useState(0)
   const [defaultAddress, setDefaultAddress] = useState(false);
   const [couponCode,setCouponCode]=useState('')
   const[isCouponVerified,setIsCouponVerified]=useState(false)
@@ -51,8 +54,7 @@ return
   useEffect(() => {
     setTotalPrice(0);
     setParsedData(parseShoppingData(shoppingData));
-    console.log(shoppingData)
-  }, [shoppingData]);
+    }, [shoppingData]);
 
   useEffect(() => {
     fetchAddress();
@@ -77,32 +79,44 @@ return
   };
 
   const HandleChange = async (property, cartId) => {
-    var shoppingdataobj = { ...shoppingData };
-    if (property === 'delete') {
-      let otherItems = parsedData?.cart.filter((x) => cartId !== x.cartId);
-      let jsonobj = JSON.stringify(otherItems);
-      await updateCart(jsonobj);
-      shoppingdataobj.cart = jsonobj;
-    }else if(property === 'Add'|| property === '-'){
-      
-
-let modifiedArray=parsedData?.cart.map((x)=>{
-
-  if(x.cartId==cartId){
-let count=property=='Add'?x.quantity+1:x.quantity-1
-return {...x,quantity:count}
-  }else{
-    return x
-  }  
-})
-let jsonobj = JSON.stringify(modifiedArray);
-await updateCart(jsonobj);
-shoppingdataobj.cart = jsonobj;
-
+    try {
+      let modifiedCart = [...parsedData.cart]; // Create a copy of the cart array
+  
+      if (property === 'delete') {
+        modifiedCart = modifiedCart.filter(item => item.cartId !== cartId);
+        console.log(modifiedCart,'ca')
+      } else if (property === 'Add' || property === '-') {
+        modifiedCart = modifiedCart.map(item => {
+          if (item.cartId === cartId) {
+            let count = property === 'Add' ? item.quantity + 1 : item.quantity - 1;
+            // Ensure quantity doesn't go below 1
+            count = Math.max(count, 1);
+            return { ...item, quantity: count }; // Update quantity for the specific item
+          }
+          return item;
+        });
+      }
+  
+      // Calculate total price based on modifiedCart
+      let total = 0;
+      modifiedCart.forEach(item => {
+            total += item.price * item.quantity;
+      });
+  
+      // Update state with the modified cart and total price
+      setParsedData({ ...parsedData, cart: modifiedCart });
+      setTotalPrice(total);
+  
+      // Update cart data in the backend
+      await updateCart(JSON.stringify(modifiedCart));
+  
+      // Dispatch updated shopping data to Redux store
+      dispatch(setShoppingData({ ...shoppingData, cart: modifiedCart }));
+    } catch (error) {
+      console.log(error);
     }
-    dispatch(setShoppingData(shoppingdataobj));
   };
-
+  
   const handleSelectAdressFromPopUp = (data) => {
     setDefaultAddress(data);
   };
@@ -123,7 +137,8 @@ shoppingdataobj.cart = jsonobj;
                     <Typography variant="h6" gutterBottom>Product Summary</Typography></div>
               
                   <div style={{ overflowY: 'scroll', overflowX: 'hidden', width: '100%', height: '58vh' }}>
-                    {parsedData.cart.map((item, index) => (
+                    {parsedData.cart.map((item, index) =>(
+                      
                       <Card key={index} className="mb-1">
                         <CardContent>
                           <Grid container justifyContent="space-between" alignItems="center">
@@ -209,15 +224,15 @@ shoppingdataobj.cart = jsonobj;
   </ListItem>
   <ListItem disablePadding sx={{ display: 'flex', justifyContent: 'space-between' }}>
     <Typography>Discount</Typography>
-    <Typography>₹0</Typography>
+    <Typography>{discount}</Typography>
   </ListItem>
   <ListItem disablePadding sx={{ display: 'flex', justifyContent: 'space-between' }}>
     <Typography>Shipping charges</Typography>
-    <Typography>Free</Typography>
+    <Typography>{shippingCharges?`₹${shippingCharges}`:"Free"}</Typography>
   </ListItem>
   <ListItem disablePadding sx={{ display: 'flex', justifyContent: 'space-between' }}>
     <Typography>Grand Total</Typography>
-    <Typography>1000</Typography>
+    <Typography>{totalPrice-shippingCharges-discount}</Typography>
   </ListItem>
   <ListItem disablePadding sx={{ display: 'flex', justifyContent: 'space-between' }}>
   {iscoupon&&(!isCouponVerified) ? (
@@ -259,7 +274,7 @@ shoppingdataobj.cart = jsonobj;
           </div>
         </div>
       ) : (
-        <>--- Empty Cart ----</>
+        <><EmptyData text={"Your cart is currently empty"} buttonText={'Shop Now'} navlink={'/products'}/></>
       )}
     </>
   );
