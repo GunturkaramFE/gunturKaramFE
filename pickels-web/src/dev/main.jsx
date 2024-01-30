@@ -34,7 +34,7 @@ const MainMenu = () => {
     { icon: <DashboardIcon />, text: 'Dashboard', path: '/admin-menu' },
     { icon: <InventoryIcon />, text: 'Products', path: '../admin-menu/products-menu' },
     { icon: <PersonIcon />, text: 'Users', path: '/users' },
-    { icon: <ShoppingCartIcon />, text: 'Orders', path: '/orders' },
+    { icon: <ShoppingCartIcon />, text: 'Orders', path: '../admin-menu/manage-orders' },
     { icon: <RedeemIcon />, text: 'Vouchers', path: '/vouchers' },
   ];
 

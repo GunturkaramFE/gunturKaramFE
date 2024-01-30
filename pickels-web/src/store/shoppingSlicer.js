@@ -29,6 +29,9 @@ const shoppingSlice = createSlice({
       const { itemId } = action.payload;
       state.wishlist = state.wishlist.filter(item => item.id !== itemId);
     },
+    emptyCart: (state) => {
+      state.cart = [];
+    },
     clearShoppingData: (state) => {
       return {
         id: null,
@@ -45,6 +48,7 @@ export const {
   addToCart,
   removeFromCart,
   addToWishlist,
+  emptyCart,
   removeFromWishlist,
   clearShoppingData,
 } = shoppingSlice.actions;
