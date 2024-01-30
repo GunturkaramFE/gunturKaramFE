@@ -1,7 +1,11 @@
 import { Button, Grid, Paper, Typography } from '@mui/material'
 import React from 'react'
 import VerifiedIcon from '@mui/icons-material/Verified';
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 const OrderConfirm = () => {
+  const {Id } = useParams();
+  const navigate=useNavigate()
   return (
     <>
     <Grid
@@ -13,11 +17,11 @@ const OrderConfirm = () => {
          <Typography variant="h5" gutterBottom sx={{width:'100%',textAlign:{xs:"center",color:"black"}}}>
            Order Placed Successful
           </Typography>
-          <Typography style={{fontSize:'15px',fontFamily:'Gill Sans'}}>OrderID : 1243DAASW</Typography>
+          <Typography style={{fontSize:'15px',fontFamily:'Gill Sans'}}>OrderID : {Id}</Typography>
           <Typography style={{width:'80%',textAlign:'center',fontSize:'14px',fontFamily:"Tahoma"}}>We have received your order and you can check your order status by using below link</Typography>
           <Typography style={{fontSize:'15px',color:'blue'}}><u>Track My Order</u></Typography>
           <Typography style={{fontSize:'15px'}}>or</Typography>
-          <Button variant="contained"  sx={{ fontFamily: 'Palatino',borderRadius:'15px',backgroundColor:'#32de84' }} >Go Back to Home</Button>
+          <Button variant="contained" onClick={()=>navigate('/')} sx={{ fontFamily: 'Palatino',borderRadius:'15px',backgroundColor:'#32de84' }} >Go Back to Home</Button>
 
         </Paper>
       </Grid>

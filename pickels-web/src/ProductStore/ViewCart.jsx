@@ -47,7 +47,7 @@ let obj={
 
 }
 dispatch(setOrderDetails(obj))
-navigate('/Confirm-order/')
+navigate('/Confirm-order/',{ replace: true })
 }
   const fetchAddress = async () => {
     const response = await api.get('/user/getShippingAddress');
@@ -94,7 +94,7 @@ navigate('/Confirm-order/')
   
       if (property === 'delete') {
         modifiedCart = modifiedCart.filter(item => item.cartId !== cartId);
-        console.log(modifiedCart,'ca')
+        
       } else if (property === 'Add' || property === '-') {
         modifiedCart = modifiedCart.map(item => {
           if (item.cartId === cartId) {
@@ -116,7 +116,7 @@ navigate('/Confirm-order/')
       // Update state with the modified cart and total price
       setParsedData({ ...parsedData, cart: modifiedCart });
       setTotalPrice(total);
-  
+   
       // Update cart data in the backend
       await updateCart(JSON.stringify(modifiedCart));
   

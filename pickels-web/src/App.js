@@ -19,6 +19,7 @@ import EmptyData from './reusableComponents/EmptyData';
 import OrderConfirm from './ProductStore/OrderConfirm';
 
 import PlaceOrder from './Payments/PlaceOrder';
+import ManageOrders from './dev/manageOrders';
 
 const ProductLayout = ({ children }) => {
   return (
@@ -61,10 +62,10 @@ function App() {
             <Route path='/WishlistProduct' element={<Wishlist/>} />
             <Route path='/empty' element={<EmptyData/>} />
 
-            <Route path='/OrderStatus' element={<OrderConfirm/>} />
+            <Route path='/OrderStatus/:Id' element={<OrderConfirm/>} />
 
 
-            <Route path='/Confirm-order/' element={<PlaceOrder/>} />
+            <Route path='/Confirm-order' element={<PlaceOrder/>} />
             {/* Admin Routes */}
             <Route
               path="/admin-menu/*"
@@ -75,6 +76,7 @@ function App() {
                     <Route path="/products-menu" element={<ProductMenu />} />
                     <Route path="/TrenditemRemove" element={<Trendremove />} />
                     <Route path="/manage-products" element={<ManageProducts />} />
+                    <Route path='/manage-orders' element={<ManageOrders/>}/>
                   </Routes>
                 </ProductLayout>
               }

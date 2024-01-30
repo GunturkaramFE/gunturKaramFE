@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent, Typography, Button, Grid, TextField } from "@mui/material";
-
+import { Card, CardContent, Typography, Button, Grid, TextField, CircularProgress } from "@mui/material";
+import { v4 as uuidv4 } from 'uuid';
+import api from "../api";
+import { fetchShoppingDataOnPageRefresh } from "../store/store";
 const PlaceOrder = () => {
   const selectOrderDetails = useSelector((state) => state.order.orderDetails);
+  const shoppingData = useSelector((state) => state.shopping);
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState(null);
   const [showBillingAddress, setShowBillingAddress] = useState(true);
   const [billingAddress,setBillingAddress]=useState({origin:'redux'})
-    const[isticked,setIsTicked]=useState(true)
+  const [isticked,setIsTicked]=useState(true);
+  const currentDate = new Date().toISOString();
+  //let dispatch = useDispatch();
   const [billingDetails, setBillingDetails] = useState({
     name: "",
     address: "",
@@ -17,8 +22,8 @@ const PlaceOrder = () => {
     pincode: "",
     origin:"redux"
   });
+  const [isLoading, setIsLoading] = useState(false); // State to track loading status
 
-  
   useEffect(() => {
     if (!selectOrderDetails) {
       navigate(-1);
@@ -32,32 +37,53 @@ const PlaceOrder = () => {
       });
     }
   }, [selectOrderDetails, navigate]);
-  
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
   };
 
   const handleAdd = () => {
-      setShowBillingAddress(true)
+    setShowBillingAddress(true)
     setIsTicked(false)
     setBillingAddress({...billingDetails, origin:"manual"})
   };
-const HandleProceed=()=>{
-    let obj={
-        BillingAddress: JSON.stringify(billingAddress),
-        ShippingAddress:selectOrderDetails.ShippingAddress,
-        Items:selectOrderDetails.items,
-        PaymentMethod:selectedOption,
-       OrderStatus: "Placed",
+
+  const HandleProceed = async () => {
+    let orderData = {
+      UserID: shoppingData.userId,
+      OrderID : uuidv4().slice(0, 12),
+      BillingAddress: JSON.stringify(billingAddress),
+      ShippingAddress: selectOrderDetails.ShippingAddress,
+      Items: selectOrderDetails.items,
+      PaymentMethod: selectedOption,
+      OrderStatus: "Placed",
       TotalAmount: selectOrderDetails.TotalAmount,
-       DiscountAmount:selectOrderDetails.DiscountAmount,
-       PromoCode: selectOrderDetails.PromoCode,
-        TransactionID: "TRANS123",
-        IsDeleted: false
+      DiscountAmount: selectOrderDetails.DiscountAmount,
+      PromoCode: selectOrderDetails.PromoCode,
+      TransactionID: "TRANS123",
+      IsDeleted: false,
+      orderDetails: JSON.stringify([{ status: "Placed", date: currentDate }])
+    };
+    
+    try {
+      setIsLoading(true); 
+      const response = await api.post('/user/create-order',{orderData});
+      console.log(response);
+      if (response.success) {
+      //  dispatch(emptyCart());
+        const { OrderID } = response.order; 
+        fetchShoppingDataOnPageRefresh()
+        navigate(`/OrderStatus/${OrderID}`,{ replace: true });
+      } else {      
+        navigate('/viewcart');
+      }
+    } catch (error) {
+      navigate('/viewcart');
+    } finally {
+      setIsLoading(false); 
     }
-console.log(obj)
-}
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setBillingDetails({
@@ -83,14 +109,13 @@ console.log(obj)
   };
   
   useEffect(() => {
-    
-    if (billingAddress.origin === "redux"&&showBillingAddress) {
-       setIsTicked(true);
-    }else{
-        setIsTicked(false)
+    if (billingAddress.origin === "redux" && showBillingAddress) {
+      setIsTicked(true);
+    } else {
+      setIsTicked(false);
     }
   }, [showBillingAddress]);
-  
+
   // Define options array
   const options = ["Debit Card", "Net Banking", "Credit card", "Pay with UPI", "Cash on Delivery"];
 
@@ -128,18 +153,15 @@ console.log(obj)
                 <label style={{marginBottom:"10px"}}>
                   <input type="checkbox" checked={isticked} onChange={handleCheckboxChange} /> Billing Address same as Shipping Address
                 </label>
-                {showBillingAddress? (
-          <Card style={{ maxWidth: '100%', width: 'auto' }}>
-          <CardContent style={{ wordWrap: 'break-word' }}>
-            <Typography gutterBottom>{billingAddress?.name}</Typography>
-            <Typography gutterBottom>Mobile: {billingAddress?.mobile}</Typography>
-            <Typography gutterBottom>Address: {billingAddress?.address}</Typography>
-            <Typography gutterBottom>Pincode: {billingAddress?.pincode}</Typography>
-          </CardContent>
-        </Card>
-        
-              
-               
+                {showBillingAddress ? (
+                  <Card style={{ maxWidth: '100%', width: 'auto' }}>
+                    <CardContent style={{ wordWrap: 'break-word' }}>
+                      <Typography gutterBottom>{billingAddress?.name}</Typography>
+                      <Typography gutterBottom>Mobile: {billingAddress?.mobile}</Typography>
+                      <Typography gutterBottom>Address: {billingAddress?.address}</Typography>
+                      <Typography gutterBottom>Pincode: {billingAddress?.pincode}</Typography>
+                    </CardContent>
+                  </Card>
                 ) : (
                   <form>
                     <Grid container spacing={2}>
@@ -186,15 +208,15 @@ console.log(obj)
                     </Grid>
                   ))}
                 </Grid>
-                {/* Proceed Button */}
+                {/* Proceed Button with loading indicator */}
                 <Grid container justifyContent="center" style={{ marginTop: "20px" }}>
                   <Button
                     variant="contained"
                     color="success"
                     onClick={HandleProceed}
-                    disabled={!selectedOption}
+                    disabled={!selectedOption || isLoading} // Disable the button if no option is selected or if loading is in progress
                   >
-                    Proceed
+                    {isLoading ? <CircularProgress size={24} color="inherit" /> : "Proceed"} {/* Show loading indicator if isLoading is true */}
                   </Button>
                 </Grid>
               </div>
