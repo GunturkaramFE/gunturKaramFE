@@ -19,21 +19,61 @@ const ViewCart = () => {
   const [discount,setdiscount]=useState(0)
   const [defaultAddress, setDefaultAddress] = useState(false);
   const [couponCode,setCouponCode]=useState('')
+  const[err,setErr]=useState('')
   const[isCouponVerified,setIsCouponVerified]=useState(false)
 const[iscoupon,setIsCoupon]=useState(true)
 const navigate =useNavigate()
   let dispatch = useDispatch();
-const handleCoupouns=()=>{
-  if(isCouponVerified){
+const handleCoupouns=async()=>{
+if(isCouponVerified){
 setCouponCode('')
 setIsCouponVerified(false)
 setIsCoupon(true)
+setdiscount(0)
+setErr('')
 return
   }
    if(couponCode){
-    setIsCouponVerified(true)
+   
+    try {
+      const response = await api.post('/user/verifyVoucher',{
+        voucher:couponCode      
+    })
+    console.log(response.success)
+      if(response.success){  
+       await api.put('/user/updateVoucher',{
+          
+            voucherId:response.voucher.id,
+          updatedData: {
+            CouponsCount:response.voucher.CouponsCount-1
+                      }
+        
+        })        
+     setIsCouponVerified(true)
+     setErr(`${response.voucher.Amount}Coupoun Applied`)
+     setdiscount(response.voucher.Amount)
+         
+      }else{
+        setdiscount(0)
+        setCouponCode('')
+        setIsCouponVerified(false)
+        setIsCoupon(true)
+        setErr('Coupon Not Valid')
+      }
+      
+    } catch (error) {
+      setdiscount(0)
+      setCouponCode('')
+      setIsCouponVerified(false)
+      setIsCoupon(true)
+      setErr('Something Went Wroung')      
+    }
+
+  
   }else{
     setIsCoupon(true)
+    setErr('')
+    setdiscount(0)
   }
 
 }
@@ -44,15 +84,13 @@ let obj={
   DiscountAmount:discount,
   PromoCode:couponCode,
   items:JSON.stringify(parsedData.cart)
-
 }
 dispatch(setOrderDetails(obj))
 navigate('/Confirm-order/',{ replace: true })
 }
   const fetchAddress = async () => {
     const response = await api.get('/user/getShippingAddress');
-    if (response.success) {
-  
+    if (response.success) {  
       const defaultAddress = response?.shippingAddresses?.find((x) => x.is_default) || response?.shippingAddresses?.[0];
       setDefaultAddress(defaultAddress);
     }
@@ -248,7 +286,11 @@ navigate('/Confirm-order/',{ replace: true })
   </ListItem>
   <ListItem disablePadding sx={{ display: 'flex', justifyContent: 'space-between' }}>
   {iscoupon&&(!isCouponVerified) ? (
-        <a onClick={()=>{setIsCoupon(false)}} style={{ font: 'menu' }}>Do You Have a Coupon?</a>)
+        <a onClick={()=>{
+          setIsCoupon(false)
+         setErr('')
+         setdiscount(0)
+        }} style={{ font: 'menu' }}>Do You Have a Coupon?</a>)
        : (
         <div style={{marginTop:"15px"}}>
           <TextField
@@ -264,9 +306,9 @@ navigate('/Confirm-order/',{ replace: true })
         </div>
       )}
   </ListItem>
-  {isCouponVerified&&<> <ListItem  disablePadding sx={{ display: 'flex',Color:'green',fontSize:"10px", justifyContent: 'space-between' }}>
-    <Typography>$20000 Applied Successfully</Typography>
-     </ListItem></>}
+  <> <ListItem  disablePadding sx={{ display: 'flex',Color:'green',fontSize:"10px", justifyContent: 'space-between' }}>
+    <Typography>{err}</Typography>
+     </ListItem></>
   <div style={{ display: 'flex', justifyContent: 'center', marginTop: "30px", width: '100%' }}>
     <Button variant="outlined" color="success" size="small" disabled={!defaultAddress} onClick={handleCheckout} >
       Checkout

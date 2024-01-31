@@ -14,7 +14,9 @@ const authenticatedRoutes = [
   '/user/setDefaultAddress',
   "/user/addShippingAddress",
   "/user/create-order",
-  "/user/Order/sort"
+  "/user/Order/sort",
+  "/user/verifyVoucher",
+  "/user/updateVoucher",
 ];
 api.interceptors.request.use(
   (config) => {
