@@ -18,16 +18,10 @@ const Footer = () => {
     position: 'relative',
   };
   
-  const shadeStyle = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    background: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5))',
-  };
+  
   return (
-    <Grid container className="mt-5 w-100 h-auto">
+    <Grid container className="mt-5 w-100 h-auto"  style={{ position: 'relative', overflow: 'hidden', height: '100%' }}>
+      
       <Grid item xs={12} sm={11} md={12} className="contact-container" sx={{paddingTop:'10px 0'}} >
         <Grid container sm={4} xs={5} sx={{paddingLeft:{xs:'10px',sm:'20px'},marginTop:'10px'}}>
         <Box>

@@ -50,9 +50,8 @@ return
         
         })        
      setIsCouponVerified(true)
-     setErr(`${response.voucher.Amount}Coupoun Applied`)
+     setErr(`${parseFloat(response.voucher.Amount).toString()} Coupon Applied`);
      setdiscount(response.voucher.Amount)
-         
       }else{
         setdiscount(0)
         setCouponCode('')
@@ -172,6 +171,10 @@ navigate('/Confirm-order/',{ replace: true })
   const HandleChangeAddress = () => {
     setIsAddressPopup(!isaddressPopup);
   };
+  const handleCouponCodeChange = (e) => {
+    const uppercaseValue = e.target.value.toUpperCase();
+    setCouponCode(uppercaseValue);
+  };
 
   return (
     <>
@@ -290,16 +293,17 @@ navigate('/Confirm-order/',{ replace: true })
           setIsCoupon(false)
          setErr('')
          setdiscount(0)
-        }} style={{ font: 'menu' }}>Do You Have a Coupon?</a>)
+        }} style={{ font: 'menu' }}><u style={{color:"grey",cursor:'pointer'}}> Do You Have a Coupon?</u></a>)
        : (
         <div style={{marginTop:"15px"}}>
-          <TextField
-            variant="outlined"
-            placeholder="Enter Coupon Code"
-            size="small" 
-            disabled={isCouponVerified}
-            onChange={(e)=>setCouponCode(e.target.value)}           
-          />
+         <TextField
+      variant="outlined"
+      placeholder="Enter Coupon Code"
+      size="small"
+      disabled={isCouponVerified}
+      onChange={handleCouponCodeChange}
+      value={couponCode} 
+    />
           <Button onClick={handleCoupouns}color="primary">
            {!isCouponVerified?"Apply":<CloseIcon/>}
           </Button>
@@ -307,7 +311,7 @@ navigate('/Confirm-order/',{ replace: true })
       )}
   </ListItem>
   <> <ListItem  disablePadding sx={{ display: 'flex',Color:'green',fontSize:"10px", justifyContent: 'space-between' }}>
-    <Typography>{err}</Typography>
+     <Typography sx={{fontFamily:'Palatino'}}>{err}</Typography>
      </ListItem></>
   <div style={{ display: 'flex', justifyContent: 'center', marginTop: "30px", width: '100%' }}>
     <Button variant="outlined" color="success" size="small" disabled={!defaultAddress} onClick={handleCheckout} >

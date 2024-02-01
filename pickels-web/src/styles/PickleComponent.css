@@ -1,0 +1,18 @@
+/* PickleComponent.css */
+.root {
+    flex-grow: 1;
+    padding: 16px; /* Use the desired padding value */
+  }
+  
+  .card {
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  .card:hover {
+    transform: scale(1.1);
+  }
+  
+  .media {
+    height: 200px; /* Use the desired height value */
+  }
+  
