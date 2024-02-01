@@ -3,7 +3,7 @@ import axios from 'axios';
 const api = axios.create({
   baseURL: "http://localhost:8008",
 });
-const adminRoutes=["/user/Order/sort", "/user/create-order",]
+const adminRoutes=["/user/Order/sort", "/user/create-order", "/user/verifyVoucher"]
 // Define an array of routes that require authentication
 const authenticatedRoutes = [
   '/user/getShoppingData',
@@ -17,7 +17,12 @@ const authenticatedRoutes = [
   "/user/Order/sort",
   "/user/verifyVoucher",
   "/user/updateVoucher",
-];
+  "/user/getVoucher",
+  "/user/addVoucher",
+  "/user/updateVoucher",
+  "/user/order/get",
+ "/user/order/update",
+]
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('Auth');
