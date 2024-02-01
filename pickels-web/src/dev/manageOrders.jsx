@@ -34,6 +34,7 @@ const ManageOrders = () => {
   const [trigger, setTrigger] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState("Placed");
   const [loading, setLoading] = useState(false);
+  const [updating, setUpdating] = useState({});
   const [counts, setCounts] = useState({
     Placed: 0,
     Confirmed: 0,
@@ -50,7 +51,7 @@ const ManageOrders = () => {
     // Convert the endDate to end of day
     const endOfDay = new Date(endDate);
     endOfDay.setHours(23, 59, 59, 999);
-  
+
     let obj = {
       filter: {
         startdate: new Date(startDate).toISOString(), // Convert to ISO string
@@ -58,15 +59,17 @@ const ManageOrders = () => {
       }
     };
     try {
-      setLoading(true); 
+      setLoading(true);
       const response = await api.post('/user/Order/sort', obj);
       if (response.success) {
         setData(response.orders);
-     
+
         const countObj = {
           Placed: 0,
           Confirmed: 0,
-          Delivered: 0
+          Delivered: 0,
+          Shipped: 0,
+          Cancelled: 0
         };
         response.orders.forEach(order => {
           countObj[order.OrderStatus]++;
@@ -86,6 +89,43 @@ const ManageOrders = () => {
   useEffect(() => {
     fetchData();
   }, [trigger]);
+
+  const HandleButtonClick = async (event, status, orderId) => {
+    event.stopPropagation();
+    setUpdating({ ...updating, [orderId]: true }); 
+    const response = await api.post('/user/order/get',{
+      filter: {
+    OrderID:orderId
+    }
+
+});
+    try {      
+      if(response){
+
+    let itemStatus=status === 'Placed'
+    ? 'Confirmed'
+    : status === 'Confirmed'
+        ? 'Shipped'
+        : status === 'Shipped'
+            ? 'Delivered'
+            : 'Placed'
+let orderDetails=JSON.parse(response.orders[0].orderDetails)
+orderDetails.push({ date: new Date().toISOString(), status:itemStatus });
+        let Data = {         
+            OrderStatus: itemStatus,
+            orderDetails:JSON.stringify(orderDetails),
+        };
+    api.post('/user/order/update',{updatedData:Data, orderId:orderId,})
+
+    
+      }
+    } catch (error) {
+      // Handle error
+    } finally {
+      setUpdating({ ...updating, [orderId]: false }); 
+      setTrigger(!trigger)
+    }
+  };
 
   const handleEndDateChange = (event) => {
     setEndDate(event.target.value);
@@ -122,8 +162,8 @@ const ManageOrders = () => {
         </div>
       ) : (
         <>
-          <Grid container spacing={2} justifyContent="center" >
-            <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}} md={4}>
+          <Grid container spacing={2} justifyContent="center">
+            <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }} md={4}>
               <TextField
                 id="start-date"
                 label="Start Date"
@@ -135,7 +175,7 @@ const ManageOrders = () => {
                 }}
               />
             </Grid>
-            <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}} md={4}>
+            <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }} md={4}>
               <TextField
                 id="end-date"
                 label="End Date"
@@ -147,7 +187,7 @@ const ManageOrders = () => {
                 }}
               />
             </Grid>
-            <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}} md={4}>
+            <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }} md={4}>
               <Button variant="contained" onClick={handleApplyFilter}>
                 Apply Filter
               </Button>
@@ -159,9 +199,8 @@ const ManageOrders = () => {
               { title: "Shipped", count: counts.Shipped, description: "Total orders delivered to customers." },
               { title: "Delivered", count: counts.Delivered, description: "Total orders delivered to customers." },
               { title: "Cancelled", count: counts.Cancelled, description: "Total orders delivered to customers." },
-              { title: "Manage", description: "Here You Manage All Orders" },
             ].map((card, index) => (
-              <Grid item xs={5.5}  md={2.8} key={index}>
+              <Grid item xs={5.5} md={2.8} key={index}>
                 <Grow in={true} timeout={index * 500}>
                   <Card
                     sx={{
@@ -210,8 +249,8 @@ const ManageOrders = () => {
             ))}
           </Grid>
           <Grid sx={{ width: "100%", display: "flex", justifyContent: "center", maxHeight: "50vh", marginTop: "10px", overflowY: "auto", overflowX: "hidden" }}>
-            <Grid sx={{ width: {xs:"100%",sm:'70%'} }}>
-              <Typography variant="h5" component="h2" sx={{textAlign:{xs:"center",sm:'start'}}}>
+            <Grid sx={{ width: { xs: "100%", sm: '70%' } }}>
+              <Typography variant="h5" component="h2" sx={{ textAlign: { xs: "center", sm: 'start' } }}>
                 {selectedStatus}
               </Typography>
               <Grid sx={{ overflowY: "auto", overflowX: "hidden", width: "100%" }}>
@@ -221,27 +260,51 @@ const ManageOrders = () => {
                       <div key={index}>
                         <Accordion>
                           <AccordionSummary sm={12}
-                            expandIcon={<ExpandMoreIcon/>}
+                            expandIcon={<ExpandMoreIcon />}
                             aria-controls={`panel${index + 1}-content`}
                             id={`panel${index + 1}-header`}
-                            sx={{width:'100%',height:{xs:"14vh",sm:"10vh",boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)'}}}
+                            sx={{ width: '100%', height: { xs: "14vh", sm: "10vh", boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' } }}
                           >
-                            <Grid sx={{display:'flex',width:'100%',justifyContent:'space-evenly',alignItems:'center',flexDirection:{xs:"column",sm:'row'}}}>
-                            <Typography  sx={{fontFamily:"Gill Sans"}}>Order ID: {order.OrderID}</Typography>
-                            <Typography   sx={{fontFamily:"Gill Sans"}}>Date: {order.OrderDate}</Typography>
-                            <Grid sx={{display:"flex",justify:'center'}}>
-                            <Typography  sx={{fontFamily:'Verdana'}}>Status: </Typography><Typography sx={{fontFamily:'Verdana',color:'green'}}> {order.OrderStatus}</Typography>
+                            <Grid
+                              sx={{
+                                display: 'flex',
+                                width: '100%',
+                                justifyContent: 'space-evenly',
+                                alignItems: 'center',
+                                flexDirection: { xs: 'column', sm: 'row' },
+                              }}
+                            >
+                              <Typography sx={{ fontFamily: 'Gill Sans' }}>Order ID: {order.OrderID}</Typography>
+                              <Typography sx={{ fontFamily: 'Gill Sans' }}>Date: {order.OrderDate}</Typography>
+                              <Grid sx={{ display: 'flex', justify: 'center' }}>
+                                <Typography sx={{ fontFamily: 'Verdana' }}>Status: </Typography>
+                                <Typography sx={{ fontFamily: 'Verdana', color: 'green' }}> {order.OrderStatus}</Typography>
+                              </Grid>
+                              {(order.OrderStatus === 'Placed' || order.OrderStatus === 'Confirmed' || order.OrderStatus === 'Shipped') && (
+                                <Button
+                                  variant="contained"
+                                  disabled={updating[order.OrderID]} // Disable the button when updating is true for this row
+                                  onClick={(event) => { HandleButtonClick(event, order.OrderStatus, order.OrderID) }}
+                                >
+                                  {updating[order.OrderID] ? ( // Display circular loading if updating is true for this row
+                                    <CircularProgress size={24} /> // Adjust size as needed
+                                  ) : (
+                                    order.OrderStatus === 'Placed'
+                                      ? 'Confirm Order'
+                                      : order.OrderStatus === 'Confirmed'
+                                        ? 'Mark as Shipped'
+                                        : 'Mark as Delivered'
+                                  )}
+                                </Button>
+                              )}
                             </Grid>
-                            <Button variant="contained" >
-                                 Back Drop
-                            </Button>
-                            </Grid>
+
                           </AccordionSummary>
                           <AccordionDetails>
                             {parseItems(order.Items).map((item, itemIndex) => (
                               <Card
                                 key={`${index}-${itemIndex}`}
-                                sx={{ width: '100%', height: { xs: 'auto', sm: '20%' },marginBottom:'10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}
+                                sx={{ width: '100%', height: { xs: 'auto', sm: '20%' }, marginBottom: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}
                               >
                                 <Grid container sm={12}>
                                   <Grid item xs={12} sm={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -261,11 +324,11 @@ const ManageOrders = () => {
                                         <Typography variant="body2" fontSize="12px" color="#666" marginTop="1px">
                                           Quantity: {item.quantity}
                                         </Typography>
-                                        {/* Additional properties as needed */}
+
                                       </Box>
                                     </Grid>
                                     <Grid item xs={2} sm={4} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-                                     
+
                                     </Grid>
                                   </Grid>
                                 </Grid>
@@ -286,4 +349,5 @@ const ManageOrders = () => {
     </>
   );
 };
+
 export default ManageOrders;
