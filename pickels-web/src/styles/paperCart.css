@@ -14,7 +14,12 @@
   .card-container:hover {
     border: 2px solid #4CAF50; /* Change border color on hover */
   }
-  
+  #borderhide{
+    border-right:white;
+  }
+  #borderhide:hover{
+    border-right: 2px solid #4CAF50;
+  }
   .card-container-inner {
     width: 100%;
     display: flex;

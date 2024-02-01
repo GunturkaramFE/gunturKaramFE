@@ -25,6 +25,7 @@ import OrderStatus from './ProductStore/OrderStatus';
 import Vouchers from './dev/Vouchers';
 
 import ManageOrders from './dev/manageOrders';
+import PickleComponent from './components/PickleComponent';
 
 
 const ProductLayout = ({ children }) => {
@@ -71,7 +72,7 @@ function App() {
             <Route path='/OrderShipping' element={<OrderShipping/>} />
             <Route path='/OrderConfirm' element={<OrderConfirm/>} />
             <Route path='/OrderShipping/OrderStatus' element={<OrderStatus/>} />
-
+            
 
             <Route path='/OrderStatus/:Id' element={<OrderConfirm/>} />
 
@@ -89,6 +90,7 @@ function App() {
                     <Route path="/manage-products" element={<ManageProducts />} />
 
                     <Route path="/vouchers" element={<Vouchers/>} />
+                 
 
                     <Route path='/manage-orders' element={<ManageOrders/>}/>
 

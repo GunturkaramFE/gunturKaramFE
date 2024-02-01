@@ -5,6 +5,7 @@ import Carousel from "../reusableComponents/carousel"
 import AboutContainer from "./AboutContainer"
 import ScrollingContent from "./Benifits"
 import PaperCard from "./DeliveryData"
+import PickleComponent from "./PickleComponent"
 import Bestseller from "./Topproducts"
 import TopProducts from "./TrendingProducts"
 import Footer from "./footer"
@@ -22,7 +23,8 @@ const Landing_page=()=>{
     <div style={{width:"100%",height:"55vh",marginTop:"90px" }}><TopProducts/></div>
     <div style={{width:"100%",height:"auto" ,backgroundColor:'white' }}><AboutContainer/></div>
     <div style={{width:"100%",height:"auto",marginTop:"5px"}}><Bestseller/></div>
-    <div style={{width:"100%",height:"20vh",marginTop:"5px"}}><ScrollingContent/></div>    
+    <div style={{width:'100%',height:'auto'}}><PickleComponent/></div> 
+    <div style={{width:"100%",height:"20vh"}}><ScrollingContent/></div>   
     <div style={{width:"100%",height:'auto'}}>
    <BannerWrapper />
    <Footer/> 
