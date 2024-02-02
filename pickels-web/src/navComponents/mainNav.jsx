@@ -175,11 +175,13 @@ const NavBar = () => {
       ) : (
        <Grid item sm={3}  className="carts" sx={{ display: 'flex', alignItems: 'center', justifyContent: "end", height: { xs: '6vh', sm: '17vh' } }}>
         <Grid sx={{ display: 'flex', justifyContent: 'space-around', width: '60%' }}>
+
           <Badge badgeContent={navData?.wishlist?.length} onClick={()=>navigate('/WishlistProduct')} color="success">
             <FavoriteBorderIcon color='grey' />
           </Badge>
              <Badge badgeContent={navData?.cart?.length} color="success">
             <ShoppingCartIcon onClick={() => navigate('/viewcart')} />
+
           </Badge>
         </Grid>
         <Grid >
