@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import NavBar from '../navComponents/mainNav';
-import ClearIcon from '@mui/icons-material/Clear';
 import { Grid, Container, Typography, Button, Select, MenuItem, Paper, Box, CircularProgress } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import RatingComponent from '../ProductStore/RatingComponent';
 import Socailmedia from './Socailmedia';
 import IconButton from '@mui/material/IconButton';
@@ -14,34 +14,41 @@ import { parseProduct, parseShoppingData } from '../helpers/parser';
 import { green } from '@mui/material/colors';
 import { useSelector, useDispatch } from 'react-redux';
 import { setShoppingData } from '../store/shoppingSlicer';
-import { AddProductToCart } from '../helpers/AddToCartModule';
-import { AddToWishList } from '../helpers/AddToWishlist';
+import {updateUserWishList} from '../helpers/AddToWishlist'
 const View = () => {
   const [count, setCount] = useState(1);
   const [price, setPrice] = useState(0);
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState({});
+  const[isWishlist,setIsWishlist]= useState(false)
   const [selectedQuantity, setSelectedQuantity] = useState();
-  const[cartLoading,setCartLoading]=useState(false)
-  const [isadded,setisadded]=useState(false)
-  const dispatch= useDispatch()
+  const [cartLoading, setCartLoading] = useState(false)
+  const [isadded, setisadded] = useState(false)
+  const dispatch = useDispatch()
   const shoppingData = useSelector((state) => state.shopping);
-  const checkProductInCart= async()=>{
-    let parsedData=await parseShoppingData(shoppingData)
-    let filtered=parsedData?.cart.filter((x)=>x.id==product.id)
-       if(filtered.length){
-      let isSameCart=filtered.find((x)=>JSON.stringify(x.selectedQuantity)==selectedQuantity)
-      if(isSameCart){
-               setisadded(true)
-      }else{
-     
-    setisadded(false)
+  const checkProductInCart = async () => {
+    let parsedData = await parseShoppingData(shoppingData)
+    let filtered = parsedData?.cart.filter((x) => x.id == product.id)
+    if (filtered.length) {
+      let isSameCart = filtered.find((x) => JSON.stringify(x.selectedQuantity) == selectedQuantity)
+      if (isSameCart) {
+        setisadded(true)
+      } else {
+
+        setisadded(false)
       }
-    }else{
+    } else {
       setisadded(false)
     }
+
+    let isItemInWishlist=parsedData?.wishlist.find((x)=>x.id==product.id)  
+    if(isItemInWishlist){
+ setIsWishlist(true)
+    }else{
+ setIsWishlist(false)
+    }
   }
- 
+
   useEffect(() => {
     if (selectedQuantity) {
       const parsedQuantity = JSON.parse(selectedQuantity);
@@ -53,7 +60,7 @@ const View = () => {
 
   const { id } = useParams();
   const buttonSx = {
-    ...(isadded&& {
+    ...(isadded && {
       bgcolor: green[500],
       '&:hover': {
         bgcolor: green[700],
@@ -63,72 +70,82 @@ const View = () => {
   useEffect(() => {
     fetchProduct();
   }, []);
-  const updateCart=async(data)=>{
+  const updateCart = async (data) => {
     setCartLoading(true)
     try {
-      let response= await api.put('/user/updateUserShoppingList',{document:{cart:data}});
-    if(response.success){
-         let obj={...shoppingData}
-         obj.cart=data
-         dispatch(setShoppingData(obj))
-         
-        }
+      let response = await api.put('/user/updateUserShoppingList', { document: { cart: data } });
+      if (response.success) {
+        let obj = { ...shoppingData }
+        obj.cart = data
+        dispatch(setShoppingData(obj))
+
+      }
     } catch (error) {
-      
-    }finally{
-setCartLoading(false)
-setisadded(true)
+
+    } finally {
+      setCartLoading(false)
+      setisadded(true)
     }
-    
+
   }
-const HandleAddToCart=async()=>{
-  let cartitem={
-    id:product.id,
-    category:product.category,
-    rating:product.rating,
-    subCategory:product.subCategory,
-    title:product.title,
-    url:product.url,
-    price:price,
-    quantity:count,
-    selectedQuantity:JSON.parse(selectedQuantity)
-   }
- 
-   let parsedData=await parseShoppingData(shoppingData)
-   cartitem.cartId=parsedData.cart.length+1;
-   let filtered=parsedData?.cart.filter((x)=>x.id==cartitem.id)
-   if(filtered.length){
-    let isSameCart=filtered.find((x)=>x.selectedQuantity.price==cartitem.selectedQuantity.price)
+   const HandleAddToCart = async () => {
+    let cartitem = {
+      id: product.id,
+      category: product.category,
+      rating: product.rating,
+      subCategory: product.subCategory,
+      title: product.title,
+      url: product.url,
+      price: price,
+      quantity: count,
+      selectedQuantity: JSON.parse(selectedQuantity)
+    }
 
-    if(isSameCart==undefined){
-       let jsonobj=JSON.stringify([cartitem,...parsedData.cart])  
-   
-       let obj={...shoppingData}
-       obj.cart=jsonobj
-       await updateCart(jsonobj) 
+    let parsedData = await parseShoppingData(shoppingData)
+    cartitem.cartId = parsedData.cart.length + 1;
+    let filtered = parsedData?.cart.filter((x) => x.id == cartitem.id)
+    if (filtered.length) {
+      let isSameCart = filtered.find((x) => x.selectedQuantity.price == cartitem.selectedQuantity.price)
 
-     }else{
-    alert("alres")
-      
-     }
-   
-   }else{
-      let jsonobj=JSON.stringify([cartitem,...parsedData.cart])  
-            let obj={...shoppingData}
-      obj.cart=jsonobj
-     await updateCart(jsonobj)
- 
-   }
-}
+      if (isSameCart == undefined) {
+        let jsonobj = JSON.stringify([cartitem, ...parsedData.cart])
+
+        let obj = { ...shoppingData }
+        obj.cart = jsonobj
+        await updateCart(jsonobj)
+
+      }
+
+    } else {
+      let jsonobj = JSON.stringify([cartitem, ...parsedData.cart])
+      let obj = { ...shoppingData }
+      obj.cart = jsonobj
+      await updateCart(jsonobj)
+
+    }
+  }
   useEffect(() => {
     if (Array.isArray(product?.pricelist) && product?.pricelist.length > 0) {
-    
+      
       setSelectedQuantity(JSON.stringify(product.pricelist[0]));
     }
-  }, [product.pricelist,product]);
- 
-  const HandleAddToWhishList=()=>{
-AddToWishList(product.id)
+    
+
+  }, [product.pricelist, product]);
+const HandleRemoveFromWhishList = async ()=>{
+  let wishlist;
+  let WishlistItems= JSON.parse(shoppingData.wishlist).filter((x)=>x.id!=product.id)
+  wishlist=JSON.stringify(WishlistItems)
+  await updateUserWishList(wishlist)
+  window.location.reload();
+}
+  const HandleAddToWhishList =async () => {
+    let wishlist;
+    let WishlistItems= JSON.parse(shoppingData.wishlist)
+    WishlistItems.push(product)
+    wishlist=JSON.stringify(WishlistItems)
+    await updateUserWishList(wishlist)     
+      window.location.reload(); 
   }
 
   const fetchProduct = async () => {
@@ -137,7 +154,7 @@ AddToWishList(product.id)
       const response = await api.get(`/user/get-items/${id}`);
       if (response.success) {
         setProduct(parseProduct(response.items));
-             
+
       }
     } catch (error) {
       // Handle error if needed
@@ -156,7 +173,7 @@ AddToWishList(product.id)
     setCount(count + 1);
   };
 
- 
+
 
   return (
     <>
@@ -174,24 +191,24 @@ AddToWishList(product.id)
             <Grid item xs={12} sm={6} style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <Typography variant="h4">{product.title}</Typography>
               <Typography variant="h5">
-              <del style={{ color: 'red', marginRight: '5px',fontSize:"19px" }}>&#x20B9;{(price * 1.3).toFixed(2)}</del>&#x20B9;{price.toFixed(2)}
+                <del style={{ color: 'red', marginRight: '5px', fontSize: "19px" }}>&#x20B9;{(price * 1.3).toFixed(2)}</del>&#x20B9;{price.toFixed(2)}
 
               </Typography>
               <div>
                 <label style={{ marginRight: '10px', fontWeight: 'bold', fontSize: 14 }}>Weight :</label>
                 <Select
-  style={{ width: '40%', height: '40px' }}
-  value={selectedQuantity || (product.pricelist && JSON.stringify(product.pricelist[0]))}
-  onChange={(e) => setSelectedQuantity(e.target.value)}
->
-  {product.pricelist &&
-    product.pricelist.map((x, index) => (
-      <MenuItem key={index} value={JSON.stringify(x)}>
-        {`price: ${x.price} ---- quantity: ${x.quantity}`}
-      </MenuItem>
-    ))}
-</Select>
- </div>
+                  style={{ width: '40%', height: '40px' }}
+                  value={selectedQuantity || (product.pricelist && JSON.stringify(product.pricelist[0]))}
+                  onChange={(e) => setSelectedQuantity(e.target.value)}
+                >
+                  {product.pricelist &&
+                    product.pricelist.map((x, index) => (
+                      <MenuItem key={index} value={JSON.stringify(x)}>
+                        {`price: ${x.price} ---- quantity: ${x.quantity}`}
+                      </MenuItem>
+                    ))}
+                </Select>
+              </div>
 
               <Grid sx={{ width: '100%', display: 'flex', gap: '30px', flexDirection: ['column', 'row'] }}>
                 <Grid>
@@ -218,33 +235,37 @@ AddToWishList(product.id)
                     </IconButton>
                   </Grid>
                 </Grid> <Box sx={{ m: 1, position: 'relative' }}>
-        <Button
-          variant="contained"
-          sx={buttonSx}
-          disabled={cartLoading}
-         onClick={()=>{!isadded&&HandleAddToCart()}}
-        >
-         {isadded?'Added TO Cart':"Add To Cart"}
-        </Button>
-        {cartLoading&& (
-          <CircularProgress
-            size={24}
-            sx={{
-              color: green[500],
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              marginTop: '-12px',
-              marginLeft: '-12px',
-            }}
-          />
-        )}
-      </Box>
+                  <Button
+                    variant="contained"
+                    sx={buttonSx}
+                    disabled={cartLoading}
+                    onClick={() => { !isadded && HandleAddToCart() }}
+                  >
+                    {isadded ? 'Added TO Cart' : "Add To Cart"}
+                  </Button>
+                  {cartLoading && (
+                    <CircularProgress
+                      size={24}
+                      sx={{
+                        color: green[500],
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        marginTop: '-12px',
+                        marginLeft: '-12px',
+                      }}
+                    />
+                  )}
+                </Box>
               </Grid>
-              <div style={{ display: 'flex', width: '100%', gap: '10px' }}>
+             {!isWishlist?<div style={{ display: 'flex', width: '100%', gap: '10px' }}>
                 <FavoriteBorderIcon style={{ color: 'red', cursor: 'pointer' }} onClick={HandleAddToWhishList} />
                 <Typography sx={{ fontSize: 15 }}>Add to wishlist</Typography>
-              </div>
+              </div>:
+              <div style={{ display: 'flex', width: '100%', gap: '10px' }}>
+                <FavoriteIcon style={{ color: 'green', cursor: 'pointer' }} onClick={HandleRemoveFromWhishList} />
+                <Typography sx={{ fontSize: 15 }}>Added to wishlist</Typography>
+              </div>}
               <RatingComponent initialRating={product.rating} sx={{ margin: 0 }} />
               <hr />
               <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '15px' }}>
@@ -265,7 +286,7 @@ AddToWishList(product.id)
                   <Typography color="grey">{product.subCategory}</Typography>
                 </Box>
 
-                        <Box sx={{ display: 'flex' }}>
+                <Box sx={{ display: 'flex' }}>
                   <Typography variant="subtitle1"><b>Share : </b></Typography>
                   <div style={{ width: '30%', '@media (max-width:600px)': { width: '100%' } }}>
                     <Socailmedia />

@@ -69,9 +69,9 @@ function App() {
             <Route path='/WishlistProduct' element={<Wishlist/>} />
             <Route path='/empty' element={<EmptyData/>} />
 
-            <Route path='/OrderShipping' element={<OrderShipping/>} />
+            <Route path='/MyOrders' element={<OrderShipping/>} />
             <Route path='/OrderConfirm' element={<OrderConfirm/>} />
-            <Route path='/OrderShipping/OrderStatus' element={<OrderStatus/>} />
+            <Route path='MyOrders/OrderStatus' element={<OrderStatus/>} />
             
 
             <Route path='/OrderStatus/:Id' element={<OrderConfirm/>} />

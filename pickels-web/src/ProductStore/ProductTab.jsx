@@ -47,25 +47,36 @@ function a11yProps(index) {
 const ProductTab = () => {
   const [value, setValue] = React.useState(0);
   const dispatch = useDispatch();
-  const allproducts = useSelector(state => state.allProducts);
+  const allProducts = useSelector(state => state.allProducts);
   const [pop, setPopUp] = useState(false);
   const [popUpData, setPopUpData] = useState({});
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  
   const fetchAllProducts = async () => {
     const products = await api.get('/user/get-all-products');
     dispatch(setAllProducts(products?.items || []));
   };
-  const HandlePopup = (data) => {
-    console.log(data, 'parsed');
+
+  const handlePopup = (data) => {
     setPopUpData(data);
     setPopUp(!pop);
   };
+
   useEffect(() => {
     fetchAllProducts();
   }, []);
 
   useEffect(() => {
-    console.log(allproducts, "all");
-  }, [allproducts]);
+    if (allProducts.length) {
+      if (value === 0) {
+        setFilteredProducts(allProducts);
+      } else {
+        const subcategory = subcategories[value - 1];
+        const filtered = allProducts.filter(product => product.subCategory === subcategory);
+        setFilteredProducts(filtered);
+      }
+    }
+  }, [value, allProducts]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -76,14 +87,14 @@ const ProductTab = () => {
 
   return (
     <>
-      {allproducts.length ? (
+      {allProducts.length ? (
         <Box sx={{ width: '100%'}}>
           {pop && (
             <div>
               <AddToCartPopUp
                 ispop={pop}
-                fun={HandlePopup}
-                formData={<AddToCart data={popUpData} fun={HandlePopup} />}
+                fun={handlePopup}
+                formData={<AddToCart data={popUpData} fun={handlePopup} />}
               />
             </div>
           )}
@@ -105,9 +116,9 @@ const ProductTab = () => {
           <Grid container justifyContent="center" sx={{ height: { xs: '91vh', sm: '75vh' } }}>
             <CustomTabPanel value={value} index={0} sx={{ height: { xs: '91vh', sm: '75vh' } }} width="100%" style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
               <Grid container justifyContent="center" rowGap='26px'>
-                {allproducts?.map((product, index) => (
+                {filteredProducts.map((product, index) => (
                   <Grid item key={index} xs={12} sm={6} md={4} lg={3} sx={{ paddingLeft: { xs: '30px', sm: '13px' } }}>
-                    <Card data={product} PopUpHandler={HandlePopup} width='100%'/>
+                    <Card data={product} PopUpHandler={handlePopup} width='100%'/>
                   </Grid>
                 ))}
               </Grid>
@@ -115,9 +126,9 @@ const ProductTab = () => {
             {subcategories.map((subcategory, index) => (
               <CustomTabPanel key={index} value={value} index={index + 1} sx={{ height: { xs: '91vh', sm: '75vh' } }} width="100%" style={{ overflowY: 'scroll', overflowX: 'hidden' ,zIndex:0 }}>
                 <Grid container justifyContent="center" rowGap='26px'>
-                  {allproducts?.filter(product => product.subCategory === subcategory).map((product, index) => (
+                  {filteredProducts.filter(product => product.subCategory === subcategory).map((product, index) => (
                     <Grid item key={index} xs={12} sm={6} md={4} lg={3} sx={{ paddingLeft: { xs: '30px', sm: '13px' } }}>
-                      <Card data={product} PopUpHandler={HandlePopup} width='100%' />
+                      <Card data={product} PopUpHandler={handlePopup} width='100%' />
                     </Grid>
                   ))}
                 </Grid>

@@ -44,7 +44,7 @@ const ManageProducts = () => {
   };
   useEffect(() => {
     fetchProducts();
-    console.log(fetchProducts)
+
   }, []);
   const keysForDropdown = fetchedProducts?.length > 0 ? Object.keys(fetchedProducts[0]) : [];
 const AddtoTrend= async(productId)=>{
@@ -55,7 +55,7 @@ setBackdrop(true); // Show backdrop
     const response = await api.post('/user/trending-items/add', { document: {itemid:+productId }});
 
     if (response.success) {
-     alert('item added to Tending items')
+    
     } else {
       alert('something went wrong')
     }

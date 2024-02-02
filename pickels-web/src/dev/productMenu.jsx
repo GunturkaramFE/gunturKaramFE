@@ -14,7 +14,6 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 // ProductMenu component
 const ProductMenu = () => {
     const navigate = useNavigate();
-    const [isTrendingListModal,setIsTrendingList]=useState(false)
 
     const handleAddProductsClick = () => {
         navigate('../add-product');
@@ -24,8 +23,7 @@ const ProductMenu = () => {
         navigate('../manage-products');
     };
     const handledeleteproducts = () => {
-        setIsTrendingList(true);
-        navigate('../TrenditemRemove')
+             navigate('../TrenditemRemove')
     };
     
 

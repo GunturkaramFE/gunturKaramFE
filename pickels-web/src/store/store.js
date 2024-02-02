@@ -1,5 +1,6 @@
 // src/store/store.js
 import { configureStore } from '@reduxjs/toolkit';
+import userReducer, { setUserData, clearUserData } from '../store/userSlicer'; // Import user reducer and actions
 import profileReducer, { clearProfile, setProfile } from '../store/profileSlicer';
 import api from '../api';
 import shoppingReducer, { clearShoppingData, setShoppingData } from '../store/shoppingSlicer';
@@ -7,8 +8,10 @@ import trendingProductsReducer, { setAllProducts, clearAllProducts } from '../st
 import allProductsReducer, { setAllProducts as setAllProductsAll, clearAllProducts as clearAllProductsAll } from '../store/allProductsSlicer';
 import addressReducer from '../store/shippingAddressSlicer'
 import orderReducer from './orderDetailsSlicer';
+
 const store = configureStore({
   reducer: {
+    user: userReducer,
     profile: profileReducer,
     shopping: shoppingReducer,
     trendingProducts: trendingProductsReducer,
@@ -20,28 +23,32 @@ const store = configureStore({
 
 export const fetchShoppingDataOnPageRefresh = async () => {
   try {
-    const response = await api.get('/user/getShoppingData');
-    let obj={
-    id: null,
-    userId: null,
-    cart: [],
-    wishlist: []
-  }
+    const [userDataResponse, shoppingDataResponse] = await Promise.all([
+      api.get('/user/getUser'),
+      api.get('/user/getShoppingData')
+    ]);
 
-    if(response.success){
-   
-      store.dispatch(setShoppingData({...response.data,isuser:true}));
-    }else if(!response.status&&response?.error=='Token not provided')
-    {
-      obj.isuser=false;
-      store.dispatch(setShoppingData(obj))
+    const user = userDataResponse?.user;
+    const shoppingData = shoppingDataResponse.data;
+
+    if (user) {
+      store.dispatch(setUserData(user));
+    } else {
+      store.dispatch(clearUserData());
     }
-   
+
+    if (shoppingDataResponse.success) {
+      store.dispatch(setShoppingData({ ...shoppingData, isuser: true }));
+    } else if (!shoppingDataResponse.status && shoppingDataResponse?.error === 'Token not provided') {
+      store.dispatch(setShoppingData({ id: null, userId: null, cart: [], wishlist: [], name: '', isuser: false }));
+    }
+
   } catch (error) {
     console.error('Error fetching shopping data:', error);
     store.dispatch(clearShoppingData());
   }
 };
+
 
 fetchShoppingDataOnPageRefresh().then(() => console.log('Shopping data fetched.'));
 
