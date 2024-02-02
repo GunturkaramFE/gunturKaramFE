@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/topproducts.css'
 import { Button, Card, CardActionArea, FormControl, InputLabel, MenuItem, Rating, Select, Stack } from '@mui/material';
 import { bestSellers } from '../asserts/benifits';
@@ -8,11 +8,24 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
 import { useNavigate } from 'react-router-dom';
+import api from '../api';
 const Bestseller = () => {
-  const navigate=useNavigate()
-  const handleView=()=>{
-   navigate('/ViewProduct')
+    const[items,setItems]=useState([])
+  const handleView=(id)=>{
+    window.open(`/ViewProduct/${id}`, '_blank')
   }
+
+const fetchItems= async()=>{
+  const response = await api.get(`/user/sort-items/${4}`)
+  console.log(response)
+  if(response.success){
+    setItems(response.items)
+  }
+}
+useEffect(()=>{
+fetchItems()
+},[])
+
   return (
     <>
       <div className="Best-Seller-Container">    
@@ -22,10 +35,10 @@ const Bestseller = () => {
     <div className='Best-seller-inner-card'>
 
     {
-     bestSellers.map((x)=>{
+     items.map((x)=>{
         return(
           <div className='item-card'>    
-           <img src={x.img} alt="" /> 
+           <img src={x.url} alt="" /> 
            
   <Card  sx={{
     height: '70%',
@@ -41,19 +54,11 @@ const Bestseller = () => {
     <div className="card-body class-body-text-container">
       <h5 className="card-title">{x.title}</h5> 
       <p className="card-text">
-  <s style={{ color: 'red', textDecoration: 'line-through' }}>&#x20B9;500</s> &#x20B9;<span style={{ fontSize: '1.5em' }}>300</span></p>
-<div className='select-container'>
-<select class="form-select form-select-sm" aria-label="Small select example">
-  <option selected value="0">1kg--₹200</option>
-  <option value="1">2kg--₹350</option>
-  <option value="2">3kg--₹500</option>
-  <option value="3">4kg--₹600</option>
-</select>
-</div>
+  From &#x20B9;<span style={{ fontSize: '1.5em' }}>{x.startingPrice}</span></p>
 <div className='buttons-container'>
    <Stack spacing={2} direction="row">
-   <Button variant="outlined" onClick={handleView}><VisibilityIcon/>View</Button>
-   <Button variant="outlined"><ShoppingCartIcon/>Add</Button>
+   <Button variant="outlined" onClick={()=>handleView(x.id)}><VisibilityIcon/>Explore</Button>
+ 
     </Stack>
     </div>
     </div>

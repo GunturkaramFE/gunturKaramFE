@@ -29,9 +29,11 @@ const NavBar = () => {
   const [state, setState] = React.useState({ right: false });
   const [navData, setNavData] = useState(false);
   const shoppingData = useSelector((state) => state.shopping);
+  const user = useSelector((state) => state.user);
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
   const logoutRef = useRef(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
 
   const handleDrawerToggle = (open) => () => {
     setIsDrawerOpen(open);
@@ -72,7 +74,6 @@ const NavBar = () => {
     setNavData(parseShoppingData(shoppingData));
   }, [shoppingData]);
 
-  useEffect(() => console.log('dddddd', navData), [navData]);
 
   const toggleDrawer = (anchor: Anchor, open: boolean) => () => {
     setState({ ...state, [anchor]: open });
@@ -132,7 +133,7 @@ const NavBar = () => {
             {navData?.isuser ? (
               <PersonIcon onClick={handleLogout} />
             ) : (
-              // Render nothing here for mobile, as MenuIcon is already shown
+            
               !isMobile && <a onClick={toggleDrawer('right', true)} style={{color:"red"}}>Log/Signup</a>
             )}
             <Box style={{ width: '100%', position: 'absolute', top: '150%', right: '550%' }}>
@@ -174,21 +175,20 @@ const NavBar = () => {
       ) : (
        <Grid item sm={3}  className="carts" sx={{ display: 'flex', alignItems: 'center', justifyContent: "end", height: { xs: '6vh', sm: '17vh' } }}>
         <Grid sx={{ display: 'flex', justifyContent: 'space-around', width: '60%' }}>
-          <Badge badgeContent={navData?.wishlist?.length} color="success">
-            <FavoriteBorderIcon style={{cursor:'pointer'}} color='grey' />
+
+          <Badge badgeContent={navData?.wishlist?.length} onClick={()=>navigate('/WishlistProduct')} color="success">
+            <FavoriteBorderIcon color='grey' />
           </Badge>
-          <Badge badgeContent={4} color="success">
-            <NotificationsNoneIcon style={{cursor:'pointer'}} color='grey' />
-          </Badge>
-          <Badge badgeContent={navData?.cart?.length} color="success">
-            <ShoppingCartIcon style={{cursor:'pointer'}} onClick={() => navigate('/viewcart')} />
+             <Badge badgeContent={navData?.cart?.length} color="success">
+            <ShoppingCartIcon onClick={() => navigate('/viewcart')} />
+
           </Badge>
         </Grid>
         <Grid >
         <Box>
           <Box style={{ position: 'relative' }}>
-            {navData?.isuser ? (
-              <PersonIcon onClick={handleLogout} />
+            {navData?.isuser ? (<>Hello {user.name}
+              <PersonIcon onClick={handleLogout} /></>
             ) : (
               // Render nothing here for mobile, as MenuIcon is already shown
               !isMobile && <a onClick={toggleDrawer('right', true)}>Log/Signup</a>

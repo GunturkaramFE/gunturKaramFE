@@ -7,7 +7,7 @@ import AddToCart from '../ProductStore/AddToCart';
 import { parseProduct } from '../helpers/parser';
 const ProductCard = ({productdetails,PopUpHandler }) => {
   const [isHovered, setIsHovered] = useState(false);
-  console.log(productdetails)
+
   return (<>  
     <div
       className="card"

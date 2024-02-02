@@ -8,6 +8,7 @@ const shoppingSlice = createSlice({
     userId: null,
     cart: [],
     wishlist: [],
+    name:''
   },
   reducers: {
     setShoppingData: (state, action) => {
