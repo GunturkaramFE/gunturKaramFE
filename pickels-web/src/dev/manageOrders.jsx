@@ -5,6 +5,7 @@ import Rating from "@mui/material/Rating";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import {
   Grid,
   Card,
@@ -21,8 +22,10 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useNavigate } from "react-router-dom";
 
 const ManageOrders = () => {
+  const navigate=useNavigate()
   const today = new Date().toISOString().slice(0, 10);
   const pastTenDays = new Date(
     new Date().setDate(new Date().getDate() - 10)
@@ -280,6 +283,7 @@ orderDetails.push({ date: new Date().toISOString(), status:itemStatus });
                                 <Typography sx={{ fontFamily: 'Verdana' }}>Status: </Typography>
                                 <Typography sx={{ fontFamily: 'Verdana', color: 'green' }}> {order.OrderStatus}</Typography>
                               </Grid>
+                              <VisibilityIcon onClick={()=>{navigate('/ItemData')}} style={{color:'green'}} />
                               {(order.OrderStatus === 'Placed' || order.OrderStatus === 'Confirmed' || order.OrderStatus === 'Shipped') && (
                                 <Button
                                   variant="contained"
