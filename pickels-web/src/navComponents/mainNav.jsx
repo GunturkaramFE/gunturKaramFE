@@ -1,55 +1,50 @@
 import '../styles/nav.css';
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import { IconButton, Typography } from '@mui/material';
+import { Button, IconButton, Typography, useMediaQuery } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Drawer from '@mui/material/Drawer';
 import Divider from '@mui/material/Divider';
-import MenuIcon from '@mui/icons-material/Menu';
+import MenuIcon from '@mui/icons-material/Menu'; // Import MenuIcon
 import Badge from '@mui/material/Badge';
 import PersonIcon from '@mui/icons-material/Person';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SearchFilter from '../reusableComponents/filter';
 import logo from '../asserts/logo.png';
-import Login from './Login';
 import { useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
 import BasicTabs from './Tabs';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux'; // Assuming you have shoppingData in redux state
 import { parseShoppingData } from '../helpers/parser';
 import Logout from './Logout';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
-import { useMediaQuery } from '@mui/material';
+import { clearShoppingData } from '../store/shoppingSlicer';
 
 type Anchor = 'right';
 
 const NavBar = () => {
   const [state, setState] = React.useState({ right: false });
   const [navData, setNavData] = useState(false);
-  const shoppingData = useSelector((state) => state.shopping);
-  const user = useSelector((state) => state.user);
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
+  const [isNewSliderOpen, setIsNewSliderOpen] = useState(false);
+   const[SmLoginForm,SetSmLogin]=useState(false)
   const logoutRef = useRef(null);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
-
-  const handleDrawerToggle = (open) => () => {
-    setIsDrawerOpen(open);
-  };
+  const isMobile = useMediaQuery('(max-width:600px)');
   const navigate = useNavigate();
-
-  const handleLogout = () => {
+  const shoppingData = useSelector((state) => state.shopping); // Assuming shoppingData is in redux state
+  const dispatch= useDispatch()
+  const handleLogout = (mode) => {
     setIsLogoutOpen(true);
+  };
+  const handleMobileLogout = () => {
+    localStorage.removeItem('Auth');
+    dispatch(clearShoppingData())
+     setIsNewSliderOpen(!isNewSliderOpen);
   };
 
   const handleLogoutClose = () => {
     setIsLogoutOpen(false);
-  };
-
-  const HandleBack = () => {
-    toggleDrawer('right', false)();
   };
 
   const handleClickOutside = (event) => {
@@ -61,6 +56,9 @@ const NavBar = () => {
       handleLogoutClose();
     }
   };
+  const handleSmLogin=()=>{
+    SetSmLogin(true)
+  }
 
   useEffect(() => {
     document.addEventListener('click', handleClickOutside);
@@ -79,6 +77,10 @@ const NavBar = () => {
     setState({ ...state, [anchor]: open });
   };
 
+  const toggleNewSlider = () => {
+    setIsNewSliderOpen(!isNewSliderOpen);
+  };
+
   const list = (anchor: Anchor) => (
     <Box
       sx={{ width: anchor === 'right' ? 450 : 'auto' }}
@@ -89,142 +91,135 @@ const NavBar = () => {
       <Divider />
     </Box>
   );
-  const isMobile = useMediaQuery('(max-width:600px)');
+const handleSmFormBack=()=>{
+
+  setIsNewSliderOpen(!isNewSliderOpen)  
+  SetSmLogin(false);
+}
+  const handleBack = () => {
+    if(SmLoginForm){
+      SetSmLogin(false)
+      setIsNewSliderOpen(false)
+    }
+    toggleDrawer('right', false)()
+  };
+
   return (
-    <Box className="nav" >
+    <Box className="nav">
       <Grid container>
-      <Grid item xs={2}  sm={3} sx={{ width: '100%',height: { xs: 'auto', sm: '17vh' },display: 'flex',alignItems:{sm:"start"}
-  }}
->
-  <img
-    src={logo}
-    alt=""
-    style={{ width:{xs:"100%",sm:"70%"}, height: '100%', objectFit: 'contain' }}
-  />
-</Grid>
+        <Grid item xs={2} sm={3} sx={{ width: '100%', height: { xs: 'auto', sm: '17vh' }, display: 'flex', alignItems: { sm: "start" } }}>
+          <img
+            src={logo}
+            alt=""
+            style={{ width: { xs: "100%", sm: "70%" }, height: '100%', objectFit: 'contain' }}
+          />
+        </Grid>
 
-
-        <Grid item sm={6} xs={8} className="filter-container" sx={{display:'flex',alignItems:'center'}}>
+        <Grid item sm={6} xs={8} className="filter-container" sx={{ display: 'flex', alignItems: 'center' }}>
           <SearchFilter />
         </Grid>
-      {isMobile ? (
-        <Grid xs={2}>
-       <>
-      <IconButton sx={{ marginLeft: '25px', marginTop: '4px' }} onClick={handleDrawerToggle(true)}>
-        <MenuIcon />
-      </IconButton>
 
-      <Drawer anchor="right"    open={isDrawerOpen} onClose={handleDrawerToggle(false)}>
-      <Grid item sx={{ display: 'flex',flexDirection:'column' }}>
-        <Grid sx={{ display: 'flex', justifyContent: 'space-around', flexDirection:"column", width: '100%' }}>
-          <Grid sx={{ width: 250 ,padding:'10px 0px'}} >
-            <FavoriteBorderIcon sx={{margin:'0px 10px' ,color:'red',fontFamily:'Tahoma'}} color='grey' /> whislist ( {navData?.wishlist?.length} )
-          </Grid>
-          <Grid sx={{ width: 250 ,padding:'10px 0px',display:'flex'}} onClick={() => navigate('/viewcart')} >
-            <ShoppingCartIcon sx={{margin:'0px 10px',color:"grey"}}  /> <Typography sx={{fontFamily:'Tahoma'}}>AddToCart ( {navData?.cart?.length} )</Typography>
-          </Grid>
-        </Grid>
-        <Grid >
-        <Box sx={{ width: 250 ,padding:'10px 0px'}}>
-          <Box sx={{margin:'0px 10px'}} >
-            {navData?.isuser ? (
-              <PersonIcon onClick={handleLogout} sx={{color:"grey"}} />
-            ) : (
-            
-              !isMobile && <a onClick={toggleDrawer('right', true)} style={{color:"red"}}>Log/Signup</a>
-            )}
-            <Box style={{ width: '100%', position: 'absolute', top: '150%', right: '550%' }}>
-              {isLogoutOpen && (
-                <Box ref={logoutRef}>
-                  <Logout onLogout={handleLogoutClose} />
-                </Box>
-              )}
-            </Box>
-          </Box>
-          <Drawer
-            anchor="right"
-            open={state.right}
-            onClose={toggleDrawer('right', false)}
-            style={{ width: '100%', height: 'auto' }}
-          >
-            {list('right')}
-
-            <Box style={{ width: '100%', height: '100%' }}>
-              <Box style={{ width: '100%', paddingLeft: '20px', height: '6%', display: 'flex', alignItems: 'end' }}>
-                <KeyboardBackspaceIcon onClick={HandleBack} style={{ color: '#8B8589' }} />
-              </Box>
-              <Box style={{ width: '100%', height: '20%', display: 'flex', justifyContent: 'center' }}>
-                <img src={logo} alt="" style={{ width: '200px', objectFit: 'contain' }} />
-              </Box>
-              <Box style={{ width: '100%', height: '74%', display: 'flex', justifyContent: 'center' }}>
-                <Box style={{ width: '80%', height: '100%' }}>
-                  <BasicTabs closeDrawer={HandleBack} />
-                </Box>
-              </Box>
-             </Box>
-           </Drawer>
-          </Box>
+        <Grid item sm={3} className="carts" sx={{ display: 'flex', alignItems: 'center', justifyContent: "end", height: { xs: '6vh', sm: '17vh' } }}>
+        <Drawer
+                    anchor="right"
+                    open={state.right}
+                    onClose={toggleDrawer('right', false)}
+                    style={{ width: '100%', height: 'auto' }}
+                  >
+                    {list('right')}
+                    <Box style={{ width: '100%', height: '100%' }}>
+                      <Box style={{ width: '100%', paddingLeft: '20px', height: '6%', display: 'flex', alignItems: 'end' }}>
+                        <KeyboardBackspaceIcon onClick={handleBack} style={{ color: '#8B8589' }} />
+                      </Box>
+                      <Box style={{ width: '100%', height: '20%', display: 'flex', justifyContent: 'center' }}>
+                        <img src={logo} alt="" style={{ width: '200px', objectFit: 'contain' }} />
+                      </Box>
+                      <Box style={{ width: '100%', height: '74%', display: 'flex', justifyContent: 'center' }}>
+                        <Box style={{ width: '80%', height: '100%' }}>
+                          <BasicTabs closeDrawer={handleBack} />
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Drawer>
+          {isMobile ? (<>
+            <IconButton color="inherit" onClick={toggleNewSlider}>
+              <MenuIcon />
+            </IconButton></>
+          ) : (
+            <>
+              <Grid sx={{ display: 'flex', justifyContent: 'space-around', width: '60%' }}>
+                <Badge badgeContent={navData?.wishlist?.length} onClick={() => navigate('/WishlistProduct')} color="success">
+                  <FavoriteBorderIcon color='grey' />
+                </Badge>
+                <Badge badgeContent={navData?.cart?.length} color="success">
+                  <ShoppingCartIcon onClick={() => navigate('/viewcart')} />
+                </Badge>
+              </Grid>
+              <Grid>
+                <Box>
+                  <Box style={{ position: 'relative' }}>
+                    {navData?.isuser ? (<>
+                      <PersonIcon onClick={handleLogout} /></>
+                    ) : (
+                      <a onClick={toggleDrawer('right', true)}>Log/Signup</a>
+                    )}
+                    <Box style={{ width: '100%', position: 'absolute', top: '150%', right: '550%' }}>
+                      {isLogoutOpen && (
+                        <Box ref={logoutRef}>
+                          <Logout onLogout={handleLogoutClose} />
+                        </Box>
+                      )}
+                    </Box>
+                  </Box>
+                  </Box>
+              </Grid>
+             
+            </>
+          )}
         </Grid>
       </Grid>
-      </Drawer>
-      </>
-        </Grid>
+      {isMobile && (
+  <Drawer
+    anchor="right"
+    open={isNewSliderOpen}
+    onClose={toggleNewSlider}
+    style={{ width: '100%', height: 'auto' }}
+  >
+    <Box style={{ width: '100%', height: '100%' }}>
+      {SmLoginForm ? (
+          <Box style={{ width: '100%', height: '100%' }}>
+          <Box style={{ width: '100%', paddingLeft: '20px', height: '6%', display: 'flex', alignItems: 'end' }}>
+            <KeyboardBackspaceIcon onClick={handleSmFormBack} style={{ color: '#8B8589' }} />
+          </Box>
+          <Box style={{ width: '100%', height: '20%', display: 'flex', justifyContent: 'center' }}>
+            <img src={logo} alt="" style={{ width: '200px', objectFit: 'contain' }} />
+          </Box>
+          <Box style={{ width: '100%', height: '74%', display: 'flex', justifyContent: 'center' }}>
+            <Box style={{ width: '80%', height: '100%'}}>
+              <BasicTabs closeDrawer={handleBack} />
+            </Box>
+          </Box>
+        </Box>
       ) : (
-       <Grid item sm={3}  className="carts" sx={{ display: 'flex', alignItems: 'center', justifyContent: "end", height: { xs: '6vh', sm: '17vh' } }}>
-        <Grid sx={{ display: 'flex', justifyContent: 'space-around', width: '60%' }}>
-
-          <Badge badgeContent={navData?.wishlist?.length} onClick={()=>navigate('/WishlistProduct')} color="success">
+        <>
+          <Badge badgeContent={navData?.wishlist?.length} onClick={() => navigate('/WishlistProduct')} color="success">
             <FavoriteBorderIcon color='grey' />
           </Badge>
-             <Badge badgeContent={navData?.cart?.length} color="success">
-            <ShoppingCartIcon onClick={() => navigate('/viewcart')} />
-          </Badge>
-        </Grid>
-        <Grid >
-        <Box>
-          <Box style={{ position: 'relative' }}>
-            {navData?.isuser ? (<>Hello {user.name}
-              <PersonIcon onClick={handleLogout} /></>
-            ) : (
-              // Render nothing here for mobile, as MenuIcon is already shown
-              !isMobile && <a onClick={toggleDrawer('right', true)}>Log/Signup</a>
-            )}
-            <Box style={{ width: '100%', position: 'absolute', top: '150%', right: '550%' }}>
-              {isLogoutOpen && (
-                <Box ref={logoutRef}>
-                  <Logout onLogout={handleLogoutClose} />
-                </Box>
-              )}
-            </Box>
-          </Box>
-          <Drawer
-            anchor="right"
-            open={state.right}
-            onClose={toggleDrawer('right', false)}
-            style={{ width: '100%', height: 'auto' }}
-          >
-            {list('right')}
-
-            <Box style={{ width: '100%', height: '100%' }}>
-              <Box style={{ width: '100%', paddingLeft: '20px', height: '6%', display: 'flex', alignItems: 'end' }}>
-                <KeyboardBackspaceIcon onClick={HandleBack} style={{ color: '#8B8589' }} />
-              </Box>
-              <Box style={{ width: '100%', height: '20%', display: 'flex', justifyContent: 'center' }}>
-                <img src={logo} alt="" style={{ width: '200px', objectFit: 'contain' }} />
-              </Box>
-              <Box style={{ width: '100%', height: '74%', display: 'flex', justifyContent: 'center' }}>
-                <Box style={{ width: '80%', height: '100%' }}>
-                  <BasicTabs closeDrawer={HandleBack} />
-                </Box>
-              </Box>
-            </Box>
-          </Drawer>
-        </Box>
-      </Grid>
-    </Grid>
+          {navData?.isuser ? (
+            <>
+              <Button onClick={handleMobileLogout}>LOGOUT</Button>
+            </>
+          ) : (
+            <Button onClick={handleSmLogin}>Log/Signup</Button>
+          )}
+          <Typography variant="h5">New Slider Content</Typography>
+        </>
       )}
-     
-      </Grid>
+    </Box>
+  </Drawer>
+)}
+
+
     </Box>
   );
 };
