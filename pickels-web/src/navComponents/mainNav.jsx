@@ -1,7 +1,7 @@
 import '../styles/nav.css';
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import { IconButton } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Drawer from '@mui/material/Drawer';
 import Divider from '@mui/material/Divider';
@@ -117,21 +117,18 @@ const NavBar = () => {
       <Drawer anchor="right"    open={isDrawerOpen} onClose={handleDrawerToggle(false)}>
       <Grid item sx={{ display: 'flex',flexDirection:'column' }}>
         <Grid sx={{ display: 'flex', justifyContent: 'space-around', flexDirection:"column", width: '100%' }}>
-          <Badge sx={{ width: 250 ,padding:'10px 0px'}} badgeContent={navData?.wishlist?.length} color="success" >
-            <FavoriteBorderIcon sx={{margin:'0px 10px'}} color='grey' /> whislist(0)
-          </Badge>
-          <Badge  sx={{ width: 250 ,padding:'10px 0px'}} color="success">
-            <NotificationsNoneIcon sx={{margin:'0px 10px'}} color='grey' /> Trending
-          </Badge>
-          <Badge sx={{ width: 250 ,padding:'10px 0px'}} onClick={() => navigate('/viewcart')} badgeContent={navData?.cart?.length} color="success">
-            <ShoppingCartIcon sx={{margin:'0px 10px'}}  />AddToCart
-          </Badge>
+          <Grid sx={{ width: 250 ,padding:'10px 0px'}} >
+            <FavoriteBorderIcon sx={{margin:'0px 10px' ,color:'red',fontFamily:'Tahoma'}} color='grey' /> whislist ( {navData?.wishlist?.length} )
+          </Grid>
+          <Grid sx={{ width: 250 ,padding:'10px 0px',display:'flex'}} onClick={() => navigate('/viewcart')} >
+            <ShoppingCartIcon sx={{margin:'0px 10px',color:"grey"}}  /> <Typography sx={{fontFamily:'Tahoma'}}>AddToCart ( {navData?.cart?.length} )</Typography>
+          </Grid>
         </Grid>
         <Grid >
         <Box sx={{ width: 250 ,padding:'10px 0px'}}>
-          <Box sx={{margin:'0px 10px',color:"red"}} >
+          <Box sx={{margin:'0px 10px'}} >
             {navData?.isuser ? (
-              <PersonIcon onClick={handleLogout} />
+              <PersonIcon onClick={handleLogout} sx={{color:"grey"}} />
             ) : (
             
               !isMobile && <a onClick={toggleDrawer('right', true)} style={{color:"red"}}>Log/Signup</a>
@@ -181,7 +178,6 @@ const NavBar = () => {
           </Badge>
              <Badge badgeContent={navData?.cart?.length} color="success">
             <ShoppingCartIcon onClick={() => navigate('/viewcart')} />
-
           </Badge>
         </Grid>
         <Grid >
