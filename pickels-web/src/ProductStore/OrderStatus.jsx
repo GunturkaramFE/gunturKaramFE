@@ -17,7 +17,6 @@ const[data,setData]=useState()
 const[orderdetails,setOrderDetails]=useState()
 const[loading,setLoading]=useState(false)
 const [isEditable, setEditable] = useState(false);
-const [address, setAddress] = useState({});
 const[activeStep,setActiveStep]=useState(0)
 const [steps,setSteps]=useState([
   { label: 'Order Placed', date: '' },
@@ -27,6 +26,18 @@ const [steps,setSteps]=useState([
   { label: 'Delivered', date: '' },
   
 ])
+const [address, setAddress] = useState({
+  name:'',
+  houseNumber: '',
+  street: '',
+  village: '',
+  landmark: '',
+  city: '',
+  state: '',
+  pincode: '',
+  country: '',
+  Mobile:""
+});
 
 const FetchData=async()=>{  
   try {
@@ -43,9 +54,7 @@ const FetchData=async()=>{
     
   }finally{
     setLoading(false)
-  }
-
-
+    }
 }
 useEffect(()=>{
 FetchData()
@@ -103,7 +112,8 @@ useEffect(() => {
       {loading?  <div style={{ width: '100%', height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <CircularProgress/>
         </div>:<Grid sx={{width:"100%",display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'space-evenly',gap:'20px',marginTop:"20px"}}>
-       <Card sx={{ width: '80%', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)', padding: '20px' }}>
+       <Grid sx={{width:"80%",display:'flex',justifyContent:"space-between",flexDirection:{xs:'column',sm:'row',md:'row'}}}>
+       <Card sx={{ width: {xs:'100%',sm:"60%",md:"60%"}, boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)', padding: '20px' }}>
             <Grid>
                 <Typography sx={{ fontWeight: 'bold',marginBottom:'10px' }}>Delivery Address</Typography>
                 {isEditable? (
@@ -113,23 +123,78 @@ useEffect(() => {
                             label="Name"
                             value={address.name}
                             onChange={handleInputChange}
+                            size="small"
                             fullWidth
                             sx={{ fontSize: '14px', fontWeight: 'bold', mb: 2 }}
                         />
-                        <TextField
-                            name="address"
-                            label="Address"
-                            value={address.address}
-                            onChange={handleInputChange}
-                            multiline
-                            fullWidth
-                            sx={{ width: '100%', fontSize: { xs: '12px', sm: '15px' }, mb: 2 }}
-                        />
-                        <Grid sx={{ display: 'flex', gap: '10px', alignItems: 'center',justifyContent:'space-between',width:'100%' }}>
+          <Grid sx={{display:'flex',justifyContent:'space-between',flexDirection:{xs:"column",sm:"row",md:'row'}}}>
+          <TextField
+          name="houseNumber"
+          label="H.no"
+          value={address.houseNumber}
+          size="small"
+          onChange={handleInputChange}
+          fullWidth
+          sx={{ width: {xs:"100%",sm:"20%",md:'20%'}, fontSize: { xs: '12px', sm: '15px' }, mb: 2 }}
+        />
+        <TextField
+          name="street"
+          label="Street"
+          value={address.street}
+          size="small"
+
+          onChange={handleInputChange}
+          fullWidth
+          sx={{  width: {xs:"100%",sm:"38%",md:'38%'}, fontSize: { xs: '12px', sm: '15px' }, mb: 2 }}
+        />
+         <TextField
+          name="village"
+          label="Village"
+          value={address.village}
+          onChange={handleInputChange}
+          size="small"
+          fullWidth
+          sx={{  width: {xs:"100%",sm:"38%",md:'38%'}, fontSize: { xs: '12px', sm: '15px' }, mb: 2 }}
+        />
+          </Grid >
+                     
+          <Grid sx={{display:'flex',justifyContent:'space-between',flexDirection:{xs:"column",sm:"row",md:'row'}}}>
+         <TextField
+          name="landmark"
+          label="Landmark"
+          value={address.landmark}
+          onChange={handleInputChange}
+          size="small"
+
+          fullWidth
+          sx={{ width: {xs:"100%",sm:"20%",md:'20%'}, fontSize: { xs: '12px', sm: '15px' }, mb: 2 }}
+        />
+          <TextField
+          name="city"
+          label="City"
+          value={address.city}
+          onChange={handleInputChange}
+          size="small"
+          fullWidth
+          sx={{  width: {xs:"100%",sm:"38%",md:'38%'}, fontSize: { xs: '12px', sm: '15px' }, mb: 2 }}
+        />
+        
+         <TextField
+          name="country"
+          label="Country"
+          value={address.country}
+          onChange={handleInputChange}
+          size="small"
+          fullWidth
+          sx={{  width: {xs:"100%",sm:"38%",md:'38%'}, fontSize: { xs: '12px', sm: '15px' }, mb: 2 }}
+        />
+        </Grid>
+         <Grid sx={{ display: 'flex', gap: '10px', alignItems: 'center',justifyContent:'space-between',width:'100%' }}>
                             <TextField
-                                name="phoneNumber"
-                                label="Phone Number"
-                                value={address.phoneNumber}
+                                name="Mobile"
+                                label="Mobile"
+                                value={address.Mobile}
+                                size="small"
                                 onChange={handleInputChange}
                                 sx={{ fontWeight: 'bold', fontSize: '14px', mb: 2 }}
                             />
@@ -137,18 +202,18 @@ useEffect(() => {
                                 <SaveIcon style={{color:'green'}} />
                             </IconButton>
                         </Grid>
-                    </Grid>
+          </Grid>
                 ) : (
                     <Grid>
                         <Typography sx={{ fontSize: '14px', fontWeight: 'bold', mb: 2 }}>{address.name}</Typography>
                         <Typography sx={{ width:{xs:"100%",sm:'50%'}, fontSize: { xs: '12px', sm: '15px', flexWrap: 'wrap' }, mb: 2 }}>
-    {`Address: ${address.housenumber}, ${address.street}, ${address.city}, ${address.state}, ${address.country}, pincode: ${address.pincode}`}
-</Typography>
+                {`Address: ${address.houseNumber}, ${address.street}, ${address.city}, ${address.state}, ${address.country}, pincode: ${address.pincode},Mobile:${address.Mobile}`}
+                       </Typography>
 
                         <Grid sx={{ display: 'flex', gap: '10px', alignItems: 'center',justifyContent:'space-between'  }}>
                             <Grid sx={{display:'flex'}}>
-                            <Typography sx={{ fontWeight: 'bold', fontSize: '14px', mb: 2 }}>Phone Number :</Typography>
-                            <Typography sx={{ fontSize: '15px', mb: 2 }}> {address.mobile}</Typography>
+                            <Typography sx={{ fontWeight: 'bold', fontSize: '14px', mb: 2 }}>Mobile :</Typography>
+                            <Typography sx={{ fontSize: '15px', mb: 2,fontFamily:"Tahoma" }}> {address.Mobile}</Typography>
                             </Grid>
                             <IconButton onClick={handleEditClick}>
                                 <EditIcon style={{color:'green'}}  />
@@ -158,6 +223,13 @@ useEffect(() => {
                 )}
             </Grid>
         </Card>
+        <Card sx={{width:{xs:"100%",sm:"38%",md:'38%'},boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',padding:'20px',height:{xs:"auto",sm:"160px",md:'160px'}}}>
+          <Typography variant='h6'>Billing address</Typography>
+          <Grid sx={{width:'90%',fontFamily:'Tahoma',display:'flex',justifyContent:'center',alignItems:'center',margin:"10px"}}>
+          Rakesh Kirlampalli,Address: undefined, Ramalayam, visakhapatnam, Andhra Pradesh, India, pincode: 531011,Mobile:09849765863
+          </Grid>
+        </Card>
+        </Grid>
         <Grid sx={{width:'80%'}}>
         <Card
         key={defaultData.id} 

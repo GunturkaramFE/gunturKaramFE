@@ -6,6 +6,7 @@ import ProductCard from './productCard';
 import PopupForm from '../Pop-up/PopupForm';
 import AddToCart from '../ProductStore/AddToCart';
 import AddToCartPopUp from './addToCartPopUp';
+import { Box } from '@mui/material';
 
 // ... (imports)
 
@@ -64,7 +65,7 @@ const CarouselSmall = ({ data, Component }) => {
 
   return (
     <>
-    <div {...handlers} style={{ position: 'relative', width: '100%', height: '50vh', overflow: 'hidden', marginBottom: '20px' }}>
+    <Box {...handlers} sx={{ position: 'relative', width: '100%', height: '50vh', overflow: 'hidden', marginBottom: '20px' }}>
       <ArrowBackIosNewIcon
         style={{
           position: 'absolute',
@@ -77,13 +78,14 @@ const CarouselSmall = ({ data, Component }) => {
         onClick={() => position >= 0 ? null : handleSwipe('left')}
       />
 
-      <div style={{ display: 'flex', transition: 'transform 0.5s ease', transform: `translateX(${position}px)`, justifyContent: 'space-between' }}>
-        {data?.map((card, index) => (
-          <div key={index} style={{ width: cardWidth }}>
-            <Component productdetails={card} PopUpHandler={HandlePopup}/>
-          </div>
-        ))}
-      </div>
+<Box sx={{ display: 'flex', transition: 'transform 0.5s ease', transform: `translateX(${position}px)`, justifyContent: "space-between", alignItems: "center", height: '100%' }}>
+  {data?.map((card, index) => (
+    <Box key={index} sx={{ width: cardWidth, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <Component productdetails={card} PopUpHandler={HandlePopup} />
+    </Box>
+  ))}
+</Box>
+
 
       <ArrowForwardIosIcon
         style={{
@@ -95,7 +97,7 @@ const CarouselSmall = ({ data, Component }) => {
         }}
         onClick={() => position <= -((totalCards - cardsToShow) * cardWidth) ? null : handleSwipe('right')}
       />
-    </div>
+    </Box>
     {pop&& (
       <AddToCartPopUp ispop={pop} formData={<AddToCart data={popUpData} fun={HandlePopup}/>} fun={HandlePopup}  />
     )}
