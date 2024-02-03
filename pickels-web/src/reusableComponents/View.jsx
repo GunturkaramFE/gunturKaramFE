@@ -15,6 +15,7 @@ import { green } from '@mui/material/colors';
 import { useSelector, useDispatch } from 'react-redux';
 import { setShoppingData } from '../store/shoppingSlicer';
 import {updateUserWishList} from '../helpers/AddToWishlist'
+import Footer from '../components/footer';
 const View = () => {
   const [count, setCount] = useState(1);
   const [price, setPrice] = useState(0);
@@ -189,7 +190,7 @@ const HandleRemoveFromWhishList = async ()=>{
               <img src={product.url} alt='$/' sx={{ width: '100%', height: '100vh', maxWidth: '100%' }} />
             </Grid>
             <Grid item xs={12} sm={6} style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              <Typography variant="h4">{product.title}</Typography>
+              <Typography sx={{fontFamily:'Verdana'}} variant="h4">{product.title}</Typography>
               <Typography variant="h5">
                 <del style={{ color: 'red', marginRight: '5px', fontSize: "19px" }}>&#x20B9;{(price * 1.3).toFixed(2)}</del>&#x20B9;{price.toFixed(2)}
 
@@ -297,6 +298,7 @@ const HandleRemoveFromWhishList = async ()=>{
           </Grid>
         </Container>
       )}
+      <Footer/>
     </>
   );
 };
