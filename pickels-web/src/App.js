@@ -17,16 +17,11 @@ import OfflineMessage from './helpers/nointernet';
 import Wishlist from './ProductStore/WishList';
 import EmptyData from './reusableComponents/EmptyData';
 import OrderConfirm from './ProductStore/OrderConfirm';
-
 import PlaceOrder from './Payments/PlaceOrder';
-
-import OrderShipping from './ProductStore/OrderShipping';
 import OrderStatus from './ProductStore/OrderStatus';
 import Vouchers from './dev/Vouchers';
-
 import ManageOrders from './dev/manageOrders';
-import PickleComponent from './components/PickleComponent';
-import ViewItemData from './dev/ViewItemData';
+import MyOrders from './ProductStore/OrderShipping';
 
 
 const ProductLayout = ({ children }) => {
@@ -69,14 +64,13 @@ function App() {
             <Route path='/ViewProduct/:id' element={<View />} />
             <Route path='/WishlistProduct' element={<Wishlist/>} />
             <Route path='/empty' element={<EmptyData/>} />
-            <Route path='/MyOrders' element={<OrderShipping/>} />
+
+            <Route path='/MyOrders' element={<MyOrders/>} />
+            <Route path='MyOrders/Orderdetails/:id' element={<OrderStatus/>} />
             <Route path='/OrderConfirm' element={<OrderConfirm/>} />
-            <Route path='MyOrders/OrderStatus' element={<OrderStatus/>} />         
-
-
+            <Route path='/Orderdetails/:id' element={<OrderStatus/>} />         
             <Route path='/OrderStatus/:Id' element={<OrderConfirm/>} />
             <Route path='/Confirm-order' element={<PlaceOrder/>} />
-            <Route path="/ItemData" element={<ViewItemData/>} />
             {/* Admin Routes */}
             <Route
               path="/admin-menu/*"
@@ -86,9 +80,13 @@ function App() {
                     <Route path="/add-product" element={<HandleAllProducts />} />
                     <Route path="/products-menu" element={<ProductMenu />} />
                     <Route path="/TrenditemRemove" element={<Trendremove />} />
-                    <Route path="/manage-products" element={<ManageProducts />} />                     
-                    <Route path="/vouchers" element={<Vouchers/>} />                
+                    <Route path="/manage-products" element={<ManageProducts />} />
+
+                    <Route path="/vouchers" element={<Vouchers/>} />
+                 
+
                     <Route path='/manage-orders' element={<ManageOrders/>}/>
+
                   </Routes>
                 </ProductLayout>
               }
