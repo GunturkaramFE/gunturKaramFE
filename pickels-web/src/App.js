@@ -22,6 +22,7 @@ import OrderStatus from './ProductStore/OrderStatus';
 import Vouchers from './dev/Vouchers';
 import ManageOrders from './dev/manageOrders';
 import MyOrders from './ProductStore/OrderShipping';
+import AlluserDetails from './dev/AlluserDetails';
 
 
 const ProductLayout = ({ children }) => {
@@ -81,9 +82,8 @@ function App() {
                     <Route path="/products-menu" element={<ProductMenu />} />
                     <Route path="/TrenditemRemove" element={<Trendremove />} />
                     <Route path="/manage-products" element={<ManageProducts />} />
-
-                    <Route path="/vouchers" element={<Vouchers/>} />
-                 
+                    <Route path="/userdetails" element={<AlluserDetails/>} />
+                    <Route path="/vouchers" element={<Vouchers/>} />               
 
                     <Route path='/manage-orders' element={<ManageOrders/>}/>
 
