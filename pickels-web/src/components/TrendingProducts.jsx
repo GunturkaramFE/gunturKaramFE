@@ -30,10 +30,10 @@ const TopProducts = () => {
 
   return (
     <>
-      {trendingProducts?.length>0?(<div className="top-products">
+      <div className="top-products">
         <p className="lead">Top Trending Pickels For You ..!</p>
         <CarouselSmall data={RenderProducts} Component={ProductCard} />
-      </div>):(<>sxsx</>)}
+      </div>
     </>
   );
 };

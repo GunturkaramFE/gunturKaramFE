@@ -12,7 +12,7 @@ const navigate= useNavigate()
         <div className='card-container-inner'>
           <img src='https://dwarakapickles.com/wp-content/uploads/elementor/thumbs/received-1-1-1-pob1zojtbzy4pg7g92asxu396igsvokm49dvq291eg.png' alt='/' />
         </div>
-        <div className="card-text">
+        <div className="card-text"  onClick={()=>navigate('/MyOrders')}>
           MyOrders
         </div>
       </div>

@@ -24,8 +24,8 @@ const Logout = ({onLogout}) => {
     <div onClick={()=>navigate('/view-profile')} style={{ width: '100%', height: '33.3%', display: 'flex', justifyContent: 'center', alignItems: 'center',  borderTopLeftRadius: '8px', borderTopRightRadius: '8px' }}>
       MyProfile
     </div>
-    <div style={{ width: '100%', height: '33.3%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-      MyProduct
+    <div onClick={()=>navigate('/MyOrders')} style={{ width: '100%', height: '33.3%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+      MyOrders
     </div>
     <div onClick={handleLogout} style={{ width: '100%', height: '33.3%', display: 'flex', justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: '8px', borderBottomRightRadius: '8px' }}>
       Logout

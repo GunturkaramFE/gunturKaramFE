@@ -10,11 +10,12 @@ import SaveIcon from '@mui/icons-material/Save';
 import { useParams } from 'react-router-dom';
 import api from '../api';
 import { setOrderDetails } from '../store/orderDetailsSlicer';
-
+import CloseIcon from '@mui/icons-material/Close';
 const OrderStatus = () => {
 const {id} = useParams();
 const[data,setData]=useState()
 const[orderdetails,setOrderDetails]=useState()
+const[disable,setDisable]=useState(false)
 const[loading,setLoading]=useState(false)
 const [isEditable, setEditable] = useState(false);
 const[activeStep,setActiveStep]=useState(0)
@@ -26,9 +27,9 @@ const [steps,setSteps]=useState([
   { label: 'Delivered', date: '' },
   
 ])
-const [address, setAddress] = useState({
+const [Billingaddress, setBillingAddress] = useState({
   name:'',
-  houseNumber: '',
+  housenumber: '',
   street: '',
   village: '',
   landmark: '',
@@ -36,7 +37,31 @@ const [address, setAddress] = useState({
   state: '',
   pincode: '',
   country: '',
-  Mobile:""
+  mobile :""
+});
+const [address, setAddress] = useState({
+  name:'',
+  housenumber: '',
+  street: '',
+  village: '',
+  landmark: '',
+  city: '',
+  state: '',
+  pincode: '',
+  country: '',
+  mobile:""
+});
+const [error, setError] = useState({
+  name:false,
+  housenumber:false,
+  street:false,
+  village:false,
+  landmark: false,
+  city: false,
+  state: false,
+  pincode:false,
+  country:false,
+  mobile:false
 });
 
 const FetchData=async()=>{  
@@ -47,9 +72,10 @@ const FetchData=async()=>{
       setData(response.orders[0])
       setAddress(JSON.parse(response.orders[0].ShippingAddress))
       setOrderDetails(JSON.parse(response.orders[0].orderDetails))
+      setBillingAddress(JSON.parse(response.orders[0].BillingAddress))
     }
-  console.log(JSON.parse(response.orders[0].orderDetails))
-
+  console.log(response)
+  console.log(JSON.parse(response.orders[0].ShippingAddress))
   } catch (error) {
     
   }finally{
@@ -72,39 +98,48 @@ useEffect(() => {
     setSteps(updatedSteps);
     setActiveStep(orderdetails.length - 1);
   }
-}, [orderdetails]);
-
-
-
-
-  
+}, [orderdetails]);  
     const handleEditClick = () => {
       setEditable(!isEditable);
     };
-    const handleSaveClick = () => {
-        // Save the data or perform any other necessary actions
-        setEditable(false);
+    const handleSaveClick = async () => {
+      try {
+        const response = await api.post('/user/order/update', {
+          orderId: data.OrderID, 
+          updatedData: {
+            ShippingAddress: JSON.stringify(address)
+          }
+        });   
+    
+      } catch (error) {
+        console.error("Error updating order:", error);
+      }finally{
+        window.location.reload();
+      }
     };
+    
+    
 
     const handleInputChange = (e) => {
       setAddress({
         ...address,
         [e.target.name]: e.target.value,
       });
+      let validate=['name', 'housenumber', 'street', 'village', 'landmark', 'city', 'state','mobile','country']
+      for (const key in address) {
+        if (validate.includes(key)) {
+          if(address[key].length<3){        
+            error[key]=true            
+           }else{
+            error[key]=false
+           }
+         
+        }
+      }
+      const hasAnyError = Object.values(error).some(value => value === true);
+         setDisable(!hasAnyError)
+
     };
-  
-    const defaultData = {
-        id: 1,
-        title: 'Product Title',
-        url: 'https://png.pngtree.com/png-vector/20230808/ourmid/pngtree-pickle-jar-png-image_6976662.png',
-        startingPrice: '$19.99',
-        stock: 50,
-        pricelist: '[{"price": "19.99", "quantity": "10"}, {"price": "15.99", "quantity": "20"}]',
-        rating: 4,
-      };
-    
-   
-      
       
   return (
     <>
@@ -124,25 +159,29 @@ useEffect(() => {
                             value={address.name}
                             onChange={handleInputChange}
                             size="small"
+                            error={error.name}
                             fullWidth
+                            inputProps={{ minLength: 3 }}
                             sx={{ fontSize: '14px', fontWeight: 'bold', mb: 2 }}
                         />
           <Grid sx={{display:'flex',justifyContent:'space-between',flexDirection:{xs:"column",sm:"row",md:'row'}}}>
           <TextField
-          name="houseNumber"
-          label="H.no"
-          value={address.houseNumber}
-          size="small"
-          onChange={handleInputChange}
-          fullWidth
-          sx={{ width: {xs:"100%",sm:"20%",md:'20%'}, fontSize: { xs: '12px', sm: '15px' }, mb: 2 }}
-        />
+    name="housenumber" // Corrected field name
+    label="H.no"
+    value={address.housenumber}
+    error={error.housenumber}
+    size="small"
+    onChange={handleInputChange}
+    fullWidth
+    sx={{ width: {xs:"100%",sm:"20%",md:'20%'}, fontSize: { xs: '12px', sm: '15px' }, mb: 2 }}
+/>
+
         <TextField
           name="street"
           label="Street"
           value={address.street}
           size="small"
-
+          error={error.street}
           onChange={handleInputChange}
           fullWidth
           sx={{  width: {xs:"100%",sm:"38%",md:'38%'}, fontSize: { xs: '12px', sm: '15px' }, mb: 2 }}
@@ -151,6 +190,7 @@ useEffect(() => {
           name="village"
           label="Village"
           value={address.village}
+          error={error.village}
           onChange={handleInputChange}
           size="small"
           fullWidth
@@ -162,6 +202,7 @@ useEffect(() => {
          <TextField
           name="landmark"
           label="Landmark"
+          error={error.landmark}
           value={address.landmark}
           onChange={handleInputChange}
           size="small"
@@ -173,6 +214,7 @@ useEffect(() => {
           name="city"
           label="City"
           value={address.city}
+          error={error.city}
           onChange={handleInputChange}
           size="small"
           fullWidth
@@ -183,6 +225,7 @@ useEffect(() => {
           name="country"
           label="Country"
           value={address.country}
+          error={error.country}
           onChange={handleInputChange}
           size="small"
           fullWidth
@@ -190,34 +233,43 @@ useEffect(() => {
         />
         </Grid>
          <Grid sx={{ display: 'flex', gap: '10px', alignItems: 'center',justifyContent:'space-between',width:'100%' }}>
-                            <TextField
-                                name="Mobile"
-                                label="Mobile"
-                                value={address.Mobile}
-                                size="small"
-                                onChange={handleInputChange}
-                                sx={{ fontWeight: 'bold', fontSize: '14px', mb: 2 }}
-                            />
-                            <IconButton onClick={handleSaveClick} sx={{ ml: 1 }}>
-                                <SaveIcon style={{color:'green'}} />
-                            </IconButton>
+                         <TextField
+    name="mobile" 
+    label="Mobile"
+    value={address.mobile}
+    error={error.mobile}
+    type="number"
+    size="small"
+    onChange={handleInputChange}
+    sx={{ fontWeight: 'bold', fontSize: '14px', mb: 2 }}
+/>
+<IconButton onClick={()=>{
+  setEditable(false)
+}} sx={{ ml: 1 }}>
+<CloseIcon style={{color:"red"}}/>
+</IconButton>
+
+<IconButton onClick={handleSaveClick} sx={{ ml: 1 }} disabled={!disable}>
+<SaveIcon style={disable?{color:'green'}:{color:'grey'}} />
+</IconButton>
+
                         </Grid>
           </Grid>
                 ) : (
                     <Grid>
                         <Typography sx={{ fontSize: '14px', fontWeight: 'bold', mb: 2 }}>{address.name}</Typography>
                         <Typography sx={{ width:{xs:"100%",sm:'50%'}, fontSize: { xs: '12px', sm: '15px', flexWrap: 'wrap' }, mb: 2 }}>
-                {`Address: ${address.houseNumber}, ${address.street}, ${address.city}, ${address.state}, ${address.country}, pincode: ${address.pincode},Mobile:${address.Mobile}`}
+                {`Address: ${address.housenumber}, ${address.village}, ${address.street}, ${address.city}, ${address.state}, ${address.country}, pincode: ${address.pincode}`}
                        </Typography>
 
                         <Grid sx={{ display: 'flex', gap: '10px', alignItems: 'center',justifyContent:'space-between'  }}>
                             <Grid sx={{display:'flex'}}>
                             <Typography sx={{ fontWeight: 'bold', fontSize: '14px', mb: 2 }}>Mobile :</Typography>
-                            <Typography sx={{ fontSize: '15px', mb: 2,fontFamily:"Tahoma" }}> {address.Mobile}</Typography>
+                            <Typography sx={{ fontSize: '15px', mb: 2,fontFamily:"Tahoma" }}> {address.mobile}</Typography>
                             </Grid>
-                            <IconButton onClick={handleEditClick}>
+                           {!steps[1].date&& <IconButton onClick={handleEditClick}>
                                 <EditIcon style={{color:'green'}}  />
-                            </IconButton>
+                            </IconButton>}
                         </Grid>
                     </Grid>
                 )}
@@ -226,13 +278,16 @@ useEffect(() => {
         <Card sx={{width:{xs:"100%",sm:"38%",md:'38%'},boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',padding:'20px',height:{xs:"auto",sm:"160px",md:'160px'}}}>
           <Typography variant='h6'>Billing address</Typography>
           <Grid sx={{width:'90%',fontFamily:'Tahoma',display:'flex',justifyContent:'center',alignItems:'center',margin:"10px"}}>
-          Rakesh Kirlampalli,Address: undefined, Ramalayam, visakhapatnam, Andhra Pradesh, India, pincode: 531011,Mobile:09849765863
+          <Typography variant="body1">
+        {Billingaddress.name}, Address: {Billingaddress.housenumber ? Billingaddress.housenumber + ',' : ''} {Billingaddress.street ? Billingaddress.street + ',' : ''} {Billingaddress.village ? Billingaddress.village + ',' : ''} {Billingaddress.landmark ? Billingaddress.landmark + ',' : ''} {Billingaddress.city ? Billingaddress.city + ',' : ''} {Billingaddress.state ? Billingaddress.state + ',' : ''} {Billingaddress.country ? Billingaddress.country + ',' : ''} pincode: {Billingaddress.pincode ? Billingaddress.pincode + ',' : ''} Mobile: {Billingaddress.mobile
+}
+      </Typography>
           </Grid>
         </Card>
         </Grid>
         <Grid sx={{width:'80%'}}>
         <Card
-        key={defaultData.id} 
+       
         sx={{ width: '100%', height: {xs:'auto',sm:'30vh'},  boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',display:'flex',justifyContent:'center' }}
       >
         <Grid container sm={12}>

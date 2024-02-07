@@ -7,7 +7,7 @@ import PopupForm from '../Pop-up/PopupForm';
 import AddToCart from '../ProductStore/AddToCart';
 import AddToCartPopUp from './addToCartPopUp';
 import { Box } from '@mui/material';
-
+import LinearProgress from '@mui/material/LinearProgress';
 // ... (imports)
 
 const CarouselSmall = ({ data, Component }) => {
@@ -60,7 +60,9 @@ const CarouselSmall = ({ data, Component }) => {
     }
   if (!data) {
     
-    return <div>Loading...</div>;
+    return <div> <Box sx={{ width: '100%' }}>
+    <LinearProgress />
+  </Box></div>;
   }
 
   return (
