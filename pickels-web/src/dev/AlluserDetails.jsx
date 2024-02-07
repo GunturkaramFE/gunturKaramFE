@@ -58,7 +58,7 @@ const AlluserDetails = ({ user = defaultUser }) => {
     </Card>
   </Grid>
       </Grid>
-      <Grid container spacing={2}  md={12} sx={{display :'flex',justifyContent:'center',paddingTop:"20px "}}>
+      <Grid container spacing={2}  md={12} sx={{display :'flex',justifyContent:'center',paddingTop:"20px ",fontFamily:'Tahoma'}}>
         <Grid  item xs={12} sm={6} md={5.5} lg={5.5}>
           <Card sx={{ height: {xs:"auto",md:"35vh",sm:"35vh",lg:'37vh'}, boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
             <CardContent>
@@ -88,8 +88,8 @@ const AlluserDetails = ({ user = defaultUser }) => {
               <Typography variant="h5" component="h2" align="center" justifyContent='center'>
                 Order Details <DetailsIcon style={{fontSize:'30px'}}/>
               </Typography>
-              <Grid sx={{height:'100%',height:'28vh',overflowY:'auto'}}>
-                <Card sx={{padding:'20px',margin:'10px 0px'}}>
+              <Grid sx={{height:'100%',height:'28vh',overflowY:'auto'}} >
+                <Card sx={{padding:'20px',margin:'10px 0px',fontFamily:'Tahoma'}} >
                 <Typography sx={{fontSize:'18px'}}  >OrderID:nbo15jk2b1</Typography>
                     <Typography>Status : Placed</Typography>
                     <Typography>Date: 27/19/2023 </Typography>
@@ -119,20 +119,21 @@ const AlluserDetails = ({ user = defaultUser }) => {
                Delivery Address <LocalShippingIcon style={{fontSize:'30px'}}/>
               </Typography>
               <Grid sx={{height:'100%',height:'28vh',overflowY:'auto'}}>
-                <Card sx={{padding:'20px',margin:'10px 0px'}}>
-                    <Typography variant='h6'>Rakesh Kirlampalli</Typography>
-                    <Typography>Mobile: 9849765863 </Typography>
-                    <Typography>85-155, Ramalayam, visakhapatnam, Andhra Pradesh, India ,pincode: 531011</Typography>
+                <Card sx={{padding:'20px',margin:'10px 0px',fontFamily:'Tahoma'}}>
+                    <Typography variant='h6' >Rakesh Kirlampalli</Typography>
+                    <Typography >Mobile: 9849765863 </Typography>
+                    <Typography >85-155, Ramalayam, visakhapatnam, Andhra Pradesh, India ,pincode: 531011</Typography>
+            
+                </Card>
+                <Card sx={{padding:'20px',margin:'10px 0px',fontFamily:'Tahoma'}}>
+                    <Typography  variant='h6'>Rakesh Kirlampalli</Typography>
+                    <Typography >Mobile: 9849765863 </Typography>
+                    <Typography >85-155, Ramalayam, visakhapatnam, Andhra Pradesh, India ,pincode: 531011</Typography>
                 </Card>
                 <Card sx={{padding:'20px',margin:'10px 0px'}}>
-                    <Typography variant='h6'>Rakesh Kirlampalli</Typography>
-                    <Typography>Mobile: 9849765863 </Typography>
-                    <Typography>85-155, Ramalayam, visakhapatnam, Andhra Pradesh, India ,pincode: 531011</Typography>
-                </Card>
-                <Card sx={{padding:'20px',margin:'10px 0px'}}>
-                    <Typography variant='h6'>Rakesh Kirlampalli</Typography>
-                    <Typography>Mobile: 9849765863 </Typography>
-                    <Typography>85-155, Ramalayam, visakhapatnam, Andhra Pradesh, India ,pincode: 531011</Typography>
+                    <Typography  variant='h6'>Rakesh Kirlampalli</Typography>
+                    <Typography >Mobile: 9849765863 </Typography>
+                    <Typography >85-155, Ramalayam, visakhapatnam, Andhra Pradesh, India ,pincode: 531011</Typography>
                 </Card>
           
               </Grid>
