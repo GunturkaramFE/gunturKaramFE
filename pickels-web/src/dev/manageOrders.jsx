@@ -93,6 +93,20 @@ const ManageOrders = () => {
     fetchData();
   }, [trigger]);
 
+  function formatDate(dateString) {
+    try {
+      const dateObject = new Date(dateString);
+      if (isNaN(dateObject)) {
+        // Handle invalid date strings here
+        return "Invalid Date";
+      } else {
+        return dateObject.toLocaleString();
+      }
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "Invalid Date";
+    }
+  }
   const HandleButtonClick = async (event, status, orderId) => {
     event.stopPropagation();
     setUpdating({ ...updating, [orderId]: true }); 
@@ -278,7 +292,7 @@ orderDetails.push({ date: new Date().toISOString(), status:itemStatus });
                               }}
                             >
                               <Typography sx={{ fontFamily: 'Gill Sans' }}>Order ID: {order.OrderID}</Typography>
-                              <Typography sx={{ fontFamily: 'Gill Sans' }}>Date: {order.OrderDate}</Typography>
+                              <Typography sx={{ fontFamily: 'Gill Sans' }}>Date: {formatDate(order.OrderDate)}</Typography>
                               <Grid sx={{ display: 'flex', justify: 'center' }}>
                                 <Typography sx={{ fontFamily: 'Verdana' }}>Status: </Typography>
                                 <Typography sx={{ fontFamily: 'Verdana', color: 'green' }}> {order.OrderStatus}</Typography>

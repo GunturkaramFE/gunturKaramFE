@@ -8,7 +8,7 @@ import trendingProductsReducer, { setAllProducts, clearAllProducts } from '../st
 import allProductsReducer, { setAllProducts as setAllProductsAll, clearAllProducts as clearAllProductsAll } from '../store/allProductsSlicer';
 import addressReducer from '../store/shippingAddressSlicer'
 import orderReducer from './orderDetailsSlicer';
-
+import drawerReducer from './lsDrawer'
 const store = configureStore({
   reducer: {
     user: userReducer,
@@ -17,6 +17,7 @@ const store = configureStore({
     trendingProducts: trendingProductsReducer,
     allProducts: allProductsReducer,
     shippingAddress: addressReducer,
+    drawer: drawerReducer,
     order: orderReducer
   },
 });

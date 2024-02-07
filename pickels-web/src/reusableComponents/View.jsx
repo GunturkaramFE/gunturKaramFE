@@ -16,6 +16,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setShoppingData } from '../store/shoppingSlicer';
 import {updateUserWishList} from '../helpers/AddToWishlist'
 import Footer from '../components/footer';
+import { draweropen } from '../store/lsDrawer';
 const View = () => {
   const [count, setCount] = useState(1);
   const [price, setPrice] = useState(0);
@@ -26,6 +27,7 @@ const View = () => {
   const [cartLoading, setCartLoading] = useState(false)
   const [isadded, setisadded] = useState(false)
   const dispatch = useDispatch()
+  const user = useSelector((state) => state.user);
   const shoppingData = useSelector((state) => state.shopping);
   const checkProductInCart = async () => {
     let parsedData = await parseShoppingData(shoppingData)
@@ -240,7 +242,9 @@ const HandleRemoveFromWhishList = async ()=>{
                     variant="contained"
                     sx={buttonSx}
                     disabled={cartLoading}
-                    onClick={() => { !isadded && HandleAddToCart() }}
+                    onClick={() => { 
+                      user.id?(!isadded && HandleAddToCart()):dispatch(draweropen()) 
+                       }}
                   >
                     {isadded ? 'Added TO Cart' : "Add To Cart"}
                   </Button>
@@ -260,7 +264,10 @@ const HandleRemoveFromWhishList = async ()=>{
                 </Box>
               </Grid>
              {!isWishlist?<div style={{ display: 'flex', width: '100%', gap: '10px' }}>
-                <FavoriteBorderIcon style={{ color: 'red', cursor: 'pointer' }} onClick={HandleAddToWhishList} />
+                <FavoriteBorderIcon style={{ color: 'red', cursor: 'pointer' }} onClick={()=>{
+                        user.id? HandleAddToWhishList():dispatch(draweropen()) 
+                 
+                  }} />
                 <Typography sx={{ fontSize: 15 }}>Add to wishlist</Typography>
               </div>:
               <div style={{ display: 'flex', width: '100%', gap: '10px' }}>

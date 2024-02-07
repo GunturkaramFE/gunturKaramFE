@@ -3,7 +3,6 @@ import { isValidEmail } from '../helpers/validations';
 import api from '../api';
 
 const Signup = () => {
-  const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
 
@@ -15,7 +14,7 @@ const Signup = () => {
     let payload={
    document:{
     email,
-    name:userName,
+    name:'user',
    }
     }
     api.post('/user/register', payload)
@@ -46,20 +45,7 @@ const Signup = () => {
     <div style={{ width: '100%', height: '100%' }}>
       <div className="card-body p-md-1 mx-md-3">
         <form>
-          <div className="form-outline mb-4">
-            <label className="form-label" htmlFor="form2Example22">
-              UserName
-            </label>
-            <input
-              type="text"
-              id="form2Example22"
-              className="form-control"
-              placeholder="User Name"
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
-            />
-          </div>
-          <div className="form-outline mb-4">
+           <div className="form-outline mb-4">
             <label className="form-label" htmlFor="form2Example11">
               Enter Email
             </label>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import LandingPage from './components/landingPage';
 import VerifyDiv from './Authorization/Verifydiv';
 import ProductsContainer from './ProductStore/ProductsContainer';
@@ -23,6 +23,7 @@ import Vouchers from './dev/Vouchers';
 import ManageOrders from './dev/manageOrders';
 import MyOrders from './ProductStore/OrderShipping';
 import AlluserDetails from './dev/AlluserDetails';
+import { useSelector } from 'react-redux';
 
 
 const ProductLayout = ({ children }) => {
@@ -36,15 +37,14 @@ const ProductLayout = ({ children }) => {
 
 function App() {
   const [isOnline, setIsOnline] = useState(window.navigator.onLine);
-
+  const user = useSelector((state) => state.user);
+  let restriceted=['/myorders','/Edit','/ViewCart','/verify']
   useEffect(() => {
     const updateOnlineStatus = () => {
       setIsOnline(window.navigator.onLine);
     };
-
     window.addEventListener('online', updateOnlineStatus);
     window.addEventListener('offline', updateOnlineStatus);
-
     return () => {
       window.removeEventListener('online', updateOnlineStatus);
       window.removeEventListener('offline', updateOnlineStatus);
@@ -58,14 +58,13 @@ function App() {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/verify" element={<VerifyDiv />} />
-            <Route path="/ViewCart" element={<ViewCart />} />
+            <Route path="/ViewCart" element={user.id ?<ViewCart /> : <Navigate to="/" />} />
             <Route path="/Products" element={<ProductsContainer />} />
             <Route path="/Edit" element={<EditAddress />} />
             <Route path="/Checkout" element={<CheckoutPage />} />
             <Route path='/ViewProduct/:id' element={<View />} />
             <Route path='/WishlistProduct' element={<Wishlist/>} />
             <Route path='/empty' element={<EmptyData/>} />
-
             <Route path='/MyOrders' element={<MyOrders/>} />
             <Route path='MyOrders/Orderdetails/:id' element={<OrderStatus/>} />
             <Route path='/OrderConfirm' element={<OrderConfirm/>} />
@@ -83,7 +82,7 @@ function App() {
                     <Route path="/TrenditemRemove" element={<Trendremove />} />
                     <Route path="/manage-products" element={<ManageProducts />} />
                     <Route path="/userdetails" element={<AlluserDetails/>} />
-                    <Route path="/vouchers" element={<Vouchers/>} />               
+                    <Route path="/vouchers" element={<Vouchers/>} />        
 
                     <Route path='/manage-orders' element={<ManageOrders/>}/>
 

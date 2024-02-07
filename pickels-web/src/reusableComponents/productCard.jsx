@@ -5,10 +5,13 @@ import PopupForm from '../Pop-up/PopupForm';
 import AddToCart from '../ProductStore/AddToCart';
 import { parseProduct } from '../helpers/parser';
 import '../styles/productCard.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { draweropen } from '../store/lsDrawer';
 
 const ProductCard = ({ productdetails, PopUpHandler }) => {
   const [isHovered, setIsHovered] = useState(false);
-
+  const user = useSelector((state) => state.user);
+  const dispatch= useDispatch()
   return (
     <Card
       className="card"
@@ -19,7 +22,10 @@ const ProductCard = ({ productdetails, PopUpHandler }) => {
       {isHovered && (
         <div className="overlay">
           <div className="overlay-content">
-            <span className="animate__animated animate__headShake" onClick={() => PopUpHandler(parseProduct(productdetails))}>
+            <span className="animate__animated animate__headShake" onClick={() => 
+              {
+                user.id?PopUpHandler(parseProduct(productdetails)):dispatch(draweropen()) 
+              }}>
               <AddShoppingCart className="icon" />
               <h6>Add</h6>
             </span>

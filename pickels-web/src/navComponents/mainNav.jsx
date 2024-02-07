@@ -20,7 +20,7 @@ import { parseShoppingData } from '../helpers/parser';
 import Logout from './Logout';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import { clearShoppingData } from '../store/shoppingSlicer';
-
+import {drawerClose, drawerToggle, draweropen} from '../store/lsDrawer';
 type Anchor = 'right';
 
 const NavBar = () => {
@@ -32,21 +32,23 @@ const NavBar = () => {
   const logoutRef = useRef(null);
   const isMobile = useMediaQuery('(max-width:600px)');
   const navigate = useNavigate();
-  const shoppingData = useSelector((state) => state.shopping); // Assuming shoppingData is in redux state
-  const dispatch= useDispatch()
+  const shoppingData = useSelector((state) => state.shopping); 
+  const user = useSelector((state) => state.user);
+  const isOpen = useSelector((state) => state.drawer.isOpen)
+   const dispatch= useDispatch()
   const handleLogout = (mode) => {
     setIsLogoutOpen(true);
   };
   const handleMobileLogout = () => {
     localStorage.removeItem('Auth');
     dispatch(clearShoppingData())
+    dispatch(drawerClose())
      setIsNewSliderOpen(!isNewSliderOpen);
   };
 
   const handleLogoutClose = () => {
     setIsLogoutOpen(false);
   };
-
   const handleClickOutside = (event) => {
     if (
       logoutRef.current &&
@@ -59,6 +61,7 @@ const NavBar = () => {
   const handleSmLogin=()=>{
     SetSmLogin(true)
   }
+  
 
   useEffect(() => {
     document.addEventListener('click', handleClickOutside);
@@ -74,30 +77,50 @@ const NavBar = () => {
 
 
   const toggleDrawer = (anchor: Anchor, open: boolean) => () => {
+    if(open){
+      dispatch(draweropen())
+    }else{
+      dispatch(drawerClose())
+    }
     setState({ ...state, [anchor]: open });
   };
 
   const toggleNewSlider = () => {
     setIsNewSliderOpen(!isNewSliderOpen);
   };
+  useEffect(()=>{
+    if(isOpen){  
+      if(isMobile){
+         setIsNewSliderOpen(!isNewSliderOpen);
+      SetSmLogin(true)
+      }else{
+        setState({ ...state, ['right']: true });
+      }
+    
+     
+    }
+   },[isOpen])
 
   const list = (anchor: Anchor) => (
     <Box
       sx={{ width: anchor === 'right' ? 450 : 'auto' }}
       role="presentation"
-      onClick={toggleDrawer(anchor, false)}
+      onClick={()=>{
+        
+        toggleDrawer(anchor, false)}}
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <Divider />
     </Box>
   );
 const handleSmFormBack=()=>{
-
   setIsNewSliderOpen(!isNewSliderOpen)  
   SetSmLogin(false);
+  dispatch(drawerClose())
 }
   const handleBack = () => {
     if(SmLoginForm){
+      dispatch(drawerClose())
       SetSmLogin(false)
       setIsNewSliderOpen(false)
     }
@@ -148,20 +171,30 @@ const handleSmFormBack=()=>{
           ) : (
             <>
               <Grid sx={{ display: 'flex', justifyContent: 'space-around', width: '60%' }}>
-                <Badge badgeContent={navData?.wishlist?.length} onClick={() => navigate('/WishlistProduct')} color="success">
+                <Badge badgeContent={navData?.wishlist?.length} onClick={() =>
+                   {
+                   user.id?navigate('/WishlistProduct'):dispatch(draweropen()) 
+                  }
+                   
+                   } color="success">
                   <FavoriteBorderIcon color='grey' />
                 </Badge>
-                <Badge badgeContent={navData?.cart?.length} color="success">
-                  <ShoppingCartIcon onClick={() => navigate('/viewcart')} />
+                 <Badge badgeContent={navData?.cart?.length} color="success">
+                  <ShoppingCartIcon onClick={() => {
+                     user.id?navigate('/viewcart'):dispatch(draweropen())                 
+                  
+                }
+                  }
+                     />
                 </Badge>
               </Grid>
               <Grid>
                 <Box>
-                  <Box style={{ position: 'relative' }}>
+                                  <Box style={{ position: 'relative' }}>
                     {navData?.isuser ? (<>
                       <PersonIcon onClick={handleLogout} /></>
                     ) : (
-                      <a onClick={toggleDrawer('right', true)}>Log/Signup</a>
+                    <a onClick={toggleDrawer('right', true)}>Log/Signup</a>
                     )}
                     <Box style={{ width: '100%', position: 'absolute', top: '150%', right: '550%' }}>
                       {isLogoutOpen && (
@@ -182,7 +215,10 @@ const handleSmFormBack=()=>{
   <Drawer
     anchor="right"
     open={isNewSliderOpen}
-    onClose={toggleNewSlider}
+    onClose={()=>{
+      toggleNewSlider()
+      dispatch(drawerClose())
+    }}
     style={{ width: '100%', height: 'auto' }}
   >
     <Box style={{ width: '100%', height: '100%' }}>

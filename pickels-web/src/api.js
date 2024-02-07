@@ -4,7 +4,6 @@ const api = axios.create({
   baseURL: "http://localhost:8008",
 });
 const adminRoutes=["/user/Order/sort", "/user/create-order", "/user/verifyVoucher"]
-// Define an array of routes that require authentication
 const authenticatedRoutes = [
   '/user/getShoppingData',
   '/user/updateUserShoppingList',
