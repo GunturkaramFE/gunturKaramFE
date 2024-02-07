@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import logo from '../asserts/logo.png';
 import api from '../api';
 import { isValidPassword } from '../helpers/validations';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Verification = () => {
   const [password, setPassword] = useState('');
@@ -10,12 +10,18 @@ const Verification = () => {
   const [error, setError] = useState('');
   const queryParams = new URLSearchParams(useLocation().search);
   const token = queryParams.get('token');
+    const navigate=useNavigate()  
+
+useEffect(()=>{
+if(!token){
+  navigate('/')
+}
+},[token])
   const handleConfirm = async () => {
     if (!isValidPassword(password)) {
       setError('Password must be at least 8 characters long');
       return;
     }
-
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
@@ -32,7 +38,7 @@ const Verification = () => {
     const response = await api.post('/user/verify', payload);
 
       if (response.success === true) {
-  alert(response.msg)
+            alert(response.msg)
         
       } else if (response.success === false) {
         alert(response.msg)

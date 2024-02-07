@@ -5,12 +5,14 @@ import AddToCart from './AddToCart';
 import { useNavigate } from 'react-router-dom';
 import RatingComponent from './RatingComponent';
 import { parseProduct } from '../helpers/parser';
+import { useDispatch, useSelector } from 'react-redux';
+import { draweropen } from '../store/lsDrawer';
 
 const Card = ({ data, PopUpHandler }) => {
   const navigate = useNavigate();
   const [price, setPrice] = useState(JSON.parse(data.pricelist)[0]?.price || 0);
-
-
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
   return (
     <div style={{ width: '20%', height: '30%', position: 'relative', zIndex: 0 }}>
       <div className="card" style={{ width: '300px', height: 'auto', margin: '0', padding: '0' }}>
@@ -58,8 +60,10 @@ const Card = ({ data, PopUpHandler }) => {
                 className="btn btn-success btn-block "
                 type="button"
                 style={{ backgroundColor: 'green', color: 'white', width: '35%' }}
-                onClick={() => { PopUpHandler(parseProduct(data)) }}
-              >
+                onClick={() => {
+                  user.id?PopUpHandler(parseProduct(data)):dispatch(draweropen())           
+                
+                }}>
                 ADD+
               </button>
             </div>
