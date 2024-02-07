@@ -1,7 +1,7 @@
 import '../styles/nav.css';
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import { Button, IconButton, Typography, useMediaQuery } from '@mui/material';
+import { Avatar, Button, IconButton, Typography, useMediaQuery } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Drawer from '@mui/material/Drawer';
 import Divider from '@mui/material/Divider';
@@ -119,7 +119,7 @@ const handleSmFormBack=()=>{
           <SearchFilter />
         </Grid>
 
-        <Grid item sm={3} className="carts" sx={{ display: 'flex', alignItems: 'center', justifyContent: "end", height: { xs: '6vh', sm: '17vh' } }}>
+        <Grid item xs={2} sm={3} className="carts" sx={{ display: 'flex', alignItems: 'center', justifyContent: "end",height: { xs: '6vh', sm: '17vh' } }}>
         <Drawer
                     anchor="right"
                     open={state.right}
@@ -187,32 +187,43 @@ const handleSmFormBack=()=>{
   >
     <Box style={{ width: '100%', height: '100%' }}>
       {SmLoginForm ? (
-          <Box style={{ width: '100%', height: '100%' }}>
-          <Box style={{ width: '100%', paddingLeft: '20px', height: '6%', display: 'flex', alignItems: 'end' }}>
+          <Box sx={{ width: '100%', height: '100%' }}>
+          <Box sx={{ width: '100%', paddingLeft: '20px', height: '6%', display: 'flex', alignItems: 'end' }}>
             <KeyboardBackspaceIcon onClick={handleSmFormBack} style={{ color: '#8B8589' }} />
           </Box>
-          <Box style={{ width: '100%', height: '20%', display: 'flex', justifyContent: 'center' }}>
+          <Box sx={{ width: '100%', height: '20%', display: 'flex', justifyContent: 'center' }}>
             <img src={logo} alt="" style={{ width: '200px', objectFit: 'contain' }} />
           </Box>
-          <Box style={{ width: '100%', height: '74%', display: 'flex', justifyContent: 'center' }}>
-            <Box style={{ width: '80%', height: '100%'}}>
+          <Box sx={{ width: '100%', height: '74%', display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ width: '100%', height: '100%'}}>
               <BasicTabs closeDrawer={handleBack} />
             </Box>
           </Box>
         </Box>
       ) : (
         <>
-          <Badge badgeContent={navData?.wishlist?.length} onClick={() => navigate('/WishlistProduct')} color="success">
-            <FavoriteBorderIcon color='grey' />
-          </Badge>
+        <Grid sx={{width:'300px'}}>
+          <Grid sx={{width:'100%',display:'flex',alignItems:'center',justifyContent:'center',height:"100px"}}>
+          <Avatar size='large' >N</Avatar>
+          </Grid>
+          <Grid onClick={() => navigate('/WishlistProduct')} color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',borderTop:'1px solid #DADFDE',borderBottom:'1px solid #DADFDE'}}>
+            <FavoriteBorderIcon style={{color:'red'}} /> <Typography> Whislist  ({navData?.wishlist?.length})</Typography> 
+          </Grid>
+          <Grid onClick={() => navigate('/viewcart')}  color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',borderBottom:'1px solid #DADFDE'}}>
+          <ShoppingCartIcon /> <Typography> AddtoCart  ({navData?.wishlist?.length})</Typography> 
+          </Grid>
           {navData?.isuser ? (
             <>
-              <Button onClick={handleMobileLogout}>LOGOUT</Button>
+              <Grid onClick={handleMobileLogout}  color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',marginTop:"667px",justifyContent:'center',alignItems:'center',backgroundColor:'#DADFDE'}}>
+              <Button sx={{color:"white"}} >LOGOUT</Button>
+              </Grid>
             </>
           ) : (
-            <Button onClick={handleSmLogin}>Log/Signup</Button>
+            <Grid  onClick={handleSmLogin} color="success" sx={{display:'flex',padding:"2px 0px",gap:'10px',justifyContent:'center',alignItems:'center',borderBottom:'1px solid #DADFDE'}}>
+          Log/Signup
+            </Grid>
           )}
-          <Typography variant="h5">New Slider Content</Typography>
+          </Grid>
         </>
       )}
     </Box>
