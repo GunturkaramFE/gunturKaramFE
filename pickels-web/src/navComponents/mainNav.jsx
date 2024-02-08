@@ -2,7 +2,10 @@ import '../styles/nav.css';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { Avatar, Button, IconButton, Typography, useMediaQuery } from '@mui/material';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Grid from '@mui/material/Grid';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import LoginIcon from '@mui/icons-material/Login';
 import Drawer from '@mui/material/Drawer';
 import Divider from '@mui/material/Divider';
 import MenuIcon from '@mui/icons-material/Menu'; // Import MenuIcon
@@ -21,6 +24,7 @@ import Logout from './Logout';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import { clearShoppingData } from '../store/shoppingSlicer';
 import {drawerClose, drawerToggle, draweropen} from '../store/lsDrawer';
+import { PowerOffOutlined } from '@mui/icons-material';
 type Anchor = 'right';
 
 const NavBar = () => {
@@ -194,7 +198,12 @@ const handleSmFormBack=()=>{
                     {navData?.isuser ? (<>
                       <PersonIcon onClick={handleLogout} /></>
                     ) : (
-                    <a onClick={toggleDrawer('right', true)}>Log/Signup</a>
+                      <Grid sx={{padding:"5px",borderRadius:"3px"}}>
+                      <a onClick={toggleDrawer('right', true)} style={{display:'flex',cursor:'pointer',justifyContent:'center',alignItems:'center'}}>
+                      <Typography sx={{fontSize:'15px',fontWeight:'bold'}}>Login</Typography>
+                      <LoginIcon style={{marginLeft:'5px'}}/>
+                      </a>
+                      </Grid>
                     )}
                     <Box style={{ width: '100%', position: 'absolute', top: '150%', right: '550%' }}>
                       {isLogoutOpen && (
@@ -250,13 +259,18 @@ const handleSmFormBack=()=>{
           </Grid>
           {navData?.isuser ? (
             <>
-              <Grid onClick={handleMobileLogout}  color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',marginTop:"667px",justifyContent:'center',alignItems:'center',backgroundColor:'#DADFDE'}}>
-              <Button sx={{color:"white"}} >LOGOUT</Button>
+              <Grid onClick={handleMobileLogout}  color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',marginTop:"667px",justifyContent:'center',alignItems:'center',backgroundColor:'#C0C0C0'}}>
+              <Button sx={{color:"white"}} > LOGOUT</Button><ExitToAppIcon style={{color:'white'}}/> 
               </Grid>
             </>
           ) : (
             <Grid  onClick={handleSmLogin} color="success" sx={{display:'flex',padding:"2px 0px",gap:'10px',justifyContent:'center',alignItems:'center',borderBottom:'1px solid #DADFDE'}}>
-          Log/Signup
+             <Grid sx={{padding:"5px",borderRadius:"3px"}}>
+                      <a onClick={toggleDrawer('right', true)} style={{display:'flex',cursor:'pointer',justifyContent:'center',alignItems:'center'}}>
+                      <Typography sx={{fontSize:'15px',fontWeight:'bold'}}>Login</Typography>
+                      <LoginIcon style={{marginLeft:'5px'}}/>
+                      </a>
+             </Grid>
             </Grid>
           )}
           </Grid>

@@ -85,38 +85,38 @@ const Footer = () => {
       <Grid item xs={12} md={12}  className="foot-ter">
           <Grid container sm={11} xs={11} spacing={2} sx={{ justifyContent: 'space-evenly' }}>
           <Grid item xs={4} md={3}>
-            <Box>
-              <Typography variant="h6" className="fw-bold text-white">
-                Policies
-              </Typography>
-              <ul className="footer-links list-unstyled">
-                <li>
-                  <Typography variant="subtitle1" className="text-white">
-                    Privacy Policy
-                  </Typography>
-                </li>
-                <li>
-                  <Typography variant="subtitle1" className="text-white">
-                    Terms & Conditions
-                  </Typography>
-                </li>
-                <li>
-                  <Typography variant="subtitle1" className="text-white">
-                    Payment Options
-                  </Typography>
-                </li>
-                <li>
-                  <Typography variant="subtitle1" className="text-white">
-                    Delivery Options
-                  </Typography>
-                </li>
-                <li>
-                  <Typography variant="subtitle1" className="text-white">
-                    Cancellation Policy
-                  </Typography>
-                </li>
-              </ul>
-            </Box>
+          <Box>
+      <Typography variant="h6" className="fw-bold text-white">
+        Policies
+      </Typography>
+      <ul className="footer-links list-unstyled">
+        <li>
+          <Typography variant="subtitle1" className="text-white policy-link">
+            Privacy Policy
+          </Typography>
+        </li>
+        <li>
+          <Typography variant="subtitle1" className="text-white policy-link">
+            Terms & Conditions
+          </Typography>
+        </li>
+        <li>
+          <Typography variant="subtitle1" className="text-white policy-link">
+            Payment Options
+          </Typography>
+        </li>
+        <li>
+          <Typography variant="subtitle1" className="text-white policy-link">
+            Delivery Options
+          </Typography>
+        </li>
+        <li>
+          <Typography variant="subtitle1" className="text-white policy-link">
+            Cancellation Policy
+          </Typography>
+        </li>
+      </ul>
+    </Box>
           </Grid>
           <Grid item xs={4} md={3}>
             <Box>
@@ -125,27 +125,27 @@ const Footer = () => {
               </Typography>
               <ul className="footer-links list-unstyled">
                 <li>
-                  <Typography variant="subtitle1" className="text-white">
+                  <Typography variant="subtitle1" className="text-white policy-link">
                     Home
                   </Typography>
                 </li>
                 <li>
-                  <Typography variant="subtitle1" className="text-white">
+                  <Typography variant="subtitle1" className="text-white policy-link">
                     Items
                   </Typography>
                 </li>
                 <li>
-                  <Typography variant="subtitle1" className="text-white">
+                  <Typography variant="subtitle1" className="text-white policy-link">
                     Cart
                   </Typography>
                 </li>
                 <li>
-                  <Typography variant="subtitle1" className="text-white">
+                  <Typography variant="subtitle1" className="text-white policy-link">
                     Favorites
                   </Typography>
                 </li>
                 <li>
-                  <Typography variant="subtitle1" className="text-white">
+                  <Typography variant="subtitle1" className="text-white policy-link">
                     Profile
                   </Typography>
                 </li>
@@ -157,12 +157,12 @@ const Footer = () => {
               <Typography variant="h6" className="fw-bold text-white">
                 Location
               </Typography>
-              <Typography variant="subtitle1" className="d-flex align-items-center text-white">
+              <Typography variant="subtitle1" className="d-flex align-items-center text-white policy-link">
                 <RoomIcon fontSize="small" />
                 Mounica Towers
               </Typography>
               <address className="text-white">
-                <Typography variant="subtitle1">kavuri hills, madhapur</Typography>
+                <Typography variant="subtitle1 policy-link">kavuri hills, madhapur</Typography>
                 <Typography variant="subtitle1">HYDERABAD, TELANGANA 500081</Typography>
                 <Typography variant="subtitle1">India</Typography>
               </address>

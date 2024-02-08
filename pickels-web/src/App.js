@@ -23,6 +23,7 @@ import ManageOrders from './dev/manageOrders';
 import MyOrders from './ProductStore/OrderShipping';
 import AlluserDetails from './dev/AlluserDetails';
 import { useSelector } from 'react-redux';
+import Alertpage from './reusableComponents/Alertpage';
 
 
 const ProductLayout = ({ children }) => {
@@ -69,7 +70,8 @@ function App() {
             <Route path='/Orderdetails/:id' element={<OrderStatus/>} />         
             <Route path='/OrderStatus/:Id' element={<OrderConfirm/>} />
             <Route path='/Confirm-order' element={<PlaceOrder/>} />
-            <Route path='/view-profile' element={<EditProfile />} />
+            <Route path='/Alertpage' element={<Alertpage/>} />
+             <Route path='/view-profile' element={<EditProfile />} />
             {/* Admin Routes */} 
             {user.type === 'admin' && ( 
               <Route
