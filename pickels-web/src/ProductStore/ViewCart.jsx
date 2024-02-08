@@ -39,7 +39,6 @@ return
       const response = await api.post('/user/verifyVoucher',{
         voucher:couponCode      
     })
-    console.log(response.success)
       if(response.success){  
        await api.put('/user/updateVoucher',{
           
@@ -77,7 +76,7 @@ return
 
 }
 const handleCheckout=()=>{
-let obj={
+  let obj={
   ShippingAddress:JSON.stringify(defaultAddress),
   TotalAmount:totalPrice-shippingCharges-discount,
   DiscountAmount:discount,
@@ -88,6 +87,7 @@ dispatch(setOrderDetails(obj))
 navigate('/Confirm-order/',{ replace: true })
 }
   const fetchAddress = async () => {
+    
     const response = await api.get('/user/getShippingAddress');
     if (response.success) {  
       const defaultAddress = response?.shippingAddresses?.find((x) => x.is_default) || response?.shippingAddresses?.[0];

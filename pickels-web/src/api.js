@@ -19,12 +19,14 @@ const authenticatedRoutes = [
   "/user/getVoucher",
   "/user/addVoucher",
   "/user/updateVoucher",
-  "/user/order/get",
  "/user/order/update",
  "/user/getUser",
  '/user/myorders',
  "/user/getorder",
- "/user/order/update"
+ "/user/order/update",
+ "/user/requestUserName",
+ "/user/getShippingAddress",
+ "/user/Order/get"
 ]
 api.interceptors.request.use(
   (config) => {

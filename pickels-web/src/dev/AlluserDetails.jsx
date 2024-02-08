@@ -1,64 +1,106 @@
-import React, { useState } from 'react'
-import { Button, Card, CardContent, FormControl, Grid, Select, TextField , Typography } from '@mui/material'
+import React, { useState } from 'react';
+import { Button, Card, CardContent, CircularProgress, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import DetailsIcon from '@mui/icons-material/Details';
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
+import api from '../api';
+
 const defaultUser = {
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    phone: '+91 97342568726',
-    address: {
-      street: ' 85-155, Ramalayam',
-      city: ' visakhapatnam',
-      zipcode: '531011'
-    }
+  name: 'John Doe',
+  email: 'john.doe@example.com',
+  phone: '+91 97342568726',
+  address: {
+    street: '85-155, Ramalayam',
+    city: 'visakhapatnam',
+    zipcode: '531011'
+  }
 };
 
 const AlluserDetails = ({ user = defaultUser }) => {
-    const [circle,setCircle]=useState(true)    
+  const [loading, setLoading] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const [searchType, setSearchType] = useState('id');
+  const[shippingAddresses,setShippingAddress]=useState()
+  const[userdata,setUserdata]=useState()
+  const [orders,setOrders]=useState()
+  
+  const handleChange = (event) => {
+    setSearchType(event.target.value);
+  };
+
+  const handleSearch = async() => {
+
+try {
+  const payload={}
+  payload[searchType] = searchText;
+  const response= await api.post('/user/getUser',payload)
+  if(response.success){
+    setUserdata(response.user)
+    const address= await api.post('/user/getShippingAddress',{userId:response.user.id})
+    const orders= await api.post('/user/Order/get',{filter:{UserID:response.user.id}})
+    setOrders(orders.orders)
+    setShippingAddress(address.shippingAddresses)  
+  }  
+} catch (error) {
+  
+}finally{
+
+}
+  };
+
   return (
     <>
-     <Grid>
-      <Grid container spacing={2} md={12} sx={{display:'flex', justifyContent:'center'}}>
-  <Grid item xs={12} sm={6} md={5.5} lg={5.5}>
-    <Card sx={{ width: '100%', height: '100%' }}>
-      <CardContent>
-        <FormControl fullWidth>
-          <Select
-            labelId="filter-key-label"
-            id="filter-key-select"
-          >
-          </Select>
-        </FormControl>
-      </CardContent>
-    </Card>
-  </Grid>
+      <Grid container spacing={2} md={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Grid item xs={12} sm={6} md={5.5} lg={5.5}>
+          <Card sx={{ width: '100%', height: '100%' }}>
+            <CardContent>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Select</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={searchType}
+                  label="Age"
+                  onChange={handleChange}
+                >
+                  <MenuItem value="id">ID</MenuItem>
+                  <MenuItem value="email">Email</MenuItem>
+                </Select>
+              </FormControl>
+            </CardContent>
+          </Card>
+        </Grid>
 
-  <Grid item xs={12} sm={6} md={5.5} lg={5.5}>
-    <Card sx={{ width: '100%', height: '100%' }}>
-    <CardContent sx={{display:'flex'}}>
-  <TextField 
-    sx={{
-      width: { xs: "70%", sm: '70%', md: "70%", lg: '87%' }, // Adjust the width for larger screens
-      marginBottom: { xs: '10px', sm: '10px', md: '10px', lg: '0px' } // Add margin at the bottom for smaller screens
-    }}
-  />
-  <Button 
-    variant="outlined" 
-    sx={{
-      height: { xs: '6vh', sm: "10vh", md: '8.4vh',lg:'6vh' }, // Adjust the height for different screen sizes
-      marginLeft: { xs: "10px", sm: "10px", md: "10px", lg: "20px" } // Add left margin for larger screens
-    }}
-  >
-    Search
-  </Button>
-</CardContent>
-
-    </Card>
-  </Grid>
+        <Grid item xs={12} sm={6} md={5.5} lg={5.5}>
+          <Card sx={{ width: '100%', height: '100%' }}>
+            <CardContent sx={{ display: 'flex' }}>
+              <TextField
+                sx={{
+                  width: { xs: '70%', sm: '70%', md: '70%', lg: '87%' },
+                  marginBottom: { xs: '10px', sm: '10px', md: '10px', lg: '0px' }
+                }}
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+              />
+              <Button
+                variant="outlined"
+                onClick={handleSearch}
+                sx={{
+                  height: { xs: '6vh', sm: '10vh', md: '8.4vh', lg: '6vh' },
+                  marginLeft: { xs: '10px', sm: '10px', md: '10px', lg: '20px' }
+                }}
+              >
+                Search
+              </Button>
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
-      <Grid container spacing={2}  md={12} sx={{display :'flex',justifyContent:'center',paddingTop:"20px ",fontFamily:'Tahoma'}}>
+      
+      {loading?<div style={{ width: '100%', height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <CircularProgress />
+        </div>:<Grid container spacing={2}  md={12} sx={{display :'flex',justifyContent:'center',paddingTop:"20px ",fontFamily:'Tahoma'}}>
         <Grid  item xs={12} sm={6} md={5.5} lg={5.5}>
           <Card sx={{ height: {xs:"auto",md:"35vh",sm:"35vh",lg:'37vh'}, boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
             <CardContent>
@@ -167,8 +209,8 @@ const AlluserDetails = ({ user = defaultUser }) => {
             </CardContent>
           </Card>
         </Grid>
-      </Grid>
-      </Grid>
+      </Grid>}
+  
     </>
   )
 }
