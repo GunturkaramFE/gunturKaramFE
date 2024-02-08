@@ -14,7 +14,7 @@ const Bestseller = () => {
   const handleView = (id) => {
     window.open(`/ViewProduct/${id}`, '_blank');
   };
-
+   
   const fetchItems = async () => {
     const response = await api.get(`/user/sort-items/${4}`);
     console.log(response);
@@ -34,16 +34,18 @@ const Bestseller = () => {
         Top Best Sellers For You ...!
       </Typography>
       </Grid>
-      <Grid className="Best-seller-inner-card"  sx={{height:{xs:'auto'},gap:{xs:"60px",sm:"0px",md:"0px"}}}>
+      <Grid className="Best-seller-inner-card"  sx={{height:{xs:'auto',sm:'50vh',md:'50vh',lg:'50vh'},gap:{xs:"60px",sm:"0px",md:"0px"}}}>
         {items.map((x) => (
-          <Grid  className="item-card" key={x.id} sx={{width:{xs:'80%',sm:"15%",md:"15%"}}}>
+          <Grid  className="item-card" key={x.id} sx={{width:{xs:'80%',sm:"15%",md:"15%"},marginTop:{xs:"35px"}}}>
             <img src={x.url} alt="" />
-<Card sx={{ height: '70%', width: '100%' }}>
-  <CardActionArea>
+     <Card sx={{ height: '80%', width: '100%' }}>
+    
     <Grid className="card-body class-body-text-container" sx={{display:'flex',flexDirection:'column'}}>
-      <Typography  variant="h6" className="card-title" sx={{fontFamily:'Comic Sans MS'}}>
-        {x.title}
+      <Grid sx={{height:"80px"}}>
+      <Typography  variant="h6" className="card-title" sx={{fontFamily:'Comic Sans MS',marginTop:"20px"}}>
+      { x.title.length > 25 ? `${x.title.slice(0, 25)}...` : x.title }
       </Typography>
+      </Grid>     
       <Typography variant="body1" sx={{fontFamily:"Tahoma" ,fontSize:'14px'}}>
         From &#x20B9;<span style={{ fontSize: '1.3em',fontFamily:'Tahoma' }}>{x.startingPrice}</span>
       </Typography>
@@ -58,7 +60,7 @@ const Bestseller = () => {
         </Stack>
       </div>
     </Grid>
-  </CardActionArea>
+
 </Card>
 
           </Grid>
