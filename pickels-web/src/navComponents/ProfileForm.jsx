@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Typography,
   Button,
@@ -12,12 +12,14 @@ import {
   Grid,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import { useSelector } from 'react-redux';
+import api from '../api';
 
 const ProfileForm = () => {
+  const user = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
-    name: '',
-    email: 'rakeshkirlampalli45@gmail.com',
-    phone: '',
+    name: "",
+    email: '',
   });
 
   const [editMode, setEditMode] = useState(false);
@@ -33,11 +35,19 @@ const ProfileForm = () => {
   const handleEditClick = () => {
     setEditMode(true);
   };
+useEffect(()=>{
+  setFormData({name:user.name,email:user.email})
 
-  const handleSaveClick = () => {
-    // Add your save logic here
-    console.log('Saved:', formData);
-    setEditMode(false);
+},[user])
+  const handleSaveClick = async() => {
+    try {
+      await api.put('/user/requestUserName',{userName:formData.name})
+    } catch (error) {
+      
+    }finally{
+      setEditMode(false);
+    }
+    
   };
 
   return (
@@ -62,16 +72,7 @@ const ProfileForm = () => {
           value={formData.email}
           onChange={handleInputChange}
           placeholder="Enter your email"
-          disabled={!editMode}
-        />
-
-        <TextField
-          label="Phone"
-          name="phone"
-          value={formData.phone}
-          onChange={handleInputChange}
-          placeholder="Enter your phone number"
-          disabled={!editMode}
+          disabled={true}
         />
       </Box>
 
