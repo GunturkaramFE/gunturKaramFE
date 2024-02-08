@@ -29,11 +29,11 @@ const PickleComponent = () => {
   ];
 
   return (
-    <Grid sx={{ height:{xs:'auto',sm:'18vh',md:"18vh"}, display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' ,backgroundColor:'#00A877'}}>
+    <Grid sx={{ height:{xs:'auto',sm:'20vh',md:"20vh",lg:'20vh'}, display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' ,backgroundColor:'#00A877'}}>
       <Grid item xs={12} sm={12} md={12} sx={{  display: 'flex', width: '90%', justifyContent: 'space-evenly' }}>
         {cardsData.map((card) => (
           <Grid sm={3} key={card.id}>
-            <Grid className="card" sx={{display:'flex',flexDirection:'column', width: {xs:'100px',sm:'250px',md:'250px'},border:"none",backgroundColor:'#00A877' }}>
+            <Grid className="card" sx={{display:'flex',flexDirection:'column', width: {xs:'100px',sm:'250px',md:'250px'},border:"none",backgroundColor:'transparent' }}>
               <CardMedia
                 className="media"
                 component="img"
