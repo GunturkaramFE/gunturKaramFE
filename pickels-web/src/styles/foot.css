@@ -18,6 +18,14 @@
     width: 30%;
    
 }
+.policy-link {
+    cursor: pointer;
+  }
+  
+  .policy-link:hover {
+    text-decoration: underline;
+  }
+  
 
 /* Add styles for mobile screens */
 @media (max-width: 745.98px) {

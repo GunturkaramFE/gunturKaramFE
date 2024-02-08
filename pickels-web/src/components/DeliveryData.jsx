@@ -11,7 +11,7 @@ const PaperCard = () => {
   const user = useSelector((state) => state.user);
 const navigate= useNavigate()
   return (
-    <Paper elevation={3} className="paper-card" style={{ width: '75%', position: 'absolute', height: isMobile ? 'auto' : '130px', left: '13%', top: isMobile ? '87%' : '90%', zIndex: '100', borderRadius: '0', padding: '10px', boxSizing: 'border-box', display: 'flex', justifyContent: 'space-between' }}>
+    <Paper elevation={3} className="paper-card" style={{ width: '75%',cursor:'pointer', position: 'absolute', height: isMobile ? 'auto' : '130px', left: '13%', top: isMobile ? '87%' : '90%', zIndex: '100', borderRadius: '0', padding: '10px', boxSizing: 'border-box', display: 'flex', justifyContent: 'space-between' }}>
       <div className="card-container" onClick={()=>
                 {
               user.id?navigate('/MyOrders'):dispatch(draweropen()) 
