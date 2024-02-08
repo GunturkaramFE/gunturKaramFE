@@ -87,40 +87,42 @@ const SearchFilter = () => {
           <SearchIcon />
         </IconButton>
       </Grid>
-      {(showSuggestions && suggestions.length) && (
-        <Paper
-          elevation={3}
-          sx={{
-            position: 'absolute',
-            top: '90%',
-            left: '25%',
-            width: '50%',
-            zIndex: 10000,
-            maxHeight: '200px',
-            overflowY: 'auto',
-          }}
-        >
-          <List>
-            {suggestions.map((suggestion, index) => (
-              <ListItem 
-                key={index} 
-                onClick={() => handleSuggestionClick(suggestion.title, suggestion.id)}
-                sx={{
-                  transition: 'background-color 0.3s ease',
-                  '&:hover': {
-                    backgroundColor: '#f0f0f0', // Change to the desired hover background color
-                  },
-                  '&:active': {
-                    backgroundColor: '#e0e0e0', // Change to the desired active background color
-                  },
-                }}
-              > 
-                <ListItemText primary={suggestion.title} />
-              </ListItem>
-            ))}
-          </List>
-        </Paper>
-      )}
+      {(showSuggestions && suggestions.length > 0) ? (
+      <Paper
+        elevation={3}
+        sx={{
+          position: 'absolute',
+          top: '90%',
+          left: '25%',
+          width: '50%',
+          zIndex: 10000,
+          maxHeight: '200px',
+          overflowY: 'auto',
+        }}
+      >
+        <List>
+          {suggestions.map((suggestion, index) => (
+            <ListItem 
+              key={index} 
+              onClick={() => handleSuggestionClick(suggestion.title, suggestion.id)}
+              sx={{
+                transition: 'background-color 0.3s ease',
+                '&:hover': {
+                  backgroundColor: '#f0f0f0', // Change to the desired hover background color
+                },
+                '&:active': {
+                  backgroundColor: '#e0e0e0', // Change to the desired active background color
+                },
+              }}
+            > 
+              <ListItemText primary={suggestion.title} />
+            </ListItem>
+          ))}
+        </List>
+      </Paper>
+    ) : (
+      <></>
+    )}
     </div>
   );
 };

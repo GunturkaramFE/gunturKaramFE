@@ -6,7 +6,6 @@ import ProductsContainer from './ProductStore/ProductsContainer';
 import ViewCart from './ProductStore/ViewCart';
 import EditAddress from './ProductStore/EditAddress';
 import HandleAllProducts from './dev/allProducts';
-import CheckoutPage from './ProductStore/CheckoutPage';
 import MainMenu from './dev/main';
 import ProductMenu from './dev/productMenu';
 import ManageProducts from './dev/manageProducts';
@@ -62,7 +61,6 @@ function App() {
             <Route path="/ViewCart" element={user.id ?<ViewCart /> : <Navigate to="/" />} />
             <Route path="/Products" element={<ProductsContainer />} />
             <Route path="/Edit" element={<EditAddress />} />
-            <Route path="/Checkout" element={<CheckoutPage />} />
             <Route path='/ViewProduct/:id' element={<View />} />
             <Route path='/WishlistProduct' element={<Wishlist/>} />
             <Route path='/empty' element={<EmptyData/>} />
@@ -73,26 +71,27 @@ function App() {
             <Route path='/OrderStatus/:Id' element={<OrderConfirm/>} />
             <Route path='/Confirm-order' element={<PlaceOrder/>} />
             <Route path='/Alertpage' element={<Alertpage/>} />
-            {/* Admin Routes */}
-            <Route
-              path="/admin-menu/*"
-              element={
-                <ProductLayout>
-                  <Routes>
-                    <Route path="/add-product" element={<HandleAllProducts />} />
-                    <Route path="/products-menu" element={<ProductMenu />} />
-                    <Route path="/TrenditemRemove" element={<Trendremove />} />
-                    <Route path="/manage-products" element={<ManageProducts />} />
-                    <Route path="/userdetails" element={<AlluserDetails/>} />
-                    <Route path="/vouchers" element={<Vouchers/>} />        
-
-                    <Route path='/manage-orders' element={<ManageOrders/>}/>
-
-                  </Routes>
-                </ProductLayout>
-              }
-            />
-            <Route path='/view-profile' element={<EditProfile />} />
+             <Route path='/view-profile' element={<EditProfile />} />
+            {/* Admin Routes */} 
+            {user.type === 'admin' && ( 
+              <Route
+                path="/admin-menu/*"
+                element={
+                  <ProductLayout>
+                    <Routes>
+                      <Route path="/add-product" element={<HandleAllProducts />} />
+                      <Route path="/products-menu" element={<ProductMenu />} />
+                      <Route path="/TrenditemRemove" element={<Trendremove />} />
+                      <Route path="/manage-products" element={<ManageProducts />} />
+                      <Route path="/userdetails" element={<AlluserDetails />} />
+                      <Route path="/vouchers" element={<Vouchers />} /> 
+                      <Route path='/manage-orders' element={<ManageOrders />} />
+                    </Routes>
+                  </ProductLayout>
+                }
+              />
+            )}
+           
           </Routes>
         ) : (
           <OfflineMessage />

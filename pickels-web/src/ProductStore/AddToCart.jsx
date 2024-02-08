@@ -5,6 +5,7 @@ import { setShoppingData } from '../store/shoppingSlicer';
 import api from '../api';
 import { useNavigate } from 'react-router-dom';
 const AddToCart = ({ data,fun }) => {
+
 const navigate= useNavigate()
   const [selectedQuantity, setSelectedQuantity] = useState(0);
   const [count, setCount] = useState(1)
@@ -57,6 +58,7 @@ let parsedData;
     (data.pricelist[selectedQuantity]?.quantity.includes('kg') ? 1 : 1000);
 
 const HandleAddToCart= async()=>{
+  
   let cartitem={
    id:data.id,
    category:data.category,
@@ -64,6 +66,7 @@ const HandleAddToCart= async()=>{
    subCategory:data.subCategory,
    title:data.title,
    url:data.url,
+   stock:data.stock
   }
   cartitem.price=selectedPrice
   cartitem.quantity=count
