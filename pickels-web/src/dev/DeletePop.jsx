@@ -1,37 +1,48 @@
 import React from 'react';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import { Button } from '@mui/material';
+import { Button, Card, CardContent, Grid } from '@mui/material';
 
 const DeletePop = ({ onConfirm, onCancel }) => {
 
   const handleDeleteClick = () => {
     onConfirm('Item deleted successfully!');
   };
+
   const handleCancelClick = () => {
     onCancel();
   };
 
   return (
-    <div style={{ width: '100%', height: '300px',padding: "5px", display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <ErrorOutlineIcon sx={{ fontSize: 60, marginTop: '30px', height: '20%' }} />
-      <h4 style={{ color: 'black', height: '60%' }}>Are you sure want to delete this item ?</h4>
-      <div style={{ display: 'flex', justifyContent: 'space-around',width:'100%' }}>
-        <Button variant="contained" onClick={handleDeleteClick}>Yes, Remove</Button>
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: 'red',
-            color: 'white',
-            '&:hover': {
-              backgroundColor: 'red',
-            },
-          }}
-          onClick={handleCancelClick}
-        >
-          Cancel
-        </Button>
-      </div>
-    </div>
+    <Grid container justifyContent="center" alignItems="center" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: 9999 }}>
+      <Card sx={{ width: 400 }}>
+        <CardContent>
+          <Grid container direction="column" alignItems="center" spacing={2}>
+            <Grid item>
+              <ErrorOutlineIcon sx={{ fontSize: 60, color: 'red' }} />
+            </Grid>
+            <Grid item>
+              <h2 style={{ color: 'black' }}>Are you sure want to delete this item?</h2>
+            </Grid>
+            <Grid item>
+              <Button variant="contained" onClick={handleDeleteClick}>Yes, Remove</Button>
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: 'red',
+                  color: 'white',
+                  '&:hover': {
+                    backgroundColor: 'red',
+                  },
+                }}
+                onClick={handleCancelClick}
+              >
+                Cancel
+              </Button>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
+    </Grid>
   );
 };
 
