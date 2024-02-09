@@ -84,42 +84,6 @@ const ProductMenu = () => {
                         </Card>
                     </Grid>
             
-                    {/* Trending Products Card */}
-                    <Grid item xs={12} md={6}>
-                        <Card>
-                            <CardContent>
-                                <Typography variant="h5" component="div" gutterBottom>
-                                    <AddCircleOutlineIcon style={{ marginRight: "8px" }} />
-                                    Make Product as Trending
-                                </Typography>
-                                <Typography variant="body2" color="textSecondary">
-                                    Click the button below to add new products to your trending products
-                                </Typography>
-                                <Grid container spacing={2}>
-                                    <Grid item xs={6}>
-                                        <Button
-                                            variant="contained"
-                                            color="secondary"
-                                            fullWidth
-                                            onClick={handleAddProductsClick}
-                                        >
-                                        Make As Trending
-                                        </Button>
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <Button
-                                            variant="contained"
-                                            color="secondary"
-                                            fullWidth
-                                            onClick={handleAddProductsClick}
-                                        >
-                                            
-                                            Discard Products                                        </Button>
-                                    </Grid>
-                                </Grid>
-                            </CardContent>
-                        </Card>
-                    </Grid>
                 </Grid>
             </Box>
         </>

@@ -26,7 +26,10 @@ const authenticatedRoutes = [
  "/user/order/update",
  "/user/requestUserName",
  "/user/getShippingAddress",
- "/user/Order/get"
+ "/user/Order/get",
+ "/user/usersdata",
+ "/user/get-items",
+ "/user/delete-Item"
 ]
 api.interceptors.request.use(
   (config) => {

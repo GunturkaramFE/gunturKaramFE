@@ -33,7 +33,7 @@ const [url2,setUrl2]=useState('')
     const newPrice = {
       price: '',
       quantity: '',
-      unit: 'kg', // Default unit
+      unit: 'kg', 
     };
 
     setPriceList([...priceList, newPrice]);
