@@ -53,7 +53,7 @@ const AlluserDetails = ({ user = defaultUser }) => {
     }
   };
   useEffect(()=>{
-    console.log(userData)
+    console.log(orders)
   },[userData,orders,shippingAddresses])
 
   return (
@@ -116,18 +116,19 @@ const AlluserDetails = ({ user = defaultUser }) => {
               </Typography>
               <Grid sx={{padding:'20px'}}>
               <Typography variant="h6" component="h2" sx={{margin:"10px 0px"}}>
-                {user.name}
+                {userData.name}
               </Typography>
               <Typography color="textSecondary" gutterBottom sx={{margin:"10px 0px"}}>
-                {user.email}
+                {userData.email}
               </Typography>
+              <Typography color="textSecondary" gutterBottom sx={{margin:"10px 0px"}}>
+                {userData.id}
+              </Typography>
+            
               <Typography color="textSecondary" sx={{margin:"10px 0px"}}>
-                {user.phone}
+                {userData.type}
               </Typography>
-              <Typography color="textSecondary" sx={{margin:"10px 0px"}}>
-                {user.address.street}, {user.address.city}, {user.address.zipcode}
-              </Typography>
-              </Grid>
+                </Grid>
             </CardContent>
           </Card>
         </Grid>
@@ -139,24 +140,37 @@ const AlluserDetails = ({ user = defaultUser }) => {
                 Order Details <DetailsIcon style={{fontSize:'30px'}}/>
               </Typography>
               <Grid sx={{height:'100%',height:'35vh',overflowY:'auto'}} >
+                {
+                  orders.map((x)=>{
+                    return(<>
                 <Card sx={{padding:'20px',margin:'10px 0px',fontFamily:'Tahoma'}} >
-                <Typography sx={{fontSize:'18px'}}  >OrderID:nbo15jk2b1</Typography>
-                    <Typography>Status : Placed</Typography>
-                    <Typography>Date: 27/19/2023 </Typography>
-                    <Typography>Qauntity:2 </Typography>
+                <Typography sx={{fontSize:'18px'}}  >OrderID:{x.OrderID}</Typography>
+                    <Typography>Status :{x.OrderStatus}</Typography>
+                    <Typography>place on: {x.OrderDate} </Typography>
+                    <Typography>billing amount :{x.TotalAmount} </Typography>
+                    <Typography>Pay by :{x.PaymentMethod} </Typography>
+                    <Typography>{x.PromoCode?(`promocode:${x.PromoCode}`):("")} </Typography>
+                    <Typography>Transaction:{x.TransactionID}</Typography>
+                    ------------------------------------------------------------
+                    {
+                      JSON.parse(x.Items).map((y)=>{
+                        console.log(y)
+return(<>
+  <Typography>Item :{y.title}</Typography>
+  <Typography>Id :{y.id}</Typography>
+  <Typography>Price :{y.price}</Typography>
+  <Typography>Category :{y.subCategory}</Typography>
+  <Typography>Range :{y.selectedQuantity.quantity}{y.selectedQuantity.unit}</Typography> 
+  <Typography>Quantity :{y.quantity}</Typography>
+
+
+</>)
+                 })
+                                          }
                 </Card>
-                <Card sx={{padding:'20px',margin:'10px 0px'}}>
-                <Typography sx={{fontSize:'18px'}}  >OrderID:nbo15jk2b1</Typography>
-                    <Typography>Status : Placed</Typography>
-                    <Typography>Date: 27/19/2023 </Typography>
-                    <Typography>Qauntity:2 </Typography>
-                </Card>
-                <Card sx={{padding:'20px',margin:'10px 0px'}}>
-                <Typography sx={{fontSize:'18px'}} >OrderID:nbo15jk2b1</Typography>
-                    <Typography>Status : Placed</Typography>
-                    <Typography>Date: 27/19/2023 </Typography>
-                    <Typography>Qauntity:2 </Typography>
-                </Card>
+                    </>)
+                  })}
+                
           
               </Grid>
             </CardContent>
