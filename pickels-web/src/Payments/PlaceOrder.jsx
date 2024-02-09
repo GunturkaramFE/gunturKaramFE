@@ -49,6 +49,7 @@ const PlaceOrder = () => {
   };
 
   const HandleProceed = async () => {
+    console.log(JSON.parse(selectOrderDetails.items).map((x)=>x))
     let orderData = {
       UserID: shoppingData.userId,
       OrderID : uuidv4().slice(0, 12),
@@ -68,10 +69,12 @@ const PlaceOrder = () => {
     try {
       setIsLoading(true); 
       const response = await api.post('/user/create-order',{orderData});
-      console.log(response);
       if (response.success) {
-      //  dispatch(emptyCart());
-        const { OrderID } = response.order; 
+      const { OrderID } = response.order; 
+      JSON.parse(selectOrderDetails.items).map(async(x)=>{
+         await api.put('/user/get-items',{filter:{id:x.id}})
+      })
+     
         fetchShoppingDataOnPageRefresh()
         navigate(`/OrderStatus/${OrderID}`,{ replace: true });
       } else {      

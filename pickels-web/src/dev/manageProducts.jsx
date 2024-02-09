@@ -65,9 +65,24 @@ setBackdrop(true); // Show backdrop
     setBackdrop(false); // Hide backdrop whether success or failure
   }
 }
-  const handleDelete = (productId) => {
-    
-  };
+    const DeleteProduct=async(productid)=>{
+    try {
+      const payload = {
+        filter: {
+          id: productid
+        },
+        dataToUpdate: {
+          isDeleted:true
+        }
+      };
+  await api.put('/user/delete-Item',{...payload})
+
+    } catch (error) {
+      
+    }finally{
+      setDeletepop(!deletepop)
+    }
+  }
 
 const handledeletePopup=()=>{
   setDeletepop(!deletepop)
@@ -188,10 +203,10 @@ const handledeletePopup=()=>{
                  
                 <Tooltip title="Make product as trending"> <TrendingUpIcon onClick={()=>{AddtoTrend(product.id)}} sx={{marginTop:"10px"}}/></Tooltip>
                     <Tooltip title="Delete">      
-                    <IconButton onClick={() => handleDelete(product.id)} style={{ color: '#ff4d4f' }}>
+                    <IconButton  style={{ color: '#ff4d4f' }}>
                     <DeleteIcon  onClick={handledeletePopup} />
-                    <PopupForm ispop={deletepop} formData={<DeletePop onConfirm={handledeletePopup} onCancel={handledeletePopup} />} fun={handledeletePopup} width='400px' height='150px'/>
-                    </IconButton>
+                  {deletepop&&<DeletePop onConfirm={()=>DeleteProduct(product.id)} onCancel={handledeletePopup} />}
+                  </IconButton>
                     </Tooltip>
                     <Tooltip title="Edit">
                     <IconButton onClick={() => handleEdit(product.id)} style={{ color: '#1890ff' }}>

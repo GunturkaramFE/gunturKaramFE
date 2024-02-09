@@ -4,7 +4,6 @@ import LandingPage from './components/landingPage';
 import VerifyDiv from './Authorization/Verifydiv';
 import ProductsContainer from './ProductStore/ProductsContainer';
 import ViewCart from './ProductStore/ViewCart';
-import EditAddress from './ProductStore/EditAddress';
 import HandleAllProducts from './dev/allProducts';
 import MainMenu from './dev/main';
 import ProductMenu from './dev/productMenu';
@@ -24,6 +23,8 @@ import MyOrders from './ProductStore/OrderShipping';
 import AlluserDetails from './dev/AlluserDetails';
 import { useSelector } from 'react-redux';
 import Alertpage from './reusableComponents/Alertpage';
+import AdminDashBoard from './dev/AdminDashBoard';
+
 
 
 const ProductLayout = ({ children }) => {
@@ -38,7 +39,7 @@ const ProductLayout = ({ children }) => {
 function App() {
   const [isOnline, setIsOnline] = useState(window.navigator.onLine);
   const user = useSelector((state) => state.user);
-  let restriceted=['/myorders','/Edit','/ViewCart','/verify']
+
   useEffect(() => {
     const updateOnlineStatus = () => {
       setIsOnline(window.navigator.onLine);
@@ -56,24 +57,23 @@ function App() {
       <BrowserRouter>
         {isOnline ? (
           <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/verify" element={<VerifyDiv />} />
-            <Route path="/ViewCart" element={user.id ?<ViewCart /> : <Navigate to="/" />} />
+            <Route path="/" element={<LandingPage/>}/>
+            <Route path="/verify" element={<VerifyDiv/>}/>
+            <Route path="/ViewCart" element={user.id ?<ViewCart/> : <Navigate to="/" />} />
             <Route path="/Products" element={<ProductsContainer />} />
-            <Route path="/Edit" element={<EditAddress />} />
-            <Route path='/ViewProduct/:id' element={<View />} />
-            <Route path='/WishlistProduct' element={<Wishlist/>} />
+             <Route path='/ViewProduct/:id' element={<View />} />
+            <Route path='/WishlistProduct' element={user.id ?<Wishlist/> : <Navigate to="/"/>} />
             <Route path='/empty' element={<EmptyData/>} />
-            <Route path='/MyOrders' element={<MyOrders/>} />
-            <Route path='MyOrders/Orderdetails/:id' element={<OrderStatus/>} />
-            <Route path='/OrderConfirm' element={<OrderConfirm/>} />
-            <Route path='/Orderdetails/:id' element={<OrderStatus/>} />         
-            <Route path='/OrderStatus/:Id' element={<OrderConfirm/>} />
-            <Route path='/Confirm-order' element={<PlaceOrder/>} />
+            <Route path='/MyOrders' element={user.id ?<MyOrders/>: <Navigate to="/"/>} />
+            <Route path='MyOrders/Orderdetails/:id' element={user.id ?<OrderStatus/>: <Navigate to="/"/>} />
+            <Route path='/OrderConfirm' element={user.id ?<OrderConfirm/>: <Navigate to="/"/>} />
+            <Route path='/Orderdetails/:id' element={user.id ?<OrderStatus/>: <Navigate to="/"/>} />         
+            <Route path='/OrderStatus/:Id' element={user.id ?<OrderConfirm/>: <Navigate to="/"/>} />
+            <Route path='/Confirm-order' element={user.id ?<PlaceOrder/>: <Navigate to="/"/>} />
             <Route path='/Alertpage' element={<Alertpage/>} />
-             <Route path='/view-profile' element={<EditProfile />} />
+            <Route path='/view-profile' element={user.id ?<EditProfile />:<Navigate to="/"/>} />
             {/* Admin Routes */} 
-            {user.type === 'admin' && ( 
+            {user.type === 'admin' ? ( 
               <Route
                 path="/admin-menu/*"
                 element={
@@ -86,12 +86,17 @@ function App() {
                       <Route path="/userdetails" element={<AlluserDetails />} />
                       <Route path="/vouchers" element={<Vouchers />} /> 
                       <Route path='/manage-orders' element={<ManageOrders />} />
+                      <Route path='/dashboard' element={<AdminDashBoard/>}/>
                     </Routes>
                   </ProductLayout>
                 }
               />
+            ) : (
+              // Render the Alertpage component for non-admin users accessing admin pages
+              <Route path="/admin-menu/*" element={<Alertpage message="You are not authorized to access this page" 
+              src="https://icon-library.com/images/not-found-icon/not-found-icon-6.jpg" navigation='/'
+              />} />
             )}
-           
           </Routes>
         ) : (
           <OfflineMessage />

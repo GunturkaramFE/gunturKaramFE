@@ -31,7 +31,7 @@ const MainMenu = () => {
   };
 
   const menuItems = [
-    { icon: <DashboardIcon />, text: 'Dashboard', path: '/admin-menu' },
+    { icon: <DashboardIcon />, text: 'Dashboard', path: '../admin-menu/dashboard' },
     { icon: <InventoryIcon />, text: 'Products', path: '../admin-menu/products-menu' },
     { icon: <PersonIcon />, text: 'Users', path: '../admin-menu/userdetails' },
     { icon: <RedeemIcon />, text: 'Vouchers', path: '../admin-menu/vouchers' },
