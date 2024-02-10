@@ -11,9 +11,11 @@ import { useParams } from 'react-router-dom';
 import api from '../api';
 import { setOrderDetails } from '../store/orderDetailsSlicer';
 import CloseIcon from '@mui/icons-material/Close';
+import { useSelector } from 'react-redux';
 const OrderStatus = () => {
 const {id} = useParams();
 const[data,setData]=useState()
+const user = useSelector((state) => state.user);
 const[orderdetails,setOrderDetails]=useState()
 const[disable,setDisable]=useState(false)
 const[loading,setLoading]=useState(false)
@@ -23,10 +25,8 @@ const [steps,setSteps]=useState([
   { label: 'Order Placed', date: '' },
   { label: 'Order Confirmed', date: '' },
   { label: 'Shipped', date: '' },
-  { label: 'Out For Delivery', date: '' },
   { label: 'Delivered', date: '' },
-  
-])
+  ])
 const [Billingaddress, setBillingAddress] = useState({
   name:'',
   housenumber: '',
@@ -67,7 +67,11 @@ const [error, setError] = useState({
 const FetchData=async()=>{  
   try {
     setLoading(true)
-    const response = await api.post('/user/getorder',{ OrderID:id })
+  let obj={
+    OrderID:id
+   }
+
+    const response = await api.post('/user/getorder',obj)
     if(response.success){
       setData(response.orders[0])
       setAddress(JSON.parse(response.orders[0].ShippingAddress))
@@ -87,18 +91,36 @@ FetchData()
 },[])
 useEffect(() => {
   if (orderdetails) {
+    let cancelledIndex = -1; // Track the index of the "Cancelled" status if found
     const updatedSteps = steps.map((step, index) => {
-      if (index < orderdetails.length) {
-        const formattedDateTime = new Date(orderdetails[index].date).toLocaleString();
-        return { ...step, date: formattedDateTime };
-      } else {
-        return { ...step, date: '' };
+      const orderDetail = orderdetails[index];
+      if (orderDetail) {
+        const formattedDateTime = new Date(orderDetail.date).toLocaleString();
+        if (orderDetail.status === "Cancelled") {
+          cancelledIndex = index; // Update the cancelled index if "Cancelled" status found
+          return { label: "Cancelled", date: formattedDateTime };
+        }
+        return { label: orderDetail.status, date: formattedDateTime };
       }
+      return step; // If there's no order detail for this step, return the original step
     });
+
+    // Include all mandatory steps if not already included
+    if (cancelledIndex === -1) {
+      for (let i = 0; i < steps.length; i++) {
+        if (!updatedSteps[i]) {
+          updatedSteps[i] = { ...steps[i], date: '' };
+        }
+      }
+    }
+
     setSteps(updatedSteps);
-    setActiveStep(orderdetails.length - 1);
+    setActiveStep(cancelledIndex === -1 ? orderdetails.length - 1 : cancelledIndex); // Set active step to cancelledIndex if found, otherwise to orderdetails.length - 1
   }
-}, [orderdetails]);  
+}, [orderdetails]);
+
+
+
     const handleEditClick = () => {
       setEditable(!isEditable);
     };
@@ -267,7 +289,7 @@ useEffect(() => {
                             <Typography sx={{ fontWeight: 'bold', fontSize: '14px', mb: 2 }}>Mobile :</Typography>
                             <Typography sx={{ fontSize: '15px', mb: 2,fontFamily:"Tahoma" }}> {address.mobile}</Typography>
                             </Grid>
-                           {!steps[1].date&& <IconButton onClick={handleEditClick}>
+                           {!steps[1]?.date&& <IconButton onClick={handleEditClick}>
                                 <EditIcon style={{color:'green'}}  />
                             </IconButton>}
                         </Grid>

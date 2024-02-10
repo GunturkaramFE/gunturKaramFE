@@ -174,15 +174,15 @@ const AlluserDetails = ({ user = defaultUser }) => {
                     console.log(JSON.parse(x.ShippingAddress))
                     let Address=JSON.parse(x.ShippingAddress)
                     return(<>
-                <Card xs={12} sm={12} md={12} lg={12}  sx={{padding:'20px',height:'auto',gap:'20px',margin:'10px 0px',fontFamily:'Tahoma',boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',padding:'20px',display:'flex'}} >
-                    <Card xs={12} sm={4} md={4} lg={4}   sx={{width:"35%",height:'380px',boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',display:"flex",justifyContent:'center',alignItems:'center',flexDirection:'column'}}>
+                <Card xs={12} sm={12} md={12} lg={12}  sx={{padding:'20px',height:'auto',gap:'20px',margin:'10px 0px',fontFamily:'Tahoma',boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',padding:'20px',display:'flex',flexDirection:{xs:"column",sm:"row",md:"row",lg:'row'}}} >
+                    <Card xs={12} sm={4} md={4} lg={4}   sx={{width:{xs:"100%",sm:'35%',md:'35%',lg:'35%'},height:'380px',boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',display:"flex",justifyContent:'center',alignItems:'center',flexDirection:'column'}}>
                      <Grid sx={{fontFamily:"monospace"}}>                      
                     <Typography sx={{fontSize:'18px',marginTop:'10px'}}  >OrderID:{x.OrderID}</Typography>
                     <Typography>Status :{x.OrderStatus}</Typography>
                     <Typography>place on: {x.OrderDate} </Typography>
                     <Typography>billing amount :{x.TotalAmount} </Typography>
                     <Typography>Pay by :{x.PaymentMethod} </Typography>
-                    <Typography>{x.PromoCode?(`promocode:${x.PromoCode}`):("")} </Typography>
+                    <Typography>{x.PromoCode?(promocode:${x.PromoCode}):("")} </Typography>
                     <Typography>Transaction:{x.TransactionID}</Typography>
                     </Grid>
                     <Grid sx={{color:"grey"}}>  ......................shipping details.....................</Grid> 
@@ -222,4 +222,4 @@ const AlluserDetails = ({ user = defaultUser }) => {
   )
 }
 
-export default AlluserDetails
+export default AlluserDetails

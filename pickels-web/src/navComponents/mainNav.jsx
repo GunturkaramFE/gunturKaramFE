@@ -64,8 +64,7 @@ const NavBar = () => {
   };
   const handleSmLogin=()=>{
     SetSmLogin(true)
-  }
-  
+  }  
 
   useEffect(() => {
     document.addEventListener('click', handleClickOutside);
