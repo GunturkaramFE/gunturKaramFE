@@ -132,50 +132,7 @@ const AlluserDetails = ({ user = defaultUser }) => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid lg={6.5} sx={{display:"flex",flexDirection:'column',width:'100%',padding:'13px 0px',gap:"20px"}}> 
-        <Grid  item xs={12} sm={6} md={5.5} lg={12}>
-          <Card sx={{  height: {xs:"auto",md:"45vh",sm:"45vh",lg:'45vh'}, boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
-            <CardContent>
-              <Typography variant="h5" component="h2" align="center" justifyContent='center'>
-                Order Details <DetailsIcon style={{fontSize:'30px'}}/>
-              </Typography>
-              <Grid sx={{height:'100%',height:'35vh',overflowY:'auto'}} >
-                {
-                  orders.map((x)=>{
-                    return(<>
-                <Card sx={{padding:'20px',margin:'10px 0px',fontFamily:'Tahoma'}} >
-                <Typography sx={{fontSize:'18px'}}  >OrderID:{x.OrderID}</Typography>
-                    <Typography>Status :{x.OrderStatus}</Typography>
-                    <Typography>place on: {x.OrderDate} </Typography>
-                    <Typography>billing amount :{x.TotalAmount} </Typography>
-                    <Typography>Pay by :{x.PaymentMethod} </Typography>
-                    <Typography>{x.PromoCode?(`promocode:${x.PromoCode}`):("")} </Typography>
-                    <Typography>Transaction:{x.TransactionID}</Typography>
-                    ------------------------------------------------------------
-                    {
-                      JSON.parse(x.Items).map((y)=>{
-                        console.log(y)
-return(<>
-  <Typography>Item :{y.title}</Typography>
-  <Typography>Id :{y.id}</Typography>
-  <Typography>Price :{y.price}</Typography>
-  <Typography>Category :{y.subCategory}</Typography>
-  <Typography>Range :{y.selectedQuantity.quantity}{y.selectedQuantity.unit}</Typography> 
-  <Typography>Quantity :{y.quantity}</Typography>
-
-
-</>)
-                 })
-                                          }
-                </Card>
-                    </>)
-                  })}
-                
-          
-              </Grid>
-            </CardContent>
-          </Card>
-        </Grid>
+        <Grid lg={6.5} sx={{display:"flex",flexDirection:'column',width:'100%',padding:'13px 0px'}}> 
         <Grid  item xs={12} sm={6} md={5.5} lg={12}>
           <Card sx={{  height: {xs:"auto",md:"45vh",sm:"45vh",lg:'45vh'}, boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
             <CardContent>
@@ -204,6 +161,59 @@ return(<>
             </CardContent>
           </Card>
         </Grid>
+        </Grid>
+        <Grid  item xs={12} sm={12} md={12} lg={11} sx={{marginBottom:"20px"}}>
+          <Card sx={{  height: {xs:"auto",md:"85vh",sm:"85vh",lg:'85vh'}, boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
+            <CardContent>
+              <Typography variant="h5" component="h2" align="center" justifyContent='center'>
+                Order Details <DetailsIcon style={{fontSize:'30px'}}/>
+              </Typography>
+              <Grid sx={{height:'100%',height:'75vh',overflowY:'auto'}} >
+                {
+                  orders.map((x)=>{
+                    console.log(JSON.parse(x.ShippingAddress))
+                    let Address=JSON.parse(x.ShippingAddress)
+                    return(<>
+                <Card xs={12} sm={12} md={12} lg={12}  sx={{padding:'20px',height:'auto',gap:'20px',margin:'10px 0px',fontFamily:'Tahoma',boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',padding:'20px',display:'flex'}} >
+                    <Card xs={12} sm={4} md={4} lg={4}   sx={{width:"35%",height:'380px',boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',display:"flex",justifyContent:'center',alignItems:'center',flexDirection:'column'}}>
+                     <Grid sx={{fontFamily:"monospace"}}>                      
+                    <Typography sx={{fontSize:'18px',marginTop:'10px'}}  >OrderID:{x.OrderID}</Typography>
+                    <Typography>Status :{x.OrderStatus}</Typography>
+                    <Typography>place on: {x.OrderDate} </Typography>
+                    <Typography>billing amount :{x.TotalAmount} </Typography>
+                    <Typography>Pay by :{x.PaymentMethod} </Typography>
+                    <Typography>{x.PromoCode?(`promocode:${x.PromoCode}`):("")} </Typography>
+                    <Typography>Transaction:{x.TransactionID}</Typography>
+                    </Grid>
+                    <Grid sx={{color:"grey"}}>  ......................shipping details.....................</Grid> 
+                    <Typography sx={{textAlign:'start',width:'80%',fontFamily:"Trebuchet MS",fontSize:'15px'}}>{Address.mobile},</Typography>
+                    <Typography sx={{textAlign:'start',width:'80%',fontFamily:"Trebuchet MS",fontSize:'16px'}}>{Address.street},</Typography>
+                    <Typography sx={{textAlign:'start',width:'80%',fontFamily:"Trebuchet MS",fontSize:'16px'}}>{Address.village},</Typography>
+                    <Typography sx={{width:'80%',fontFamily:"Trebuchet MS",fontSize:'16px'}}>{Address.city},{Address.country}</Typography>
+                    <Grid sx={{color:"grey"}}>-------------------------------------------------------</Grid> 
+                    </Card>
+     <Grid container md={9} sm={9} lg={9} columnGap={2} rowGap={2} sx={{boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)', padding: "10px", display: "flex", justifyContent: 'center', alignItems: 'center' }}>
+      {JSON.parse(x.Items).map((y, index) => (
+        <Grid key={index} item xs={12} sm={3.8} md={3.8} lg={3.8} sx={{}}>
+          <Card sx={{ display: "flex", justifyContent: 'center', flexDirection: 'column', padding: "10px", height: "200px" }}>
+            <Typography sx={{ fontFamily: 'Luminari', fontSize: "20px" }}>Item: {y.title}</Typography>
+            <Typography sx={{ fontFamily: 'Luminari', fontSize: "18px" }}>Id: {y.id}</Typography>
+            <Typography sx={{ fontFamily: 'monospace', fontSize: "18px" }}>Price: &#8377;{y.price}</Typography>
+            <Typography sx={{ fontFamily: "sans-serif", fontSize: "17px" }}>Category: {y.subCategory}</Typography>
+            <Typography sx={{ fontFamily: "sans-serif", fontSize: "17px" }}>Range: {y.selectedQuantity.quantity}{y.selectedQuantity.unit}</Typography>
+            <Typography sx={{ fontFamily: "sans-serif", fontSize: "17px" }}>Quantity: {y.quantity}</Typography>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
+                </Card>
+                    </>)
+                  })}
+                
+          
+              </Grid>
+            </CardContent>
+          </Card>
         </Grid>
 
       </Grid>}

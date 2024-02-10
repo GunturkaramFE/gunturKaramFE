@@ -23,7 +23,7 @@ const DeletePop = ({ onConfirm, onCancel }) => {
             <Grid item>
               <h2 style={{ color: 'black' }}>Are you sure want to delete this item?</h2>
             </Grid>
-            <Grid item>
+            <Grid item sx={{width:"100%",display:'flex',justifyContent:'space-evenly'}}>
               <Button variant="contained" onClick={handleDeleteClick}>Yes, Remove</Button>
               <Button
                 variant="contained"
