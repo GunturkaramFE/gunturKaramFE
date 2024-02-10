@@ -182,7 +182,8 @@ const AlluserDetails = ({ user = defaultUser }) => {
                     <Typography>place on: {x.OrderDate} </Typography>
                     <Typography>billing amount :{x.TotalAmount} </Typography>
                     <Typography>Pay by :{x.PaymentMethod} </Typography>
-                    <Typography>{x.PromoCode?(promocode:${x.PromoCode}):("")} </Typography>
+                    <Typography>{x.PromoCode ? `promocode: ${x.PromoCode}` : ""}</Typography>
+
                     <Typography>Transaction:{x.TransactionID}</Typography>
                     </Grid>
                     <Grid sx={{color:"grey"}}>  ......................shipping details.....................</Grid> 
@@ -222,4 +223,4 @@ const AlluserDetails = ({ user = defaultUser }) => {
   )
 }
 
-export default AlluserDetails
+export default  AlluserDetails
