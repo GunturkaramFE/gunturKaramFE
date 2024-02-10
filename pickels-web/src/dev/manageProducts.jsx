@@ -82,6 +82,7 @@ const ManageProducts = () => {
       // Handle error
     } finally {
       setDeletepop({ ...deletepop, [productId]: false });
+      window.location.reload();
     }
   };
 
