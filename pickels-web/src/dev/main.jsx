@@ -73,7 +73,7 @@ const MainMenu = () => {
         </IconButton>
       </div>
 
-      <div style={{ paddingTop: '10vh' }}>{/* Add your content here */}</div>
+      <div style={{ paddingTop: '5vh' }}>{/* Add your content here */}</div>
 
       <Drawer
         anchor="left"

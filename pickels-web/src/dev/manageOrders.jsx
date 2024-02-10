@@ -23,6 +23,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useNavigate } from "react-router-dom";
+import ViewOrderDetails from "./ViewOrderDetails";
 
 const ManageOrders = () => {
   const navigate=useNavigate()
@@ -38,6 +39,10 @@ const ManageOrders = () => {
   const [selectedStatus, setSelectedStatus] = useState("Placed");
   const [loading, setLoading] = useState(false);
   const [updating, setUpdating] = useState({});
+  const[isSearching,setIsSearching]=useState(false)
+  const[searchtext,setSearchText]=useState('')
+  const[orderDetails,setOrderDetails]=useState()
+  const[buttonLoading,setButtonLoading]=useState(false)
   const [counts, setCounts] = useState({
     Placed: 0,
     Confirmed: 0,
@@ -107,6 +112,10 @@ const ManageOrders = () => {
       return "Invalid Date";
     }
   }
+  const handleOpenDetails = (event, orderId) => {
+    event.stopPropagation();
+    navigate(`/Orderdetails/${orderId}`, { replace: false });
+  }
   const HandleButtonClick = async (event, status, orderId) => {
     event.stopPropagation();
     setUpdating({ ...updating, [orderId]: true }); 
@@ -143,7 +152,29 @@ orderDetails.push({ date: new Date().toISOString(), status:itemStatus });
       setTrigger(!trigger)
     }
   };
+const HandleSearchOrder=async()=>{
+if(!searchtext){
+  return 
+}
 
+  setButtonLoading(true)
+try {
+  const response = await api.post('/user/order/get',{
+    filter: {
+  OrderID:searchtext
+  }
+
+})
+if(response.success){
+  setOrderDetails(response.orders)
+}
+  
+} catch (error) {
+ 
+}finally{
+  setIsSearching(true)
+  setButtonLoading(false)
+}}
   const handleEndDateChange = (event) => {
     setEndDate(event.target.value);
   };
@@ -151,7 +182,9 @@ orderDetails.push({ date: new Date().toISOString(), status:itemStatus });
   const handleApplyFilter = () => {
     setTrigger(!trigger);
   };
-
+const HandleCloseDetails=()=>{
+  setIsSearching(false)
+}
   const handleCardClick = (title) => {
     if (title !== "Manage") {
       setSelectedStatus(title);
@@ -165,7 +198,7 @@ orderDetails.push({ date: new Date().toISOString(), status:itemStatus });
   return (
     <>
       <MainMenu />
-      {loading ? (
+     {!isSearching?<>{loading ? (
         <div
           style={{
             width: "100%",
@@ -179,6 +212,18 @@ orderDetails.push({ date: new Date().toISOString(), status:itemStatus });
         </div>
       ) : (
         <>
+        <div style={{width:"100%",minHeight:"5vh",backgroundColor:"grey",display:"flex",justifyContent:"end",}}>
+        <TextField id="outlined-search"   style={{ height: "10%" }} label="Order Id" type="search" onChange={(e)=>setSearchText(e.target.value)}/>       
+        <Button
+      variant="contained"
+      disabled={buttonLoading}
+      onClick={HandleSearchOrder}
+      style={{height:"20%"}}
+    >
+      {buttonLoading && <CircularProgress size={24}  />}
+      {!buttonLoading&&"Search"}
+    </Button>
+        </div>
           <Grid container spacing={2} justifyContent="center">
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }} md={4}>
               <TextField
@@ -318,7 +363,7 @@ orderDetails.push({ date: new Date().toISOString(), status:itemStatus });
                             </Grid>
 
                           </AccordionSummary>
-                          <AccordionDetails>
+                          <AccordionDetails  onClick={(event) => handleOpenDetails(event,order.OrderID)}>
                             {parseItems(order.Items).map((item, itemIndex) => (
                               <Card
                                 key={`${index}-${itemIndex}`}
@@ -363,7 +408,7 @@ orderDetails.push({ date: new Date().toISOString(), status:itemStatus });
             </Grid>
           </Grid>
         </>
-      )}
+      )}</>:<><ViewOrderDetails data={orderDetails} HandleClose={HandleCloseDetails}/></>}
     </>
   );
 };

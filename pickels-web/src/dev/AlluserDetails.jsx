@@ -141,7 +141,7 @@ const AlluserDetails = ({ user = defaultUser }) => {
               </Typography>
               <Grid sx={{height:'100%',height:'35vh',overflowY:'auto'}} >
                 {
-                  orders.map((x)=>{
+                  orders.map((x)=>{  console.log(x,JSON.parse(x.ShippingAddress))
                     return(<>
                 <Card sx={{padding:'20px',margin:'10px 0px',fontFamily:'Tahoma'}} >
                 <Typography sx={{fontSize:'18px'}}  >OrderID:{x.OrderID}</Typography>
@@ -154,7 +154,7 @@ const AlluserDetails = ({ user = defaultUser }) => {
                     ------------------------------------------------------------
                     {
                       JSON.parse(x.Items).map((y)=>{
-                        console.log(y)
+                      
 return(<>
   <Typography>Item :{y.title}</Typography>
   <Typography>Id :{y.id}</Typography>

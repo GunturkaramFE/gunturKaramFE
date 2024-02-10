@@ -23,10 +23,10 @@ const authenticatedRoutes = [
  "/user/getUser",
  '/user/myorders',
  "/user/getorder",
+ "/user/order/get",
  "/user/order/update",
  "/user/requestUserName",
  "/user/getShippingAddress",
- "/user/Order/get",
  "/user/usersdata",
  "/user/get-items",
  "/user/delete-Item"
