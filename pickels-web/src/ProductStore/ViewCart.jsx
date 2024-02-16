@@ -196,10 +196,13 @@ navigate('/Confirm-order/',{ replace: true })
                             <Grid item xs={2}>
                               <img src={item.url} alt="Cotton T-shirt" style={{ width: '60px' }} />
                             </Grid>
-                            <Grid item xs={5}>
-                              <Typography variant="h6" gutterBottom>
+                            <Grid item xs={3.5}>
+                              <Grid sx={{height:{xs:"auto",lg:"auto",md:'auto',sm:"auto"}}}>
+                              <Typography variant="h6" sx={{fontSize:{xs:"14px",sm:"20px",lg:'20px'}}}>
                                 {item.title}
                               </Typography>
+                              </Grid>
+                              
                               <Typography variant="body2" color="textSecondary">
                                 <span className="text-muted">Item: </span>{item.subCategory}{' '}                            
                               </Typography>
@@ -234,8 +237,8 @@ navigate('/Confirm-order/',{ replace: true })
                                 <i className="fas fa-plus">+</i>
                               </button>
                             </Grid>
-                            <Grid item xs={1} container justifyContent="flex-end">
-                              <Typography variant="h6" gutterBottom>
+                            <Grid item xs={2.5} container sx={{display:'flex',alignItems:"center",justifyContent:'center'}}>
+                              <Typography variant="h6" sx={{fontSize:{xs:"14px",sm:'20px',md:'20px',lg:'20px'}}}>
                                 &#x20B9;{item.price*item.quantity}
                               </Typography>
                             </Grid>
