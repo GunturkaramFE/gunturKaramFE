@@ -3,10 +3,12 @@ import logo from '../asserts/logo.png';
 import api from '../api';
 import { isValidPassword } from '../helpers/validations';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Alert } from '@mui/material';
 
 const Verification = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [error, setError] = useState('');
   const queryParams = new URLSearchParams(useLocation().search);
   const token = queryParams.get('token');
@@ -38,10 +40,15 @@ if(!token){
     const response = await api.post('/user/verify', payload);
 
       if (response.success === true) {
-            alert(response.msg)
-        
+        setSuccessMessage(response.msg);
+        setTimeout(() => {
+          navigate('/');
+        }, 1000);
       } else if (response.success === false) {
-        alert(response.msg)
+          setSuccessMessage(response.msg);
+          setTimeout(() => {
+            navigate('/');
+          }, 1000);
       } else {
         setError('Something went wrong');
       }
@@ -54,12 +61,11 @@ if(!token){
   return (
     <>
       <div style={{ width: '100%', height: '100%' }}>
-        <div className="card border p-md-1 mx-md-3 shadow">
+       {successMessage?(<Alert severity="success">{successMessage}</Alert>):( <div className="card border p-md-1 mx-md-3 shadow">
           <div className="card-body">
             <div style={{ width: '100%', height: '20%', display: 'flex', justifyContent: 'center' }}>
               <img src={logo} alt="" style={{ width: '200px', objectFit: 'contain' }} />
-            </div>
-            <form>
+            </div> <form>
               <div className="form-outline mb-4">
                 <label className="form-label" htmlFor="form2Example22">
                   Create Password
@@ -102,7 +108,8 @@ if(!token){
               </div>
             </form>
           </div>
-        </div>
+        </div>)}
+           
       </div>
     </>
   );

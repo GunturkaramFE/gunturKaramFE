@@ -128,11 +128,11 @@ const PlaceOrder = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
+        height: "auto",
         background: "#f0f0f0", // Matched background color
       }}
     >
-      <Card style={{ maxWidth: 800, width: "100%", padding: 20 }}>
+      <Card style={{ maxWidth: 800, width: "100%", padding: 20,margin:"10px 0px" }}>
         <CardContent>
           <div
             style={{

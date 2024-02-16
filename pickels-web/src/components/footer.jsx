@@ -44,7 +44,7 @@ const Footer = () => {
                   Call Us
                 </Typography>
                 <Typography variant="subtitle1" className="fw-semibold text-white">
-                  7075026403
+                  +91 7339793979
                 </Typography>
               </Box>
             </Box>
@@ -195,7 +195,7 @@ const Footer = () => {
       <IconButton href="#" className="btn btn-outline-light mx-1" style={{ color: 'white' }}>
         <FacebookIcon />
       </IconButton>
-      <IconButton href="#" className="btn btn-outline-light mx-1" style={{ color: 'white' }}>
+      <IconButton href="https://www.instagram.com/sathyasoftechin?igsh=MWM3azNubWlwbjhobw==" className="btn btn-outline-light mx-1" style={{ color: 'white' }}>
         <InstagramIcon />
       </IconButton>
     </div>

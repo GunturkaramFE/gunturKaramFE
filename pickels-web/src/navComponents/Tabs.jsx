@@ -59,7 +59,7 @@ export default function BasicTabs({closeDrawer}) {
         <Login closeDrawer={closeDrawer}/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-       <Signup/>
+       <Signup  closeDrawer={closeDrawer} />
       </CustomTabPanel>     
     </Box>
   );

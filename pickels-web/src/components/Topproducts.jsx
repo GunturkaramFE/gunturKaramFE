@@ -36,9 +36,9 @@ const Bestseller = () => {
       </Grid>
       <Grid className="Best-seller-inner-card"  sx={{height:{xs:'auto',sm:'50vh',md:'50vh',lg:'50vh'},gap:{xs:"60px",sm:"0px",md:"0px"}}}>
         {items.map((x) => (
-          <Grid  className="item-card" key={x.id} sx={{width:{xs:'80%',sm:"15%",md:"15%"},marginTop:{xs:"35px"}}}>
+          <Grid  className="item-card" key={x.id} sx={{width:{xs:'80%',sm:"15%",md:"15%"},marginTop:{xs:"50px"}}}>
             <img src={x.url} alt="" />
-     <Card sx={{ height: '80%', width: '100%' }}>
+     <Card sx={{ height:{xs:"85%",sm:"90%",md:"90%",lg:'90%'}, width: '100%' }}>
     
     <Grid className="card-body class-body-text-container" sx={{display:'flex',flexDirection:'column'}}>
       <Grid sx={{height:"80px"}}>

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { parseProduct, parseShoppingData } from '../helpers/parser';
 import { setShoppingData } from '../store/shoppingSlicer';
 import api from '../api';
+import { Grid, Typography, Button, Card, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 const AddToCart = ({ data,fun }) => {
 
@@ -75,134 +76,92 @@ const HandleAddToCart= async()=>{
 
   cartitem.cartId=parsedData.cart.length+1;
      let jsonobj=JSON.stringify([cartitem,...parsedData.cart])  
-       await updateCart(jsonobj)
-
-  
+       await updateCart(jsonobj)  
 }
   return (
     <>
-      {data && (
-        <div style={{ width: '100%', height: '100%' }}>
-          <div className="card-body p-md-1  rounded-3">
-            <p className="lead fw-normal mb-2 text-md-lg text-lg-xl text-center">ADD TO CART</p>
-            <div style={{ width: '100%', height: '100%' }}>
-              <div style={{ height: '100%', width: '100%' }}>
-                <div
-                  className="card rounded-3 mb-4 mt-4 "
-                  style={{ boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}
-                >
-                  <div className="card-body ">
-                    <div className="row d-flex  rounded-3" style={{ width: '100%', height: 'auto' }}>
-                      <div className="col-md-4 col-lg-4 " style={{ width: '30%', height: 'auto' }}>
-                        <img
-                          style={{ width: '100px' }}
-                          src={data.url}
-                          className="img-fluid rounded-3"
-                          alt="Product"
-                        />
-                      </div>
-                      <div
-                        className="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 d-flex col"
-                        style={{ width: '40%', display: 'flex', flexDirection: 'column', gap: '15px' }}
-                      >
-                        <span className="lead fw-normal mb-2 text-md-lg text-lg-xl" style={{ fontSize: '18px' }}>
-                          {data.title}
-                        </span>
-                        <div className="select-container">
-                          <select
-                            className="form-select form-select-sm"
-                            aria-label="Small select example"
-                            onChange={(e) => setSelectedQuantity(parseInt(e.target.value))}
-                            value={selectedQuantity}
-                          >
-                            {data.pricelist.map((x, y) => (
-                              <option key={y} value={y}>
-                                {x.price + ' --- ' + x.quantity}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                        <p style={{ display: 'flex', flexDirection: 'column' }}>
-                          <span className="text-muted">{priceperkg.toFixed(2)}/KG</span>
-                          <span className="text-muted">category: {data.subCategory}</span>
-                        </p>
-                      </div>
-                      <div
-                        className="col-md-4 col-lg-4 col-xl-4 d-flex col"
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          width: '30%',
-                          justifyContent: 'end',
-                        }}
-                      >
-                        <div className="col-md-3 col-lg-3 col-xl-2 d-flex " style={{ alignItems: 'center', width: '100%' }}>
-                          <button
-                            type="button"
-                            className="btn btn-link px-2"
-                            onClick={(e) => { handleDecrease(e) }}
-                            style={{ textDecoration: 'none' }}
-                          >
-                            <i className="fas fa-minus">-</i>
-                          </button>
+    {data && (
+      <Grid item xs={12} sx={{height:'auto',display:'flex',justifyContent:'center',alignItems:'center'}} >        
+            <Grid  spacing={2} height='auto'>
+              <Typography variant="h5" align="center">ADD TO CART</Typography>
+               <Card item xs={11} sx={{padding:'10px',width:'100%',margin:"10px 0px", boxShadow: '0 0 6px rgba(0, 0, 0, 0.1)' }}>
+                <Grid container justifyContent="center">
+                  <Grid item xs={4} md={6} lg={4} sx={{display:'flex',justifyContent:'center',align:'center'}}>
+                    <img
+                      style={{ width: '100%', height: '150px', objectFit: 'contain' }}
+                      src={data.url}
+                      alt="Product"
+                    />
+                  </Grid>
+                  <Grid item xs={8} md={8} lg={8}>
+                    <Grid sx={{height:{xs:"70px",sm:'60px',md:"60px",lg:"60px"}}}>
+                    <Typography variant="h6" align="start">{data.title}</Typography>
+                    </Grid>
+                    <Grid sx={{display:'flex'}}>
+                    <Grid lg={6} sx={{display:'flex',flexDirection:'column'}}>
+                    <select
+                      className="form-select form-select-sm"
+                      aria-label="Small select example"
+                      onChange={(e) => setSelectedQuantity(parseInt(e.target.value))}
+                      value={selectedQuantity}
+                    >
+                      {data.pricelist.map((x, y) => (
+                        <option key={y} value={y}>
+                          {x.price + ' --- ' + x.quantity}
+                        </option>
+                      ))}
+                    </select>
+                    <Typography variant="body2" align="start" gutterBottom sx={{marginTop:'10px',color:'grey',fontSize:{xs:"12px",sm:"15px",md:"15px",lg:'15px'}}}>
+                      {/* <span className="text-muted">{priceperkg.toFixed(2)}/KG</span>
+                      <br /> */}
+                      category: {data.subCategory}
+                    </Typography>
+                    </Grid>
+                    <Grid  lg={6}>
+                    <Grid container alignItems="center" justifyContent="center" sx={{display:'flex'}}>
+                      <Box  style={{  width: '30px',display:'flex',justifyContent:'center',alignItems:'center',cursor:'pointer' }} onClick={handleDecrease}><i className="fas fa-minus">-</i></Box>
+                      <input
+                        id="form1"
+                        min="1"
+                        name="quantity"
+                        value={count}
+                        className="form-control form-control-sm"
+                        style={{ height: '20px',width:"40%" }}
+                      />
+                      <Box style={{  width: '30px',display:'flex',justifyContent:'center',alignItems:'center' ,cursor:'pointer'}} onClick={handleIncrease}><i className="fas fa-plus"> +</i></Box>
+                    </Grid>
+                    <Typography variant="h6" align="center" sx={{marginTop:"10px"}}>
+                    <span>&#8377;</span>  {selectedPrice * count}
+                    </Typography>
+                  </Grid>
+                    </Grid>
+                   
 
-                          <input
-                            id="form1"
-                            min="1"
-                            name="quantity"
-                            value={count}
-                            className="form-control form-control-sm"
-                            style={{ height: '20px' }}
-                          />
-                          <button
-                            type="button"
-                            className="btn btn-link px-2"
-                            onClick={(e) => handleIncrease(e)}
-                            style={{ textDecoration: 'none' }}
-                          >
-                            <i className="fas fa-plus"> +</i>
-                          </button>
-
-
-                        </div>
-                        <p style={{ display: 'flex', flexDirection: 'column' }}>
-                          <span className="lead fw-normal mb-1" style={{ fontSize: '18px' }}>
-                            $ {selectedPrice * count}
-                          </span>
-                        </p>
-
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-                <h2 style={{color:'red'}}>{err}</h2>
-                <div style={{ display: 'flex', width: '100%', justifyContent: 'space-evenly', paddingTop: '20px' }}>
-               <button
-    className="btn btn-success btn-block "
-    type="button"
-    onClick={() => {
-        window.open(`/ViewProduct/${data.id}`, '_blank');
-    }}
-    style={{ backgroundColor: 'green', color: 'white', width: '35%' }}
->
-    View
-</button>
-                  <button
-                    className="btn btn-success btn-block "
-                    type="button"
-                    style={{ backgroundColor: 'green', color: 'white', width: '35%' }} 
-                    onClick={()=>{!isAdded&&HandleAddToCart()}}
-                    >                    
-                    {!isAdded?"ADD":"Added"}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
+                  </Grid>
+                 
+                </Grid>
+               </Card>
+              <Typography variant="h6" align="center" style={{ color: 'red' }}>{err}</Typography>
+  <Grid container xs={12} lg={12}  sx={{ width:'100%',display:'flex',justifyContent:'space-evenly',alignItems:'center' ,padding:'10px 0px'}}>
+    <Button
+      variant="contained"
+      onClick={() => { window.open(`/ViewProduct/${data.id}`, '_blank'); }}
+      style={{ backgroundColor: 'green', color: 'white', width: '30%' }}
+    >
+      View
+    </Button>
+    <Button
+      variant="contained"
+      onClick={() => { !isAdded && HandleAddToCart(); }}
+      style={{ backgroundColor: 'green', color: 'white', width: '30%' }}
+    >
+      {!isAdded ? "ADD" : "Added"}
+    </Button>
+  </Grid>
+  </Grid>
+          </Grid>
+    )}
+  </>
   );
 };
 

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { isValidEmail } from '../helpers/validations';
 import api from '../api';
+import { Alert } from '@mui/material';
 
-const Signup = () => {
+const Signup = ({closeDrawer}) => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
-
+  const [showMessage, setShowMessage] = useState(false);
   const handleSignup = () => {
        if (!isValidEmail(email)) {
       setError('Invalid email format');
@@ -20,8 +21,13 @@ const Signup = () => {
     api.post('/user/register', payload)
     .then(response => {
        if (response.success==true) {
-          alert('verification-link-sent')       
-      }else if(response.success==true&&response.error=='User already exists'){
+        setShowMessage(true);
+        setTimeout(() => {      
+          setShowMessage(false);
+          closeDrawer() 
+        }, 2000);  
+          
+      }else if(response.success==false&&response.error=='User already exists'){
         setError('user-already exist');
       }else{
         setError("something went wroung")
@@ -71,9 +77,15 @@ const Signup = () => {
     SignUp
     </button>  
     </div>
-         
 
         </form>
+        <div>
+            {showMessage && (
+              <Alert variant="filled" severity="success">
+                Verification link sent
+              </Alert>
+            )}
+          </div>
       </div>
     </div>
   );
