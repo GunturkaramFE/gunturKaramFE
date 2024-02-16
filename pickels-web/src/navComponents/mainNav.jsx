@@ -6,6 +6,7 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Grid from '@mui/material/Grid';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import LoginIcon from '@mui/icons-material/Login';
+import HomeIcon from '@mui/icons-material/Home';
 import Drawer from '@mui/material/Drawer';
 import Divider from '@mui/material/Divider';
 import MenuIcon from '@mui/icons-material/Menu'; // Import MenuIcon
@@ -21,10 +22,12 @@ import BasicTabs from './Tabs';
 import { useDispatch, useSelector } from 'react-redux'; // Assuming you have shoppingData in redux state
 import { parseShoppingData } from '../helpers/parser';
 import Logout from './Logout';
+import LocalMallIcon from '@mui/icons-material/LocalMall';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import { clearShoppingData } from '../store/shoppingSlicer';
 import {drawerClose, drawerToggle, draweropen} from '../store/lsDrawer';
 import { PowerOffOutlined } from '@mui/icons-material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 type Anchor = 'right';
 
 const NavBar = () => {
@@ -193,7 +196,7 @@ const handleSmFormBack=()=>{
               </Grid>
               <Grid>
                 <Box>
-                                  <Box style={{ position: 'relative' }}>
+                  <Box style={{ position: 'relative' }}>
                     {navData?.isuser ? (<>
                       <PersonIcon onClick={handleLogout} /></>
                     ) : (
@@ -212,7 +215,7 @@ const handleSmFormBack=()=>{
                       )}
                     </Box>
                   </Box>
-                  </Box>
+                </Box>
               </Grid>
              
             </>
@@ -248,17 +251,28 @@ const handleSmFormBack=()=>{
         <>
         <Grid sx={{width:'300px'}}>
           <Grid sx={{width:'100%',display:'flex',alignItems:'center',justifyContent:'center',height:"100px"}}>
-          <Avatar size='large' >N</Avatar>
+      <Avatar size="large">
+      {user.name ? user.name.charAt(0) : ''}
+     </Avatar>
           </Grid>
-          <Grid onClick={() => navigate('/WishlistProduct')} color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',borderTop:'1px solid #DADFDE',borderBottom:'1px solid #DADFDE'}}>
+          <Grid  color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',borderTop:'1px solid #DADFDE',borderBottom:'1px solid #DADFDE'}}>
+          <HomeIcon style={{color:'grey'}} /> <Typography> Home </Typography> 
+          </Grid>
+          <Grid onClick={() => navigate('/WishlistProduct')} color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',borderBottom:'1px solid #DADFDE'}}>
             <FavoriteBorderIcon style={{color:'red'}} /> <Typography> Whislist  ({navData?.wishlist?.length})</Typography> 
           </Grid>
           <Grid onClick={() => navigate('/viewcart')}  color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',borderBottom:'1px solid #DADFDE'}}>
-          <ShoppingCartIcon /> <Typography> AddtoCart  ({navData?.wishlist?.length})</Typography> 
+          <ShoppingCartIcon style={{color:'grey'}} /> <Typography> AddtoCart  ({navData?.wishlist?.length})</Typography> 
+          </Grid>
+          <Grid onClick={() => navigate('/MyOrders')}  color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',borderBottom:'1px solid #DADFDE'}}>
+          <LocalMallIcon style={{color:'grey'}} /> <Typography> My Orders</Typography> 
+          </Grid>
+          <Grid onClick={() => navigate('/view-profile')}  color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',borderBottom:'1px solid #DADFDE'}}>
+          <AccountCircleIcon style={{color:'grey'}} /> <Typography> My Profile </Typography> 
           </Grid>
           {navData?.isuser ? (
             <>
-              <Grid onClick={handleMobileLogout}  color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',marginTop:"667px",justifyContent:'center',alignItems:'center',backgroundColor:'#C0C0C0'}}>
+              <Grid onClick={handleMobileLogout}  color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',marginTop:"530px",justifyContent:'center',alignItems:'center',backgroundColor:'#32CD32'}}>
               <Button sx={{color:"white"}} > LOGOUT</Button><ExitToAppIcon style={{color:'white'}}/> 
               </Grid>
             </>
