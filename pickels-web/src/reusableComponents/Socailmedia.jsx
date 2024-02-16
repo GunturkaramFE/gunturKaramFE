@@ -1,20 +1,21 @@
 import { Grid } from '@mui/material'
 import React from 'react'
 import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import PinterestIcon from '@mui/icons-material/Pinterest';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import TelegramIcon from '@mui/icons-material/Telegram';
+import { Instagram, WhatsApp } from '@mui/icons-material';
 const Socailmedia = () => {
   return (
     <>
-       <Grid sx={{width:'100%',display:'flex',color:'grey'}}>
+        <Grid sx={{ width: '100%', display: 'flex', color: 'grey' }}>
+      <a href="https://www.facebook.com">
         <FacebookIcon />
-        <TwitterIcon/>
-        <PinterestIcon/>
-        <LinkedInIcon/>
-        <TelegramIcon/>
-       </Grid>
+      </a>
+      <a href="https://web.whatsapp.com">
+        <WhatsApp />
+      </a>
+      <a href="https://www.instagram.com/sathyasoftechin?igsh=MWM3azNubWlwbjhobw==">
+        <Instagram />
+      </a>
+    </Grid>
     </>
   )
 }
