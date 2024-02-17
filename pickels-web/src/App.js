@@ -27,6 +27,7 @@ import AdminDashBoard from './dev/AdminDashBoard';
 
 
 
+
 const ProductLayout = ({ children }) => {
   return (
     <>
@@ -71,7 +72,7 @@ function App() {
             <Route path='/OrderStatus/:Id' element={user.id ?<OrderConfirm/>: <Navigate to="/"/>} />
             <Route path='/Confirm-order' element={user.id ?<PlaceOrder/>: <Navigate to="/"/>} />
             <Route path='/Alertpage' element={<Alertpage/>} />
-            <Route path='/view-profile' element={user.id ?<EditProfile />:<Navigate to="/"/>} />
+                 <Route path='/view-profile' element={user.id ?<EditProfile />:<Navigate to="/"/>} />
             {/* Admin Routes */} 
             {user.type === 'admin' ? ( 
               <Route

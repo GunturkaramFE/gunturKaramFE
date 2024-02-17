@@ -81,6 +81,14 @@ const NavBar = () => {
     setNavData(parseShoppingData(shoppingData));
   }, [shoppingData]);
 
+  const handleNavigation = (route) => {
+    if (user.id) {
+        navigate(route);
+    } else {    
+      handleSmLogin(true)   
+      toggleDrawer('right', true)
+        }
+};
 
   const toggleDrawer = (anchor: Anchor, open: boolean) => () => {
     if(open){
@@ -252,24 +260,29 @@ const handleSmFormBack=()=>{
         <Grid sx={{width:'300px'}}>
           <Grid sx={{width:'100%',display:'flex',alignItems:'center',justifyContent:'center',height:"100px"}}>
       <Avatar size="large">
-      {user.name ? user.name.charAt(0) : ''}
+      {user.name ? user.name.charAt(0) : 'U'}
      </Avatar>
           </Grid>
-          <Grid  color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',borderTop:'1px solid #DADFDE',borderBottom:'1px solid #DADFDE'}}>
+          <Grid  onClick={()=>{
+              navigate('/')
+              handleSmFormBack()
+          } } color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',borderTop:'1px solid #DADFDE',borderBottom:'1px solid #DADFDE'}}>
           <HomeIcon style={{color:'grey'}} /> <Typography> Home </Typography> 
           </Grid>
-          <Grid onClick={() => navigate('/WishlistProduct')} color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',borderBottom:'1px solid #DADFDE'}}>
-            <FavoriteBorderIcon style={{color:'red'}} /> <Typography> Whislist  ({navData?.wishlist?.length})</Typography> 
-          </Grid>
-          <Grid onClick={() => navigate('/viewcart')}  color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',borderBottom:'1px solid #DADFDE'}}>
-          <ShoppingCartIcon style={{color:'grey'}} /> <Typography> AddtoCart  ({navData?.wishlist?.length})</Typography> 
-          </Grid>
-          <Grid onClick={() => navigate('/MyOrders')}  color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',borderBottom:'1px solid #DADFDE'}}>
-          <LocalMallIcon style={{color:'grey'}} /> <Typography> My Orders</Typography> 
-          </Grid>
-          <Grid onClick={() => navigate('/view-profile')}  color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',borderBottom:'1px solid #DADFDE'}}>
+          <Grid onClick={() => handleNavigation('/view-profile')}  color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',borderBottom:'1px solid #DADFDE'}}>
           <AccountCircleIcon style={{color:'grey'}} /> <Typography> My Profile </Typography> 
           </Grid>
+          <Grid onClick={() => handleNavigation('/MyOrders')}  color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',borderBottom:'1px solid #DADFDE'}}>
+          <LocalMallIcon style={{color:'grey'}} /> <Typography> My Orders</Typography> 
+          </Grid>
+          <Grid onClick={() => handleNavigation('/WishlistProduct')} color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',borderBottom:'1px solid #DADFDE'}}>
+            <FavoriteBorderIcon style={{color:'red'}} /> <Typography> Whislist  ({navData?.wishlist?.length})</Typography> 
+          </Grid>
+          <Grid onClick={() => handleNavigation('/viewcart')}  color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',borderBottom:'1px solid #DADFDE'}}>
+          <ShoppingCartIcon style={{color:'grey'}} /> <Typography> AddtoCart  ({navData?.wishlist?.length})</Typography> 
+          </Grid>
+         
+          
           {navData?.isuser ? (
             <>
               <Grid onClick={handleMobileLogout}  color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',marginTop:"530px",justifyContent:'center',alignItems:'center',backgroundColor:'#32CD32'}}>
