@@ -15,6 +15,7 @@ import {
   TextField,
   Button,
   CircularProgress,
+  OutlinedInput,
 } from "@mui/material";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import api from "../api";
@@ -212,18 +213,22 @@ const HandleCloseDetails=()=>{
         </div>
       ) : (
         <>
-        <div style={{width:"100%",minHeight:"5vh",backgroundColor:"grey",display:"flex",justifyContent:"end",}}>
-        <TextField id="outlined-search"   style={{ height: "10%" }} label="Order Id" type="search" onChange={(e)=>setSearchText(e.target.value)}/>       
-        <Button
-      variant="contained"
-      disabled={buttonLoading}
-      onClick={HandleSearchOrder}
-      style={{height:"20%"}}
-    >
-      {buttonLoading && <CircularProgress size={24}  />}
-      {!buttonLoading&&"Search"}
-    </Button>
-        </div>
+    <div style={{ width: "100%", height: "5vh", display: "flex", justifyContent: "end", marginBottom: '10px' }}>
+  <OutlinedInput
+    id="outlined-search"
+    placeholder="Order Id"
+    onChange={(e) => setSearchText(e.target.value)}
+    style={{ marginRight: '10px',height:"100%" }} 
+  />
+  <Button
+    variant="contained"
+    disabled={buttonLoading}
+    onClick={HandleSearchOrder}
+    style={{ height: "100%", borderRadius: 0 }} 
+  >
+    {buttonLoading ? <CircularProgress size={24} /> : "Search"}
+  </Button>
+</div>
           <Grid container spacing={2} justifyContent="center">
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }} md={4}>
               <TextField
@@ -336,13 +341,13 @@ const HandleCloseDetails=()=>{
                                 flexDirection: { xs: 'column', sm: 'row' },
                               }}
                             >
-                              <Typography sx={{ fontFamily: 'Gill Sans' }}>Order ID: {order.OrderID}</Typography>
+                              <Typography sx={{ fontFamily: 'Gill Sans', cursor: 'text' }}>Order ID: {order.OrderID}</Typography>
                               <Typography sx={{ fontFamily: 'Gill Sans' }}>Date: {formatDate(order.OrderDate)}</Typography>
                               <Grid sx={{ display: 'flex', justify: 'center' }}>
                                 <Typography sx={{ fontFamily: 'Verdana' }}>Status: </Typography>
                                 <Typography sx={{ fontFamily: 'Verdana', color: 'green' }}> {order.OrderStatus}</Typography>
                               </Grid>
-                              <VisibilityIcon onClick={()=>{navigate('/ItemData')}} style={{color:'green'}} />
+                              {/* <VisibilityIcon onClick={()=>{navigate('/ItemData')}} style={{color:'green'}} /> */}
                               {(order.OrderStatus === 'Placed' || order.OrderStatus === 'Confirmed' || order.OrderStatus === 'Shipped') && (
                                 <Button
                                   variant="contained"
