@@ -1,11 +1,12 @@
 import { Grid, Typography, Box, Button, useMediaQuery, useTheme } from '@mui/material';
 import React from 'react';
 import VerifiedIcon from '@mui/icons-material/Verified';
+import { useNavigate } from 'react-router-dom';
 
 const AboutContainer = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-
+  const navigate=useNavigate() 
   return (
     <>
       <Grid sx={{ display: 'flex', flexDirection: isSmallScreen?'column':'row', width: '100%' }}>
@@ -95,6 +96,9 @@ const AboutContainer = () => {
               sx={{ width:'120px', height: '40px',marginBottom:isSmallScreen?'30px':'0px', backgroundColor: '#5DB04D' }}
               variant="contained"
               color="success"
+              onClick={()=>{
+                navigate('/Knowmore')
+              }}
             >
              About us
             </Button>

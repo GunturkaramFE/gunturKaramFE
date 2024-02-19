@@ -27,9 +27,7 @@ const Landing_page=()=>{
     <div style={{width:"100%",height:"auto",marginTop:"5px"}}><Bestseller/></div>
     <div style={{width:"100%",height:"20vh"}}><ScrollingContent/></div>   
     <div style={{width:"100%",height:"auto"}}><Advertisement/></div>  
-    <div style={{width:"100%",height:'auto'}}>
-   {/* <BannerWrapper /> */}
-  
+    <div style={{width:"100%",height:'auto'}}>{/* <BannerWrapper /> */}  
    <Footer/> 
     </div>       
     </div>

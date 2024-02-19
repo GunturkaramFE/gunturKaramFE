@@ -24,6 +24,7 @@ import AlluserDetails from './dev/AlluserDetails';
 import { useSelector } from 'react-redux';
 import Alertpage from './reusableComponents/Alertpage';
 import AdminDashBoard from './dev/AdminDashBoard';
+import Knowmore from './navComponents/Knowmore';
 
 
 
@@ -62,9 +63,10 @@ function App() {
             <Route path="/verify" element={<VerifyDiv/>}/>
             <Route path="/ViewCart" element={user.id ?<ViewCart/> : <Navigate to="/" />} />
             <Route path="/Products" element={<ProductsContainer />} />
-             <Route path='/ViewProduct/:id' element={<View />} />
+            <Route path='/ViewProduct/:id' element={<View />} />
             <Route path='/WishlistProduct' element={user.id ?<Wishlist/> : <Navigate to="/"/>} />
             <Route path='/empty' element={<EmptyData/>} />
+            <Route path='/Knowmore' element={<Knowmore/>} />
             <Route path='/MyOrders' element={user.id ?<MyOrders/>: <Navigate to="/"/>} />
             <Route path='MyOrders/Orderdetails/:id' element={user.id ?<OrderStatus/>: <Navigate to="/"/>} />
             <Route path='/OrderConfirm' element={user.id ?<OrderConfirm/>: <Navigate to="/"/>} />
