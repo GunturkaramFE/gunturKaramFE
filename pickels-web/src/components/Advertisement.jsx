@@ -4,7 +4,7 @@ import LocalCafeIcon from '@mui/icons-material/LocalCafe';
 const Advertisement = () => {
   return (
     <>
-      <Grid sx={{width:"100%",height:{xs:"auto",sm:'83vh',md:"83vh",lg:'83vh'},backgroundColor:'#cceee4'}}>
+      <Grid sx={{width:"100%",height:{xs:"auto",sm:'83vh',md:"83vh",lg:'83vh'},backgroundColor:'#cceee4',paddingBottom:{xs:"20px",sm:"0px",md:"0px",lg:"0px"}}}>
        <Grid sx={{width:"100%",height:'60%',display:'flex',flexDirection:{xs:"column",sm:'row',md:'row',lg:'row'},alignItems:'center'}}>
             <Grid sx={{width:"40%",height:'90%',display:'flex',alignItems:'center'}}>
             <img style={{height:"200px",objectFit:'contain',width:'100%'}} src='https://www.bigbasket.com/media/uploads/p/xxl/40178290_4-delight-foods-andhra-special-avakayamango-pickle.jpg' alt='$/'/>

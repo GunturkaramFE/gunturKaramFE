@@ -36,9 +36,9 @@ const Footer = () => {
         <Grid container id="contact-details" xs={7}  sx={{marginTop:'10px'}}>
           <Grid item xs={12} sm={6}>
             <Box display="flex"  alignItems="center">
-              <Box className="rounded-circle bg-white p-3">
-                <PhoneIcon color="primary" />
-              </Box>
+            <Box className="rounded-circle bg-white p-3 ">
+             <PhoneIcon color="primary" />
+            </Box>
               <Box>
                 <Typography variant="h6" className="fw-bold text-white">
                   Call Us
@@ -179,8 +179,7 @@ const Footer = () => {
             </button>
           </div>
         </Box>
-        </Grid>
-       
+        </Grid>       
       </Grid>
 
       <Grid item xs={12} className="outer-div pb-4 vh-20">
