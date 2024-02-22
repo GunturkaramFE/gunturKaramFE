@@ -29,19 +29,19 @@ const PickleComponent = () => {
   ];
 
   return (
-    <Grid sx={{ height:{xs:'auto',sm:'20vh',md:"20vh",lg:'20vh'}, display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' ,backgroundColor:'#00A877'}}>
+    <Grid sx={{ height:{xs:'auto',sm:'22vh',md:"20vh",lg:'20vh'}, display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' ,backgroundColor:'#00A877'}}>
       <Grid item xs={12} sm={12} md={12} sx={{  display: 'flex', width: '90%', justifyContent: 'space-evenly' }}>
         {cardsData.map((card) => (
           <Grid sm={3} key={card.id}>
-            <Grid className="card" sx={{display:'flex',flexDirection:'column', width: {xs:'100px',sm:'250px',md:'250px'},border:"none",backgroundColor:'transparent' }}>
+            <Grid className="card" sx={{display:'flex',flexDirection:'column', width: {xs:'130px',sm:'190px',md:'250px'},border:"none",backgroundColor:'transparent' }}>
               <CardMedia
                 className="media"
                 component="img"
                 alt={card.title}
                 image={card.imageUrl}
-                sx={{ height: { xs: "50px", sm: "100px", md: "80px" }, objectFit: 'contain', width: '100%' }} // Adjusted styling
+                sx={{ height: { xs: "60px", sm: "70px", md: "80px" }, objectFit: 'contain', width: '100%' }} // Adjusted styling
               />
-               <Typography  component="div" sx={{textAlign:'center',height:'auto',color:'white',fontFamily:"Tahoma",fontSize:{xs:"13px",sm:"20px",md:"18px"}}}>
+               <Typography  component="div" sx={{textAlign:'center',height:'auto',color:'white',fontFamily:"Tahoma",fontSize:{xs:"13px",sm:"18px",md:"18px"}}}>
                   {card.title}
                 </Typography>
             </Grid>

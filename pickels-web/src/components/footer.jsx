@@ -22,8 +22,8 @@ const Footer = () => {
   return (
     <Grid container className="mt-5 w-100 h-auto"  style={{ position: 'relative', overflow: 'hidden', height: '100%' }}>
       
-      <Grid item xs={12} sm={11} md={12} className="contact-container" sx={{paddingTop:'10px 0'}} >
-        <Grid container sm={4} xs={5} sx={{paddingLeft:{xs:'10px',sm:'20px'},marginTop:'10px'}}>
+      <Grid item xs={12} sm={12} md={12} className="contact-container" sx={{paddingTop:'10px 0'}} >
+        <Grid container sm={6} md={4} lg={4} xs={5}  sx={{paddingLeft:{xs:'10px',sm:'20px'},marginTop:'10px'}}>
         <Box>
           <Typography variant="h6" className="fw-bold text-white">
             GET IN TOUCH
@@ -34,9 +34,9 @@ const Footer = () => {
         </Box>
         </Grid>
         <Grid container id="contact-details" xs={7}  sx={{marginTop:'10px'}}>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} md={6} lg={6} sm={12}>
             <Box display="flex"  alignItems="center">
-            <Box className="rounded-circle bg-white p-3 ">
+             <Box className="rounded-circle bg-white p-3 ">
              <PhoneIcon color="primary" />
             </Box>
               <Box>
@@ -49,12 +49,12 @@ const Footer = () => {
               </Box>
             </Box>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} md={6} lg={6} sm={12}>
             <Box display="flex"  alignItems="center">
               <Box className="rounded-circle bg-white p-3">
                 <MailIcon color="primary" />
               </Box>
-              <Box sx={{width:"70%"}}>
+              <Box sx={{width:{xs:'70%',sm:'90%',md:'90%',lg:'90%'}}}>
                 <Typography variant="h6" className="fw-bold text-white">
                   Mail
                 </Typography>
