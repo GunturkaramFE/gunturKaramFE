@@ -257,7 +257,7 @@ const handleSmFormBack=()=>{
         </Box>
       ) : (
         <>
-        <Grid sx={{width:'300px'}}>
+        <Grid sx={{width:'300px',height:'100%'}}>
           <Grid sx={{width:'100%',display:'flex',alignItems:'center',justifyContent:'center',height:"100px"}}>
       <Avatar size="large">
       {user.name ? user.name.charAt(0) : 'U'}
@@ -285,8 +285,10 @@ const handleSmFormBack=()=>{
           
           {navData?.isuser ? (
             <>
-              <Grid onClick={handleMobileLogout}  color="success" sx={{display:'flex',padding:"10px 10px",gap:'10px',marginTop:"530px",justifyContent:'center',alignItems:'center',backgroundColor:'#32CD32'}}>
+             <Grid sx={{height:'64.3%',display:'flex',alignItems:'end'}}>
+              <Grid onClick={handleMobileLogout}  color="success" sx={{width:'100%',display:'flex',padding:"10px 10px",gap:'10px',justifyContent:'center',alignItems:'center',backgroundColor:'#32CD32'}}>
               <Button sx={{color:"white"}} > LOGOUT</Button><ExitToAppIcon style={{color:'white'}}/> 
+              </Grid>
               </Grid>
             </>
           ) : (
