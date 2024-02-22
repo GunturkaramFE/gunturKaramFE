@@ -29,12 +29,12 @@ const Bestseller = () => {
 
   return (
     <Grid className="Best-Seller-Container" sx={{display:'flex',flexDirection:'column'}}>
-      <Grid sx={{height:{xs:'10vh',sm:"10vh",md:"10vh"}}}>
+      <Grid sx={{height:{xs:'10vh',sm:"15vh",md:"10vh"}}}>
       <Typography variant="h6" className="lead" sx={{padding:"10px 5px"}}>
         Top Best Sellers For You ...!
       </Typography>
       </Grid>
-      <Grid className="Best-seller-inner-card"  sx={{height:{xs:'auto',sm:'50vh',md:'50vh',lg:'50vh'},gap:{xs:"60px",sm:"0px",md:"0px"}}}>
+      <Grid className="Best-seller-inner-card"  sx={{height:{xs:'auto',sm:'auto',md:'50vh',lg:'50vh'},gap:{xs:"60px",sm:"45px",md:"0px"}}}>
         {items.map((x) => (
           <Grid  className="item-card" key={x.id} sx={{width:{xs:'80%',sm:"15%",md:"15%"},marginTop:{xs:"50px"}}}>
             <img src={x.url} alt="" />

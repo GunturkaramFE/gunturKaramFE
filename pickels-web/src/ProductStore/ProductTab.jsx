@@ -117,7 +117,7 @@ const ProductTab = () => {
             <CustomTabPanel value={value} index={0} sx={{ height: { xs: '91vh', sm: '75vh' } }} width="100%" style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
               <Grid container justifyContent="center" rowGap='26px'>
                 {filteredProducts.map((product, index) => (
-                  <Grid item key={index} xs={12} sm={6} md={4} lg={3} sx={{ paddingLeft: { xs: '30px', sm: '13px' } }}>
+                  <Grid item key={index} xs={12} sm={7} md={4} lg={3} sx={{ paddingLeft: { xs: '30px', sm: '0px' }}}>
                     <Card data={product} PopUpHandler={handlePopup} width='100%'/>
                   </Grid>
                 ))}
@@ -127,7 +127,7 @@ const ProductTab = () => {
               <CustomTabPanel key={index} value={value} index={index + 1} sx={{ height: { xs: '91vh', sm: '75vh' } }} width="100%" style={{ overflowY: 'scroll', overflowX: 'hidden' ,zIndex:0 }}>
                 <Grid container justifyContent="center" rowGap='26px'>
                   {filteredProducts.filter(product => product.subCategory === subcategory).map((product, index) => (
-                    <Grid item key={index} xs={12} sm={6} md={4} lg={3} sx={{ paddingLeft: { xs: '30px', sm: '13px' } }}>
+                    <Grid item key={index} xs={12} sm={7} md={4} lg={3} sx={{ paddingLeft: { xs: '30px', sm: '0px' } }}>
                       <Card data={product} PopUpHandler={handlePopup} width='100%' />
                     </Grid>
                   ))}

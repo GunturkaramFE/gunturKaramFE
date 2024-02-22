@@ -10,7 +10,7 @@ const AboutContainer = () => {
   return (
     <>
       <Grid sx={{ display: 'flex', flexDirection: isSmallScreen?'column':'row', width: '100%' }}>
-        <Grid item xs={12} sm={6} sx={{ height: isSmallScreen?'auto':'90vh', width:isSmallScreen?'100%':'50%' }}>
+        <Grid item xs={12} sm={5} sx={{ height: isSmallScreen?'auto':'90vh', width:isSmallScreen?'100%':'50%' }}>
           <Box
             sx={{
               width: '100%',
@@ -42,7 +42,7 @@ const AboutContainer = () => {
             </Box>
           </Box>
         </Grid>
-        <Grid item xs={12} sm={6} container direction="column" padding="0px" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Grid item xs={12} sm={7} container direction="column" padding="0px" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <Grid sx={{ width: '93%', display: 'flex', flexDirection: 'column', height: isSmallScreen?'auto':'80vh',gap:isSmallScreen?'10px':'0px',marginTop:isSmallScreen?'40px':'0px', justifyContent: 'space-evenly' }}>
             <Grid item>
               <Typography variant="h5" color="#5DB04D" >

@@ -110,9 +110,9 @@ const MyOrders = () => {
     <>
       <NavBar />
       {!loading ? (
-        <Grid sx={{ height: '100%', display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}>
+        <Grid sx={{ height: '100%', display: 'flex', flexDirection: { xs: 'column', sm: 'column',md:"row",lg:'row' } }}>
           {/* Filters section */}
-          <Grid variant="elevation" sx={{ width: { xs: '100%', sm: '15%' }, height: { xs: '4%', sm: '10%' }, display: 'flex', flexDirection: { xs: 'row', sm: 'column' }, justifyContent: 'center', alignItems: 'start' }}>
+          <Grid variant="elevation" sx={{ width: { xs: '100%', sm: '100%',md:'15%',lg:'15%' }, height: { xs: '4%', sm: '10%' }, display: 'flex', flexDirection: { xs: 'row', sm: 'row',md:"column",lg:"column" }, justifyContent: 'center', alignItems: 'start' }}>
             <Grid sx={{ width: "100%", padding: '10px' }}>
               <Typography sx={{ margin: '10px 0px', fontWeight: "bold" }}>ORDER TIME</Typography>
               <hr />
@@ -134,7 +134,7 @@ const MyOrders = () => {
           {/* Orders section */}
           <Paper
             sx={{
-              width: { xs: '100%', sm: '85%' },
+              width: { xs: '100%', sm: '100%',md:'85%',lg:'85%' },
               height: { xs: '80vh', sm: '82.7vh' },
               padding: '20px',
               overflowY: 'auto',

@@ -169,8 +169,8 @@ useEffect(() => {
       {loading?  <div style={{ width: '100%', height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <CircularProgress/>
         </div>:<Grid sx={{width:"100%",display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'space-evenly',gap:'20px',marginTop:"20px"}}>
-       <Grid sx={{width:"80%",display:'flex',justifyContent:"space-between",flexDirection:{xs:'column',sm:'row',md:'row'}}}>
-       <Card sx={{ width: {xs:'100%',sm:"60%",md:"60%"}, boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)', padding: '20px' }}>
+       <Grid sx={{width:"80%",display:'flex',justifyContent:"space-between",flexDirection:{xs:'column',sm:'column',md:'row'}}}>
+       <Card sx={{ width: {xs:'100%',sm:"100%",md:"60%"}, boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)', padding: '20px' }}>
             <Grid>
                 <Typography sx={{ fontWeight: 'bold',marginBottom:'10px' }}>Delivery Address</Typography>
                 {isEditable? (
@@ -297,7 +297,7 @@ useEffect(() => {
                 )}
             </Grid>
         </Card>
-        <Card sx={{width:{xs:"100%",sm:"38%",md:'38%'},boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',padding:'20px',height:{xs:"auto",sm:"160px",md:'160px'}}}>
+        <Card sx={{width:{xs:"100%",sm:"100%",md:'38%'},boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',padding:'20px',height:'auto'}}>
           <Typography variant='h6'>Billing address</Typography>
           <Grid sx={{width:'90%',fontFamily:'Tahoma',display:'flex',justifyContent:'center',alignItems:'center',margin:"10px"}}>
           <Typography variant="body1">

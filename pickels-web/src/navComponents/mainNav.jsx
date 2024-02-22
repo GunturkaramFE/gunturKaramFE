@@ -144,7 +144,7 @@ const handleSmFormBack=()=>{
   return (
     <Box className="nav">
       <Grid container>
-        <Grid item xs={2} sm={3} sx={{ width: '100%', height: { xs: 'auto', sm: '17vh' }, display: 'flex', alignItems: { sm: "start" } }}>
+        <Grid item xs={2} sm={2} sx={{ width: '100%', height: { xs: 'auto', sm: '17vh' }, display: 'flex', alignItems: { sm: "start" } }}>
           <img
             src={logo}
             alt=""
@@ -156,7 +156,7 @@ const handleSmFormBack=()=>{
           <SearchFilter />
         </Grid>
 
-        <Grid item xs={2} sm={3} className="carts" sx={{ display: 'flex', alignItems: 'center', justifyContent: "end",height: { xs: '6vh', sm: '17vh' } }}>
+        <Grid item xs={2} sm={4} className="carts" sx={{ display: 'flex', alignItems: 'center', justifyContent: "end",height: { xs: '6vh', sm: '17vh' } }}>
         <Drawer
                     anchor="right"
                     open={state.right}

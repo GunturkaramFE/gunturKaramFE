@@ -70,9 +70,9 @@ const Knowmore = () => {
      </Grid>
     </Grid>
 
-    <Grid lg={12} md={12} sm={12} xs={12} sx={{marginTop:"20px",display:"flex",flexDirection:{xs:'column',sm:'row',md:'row',lg:'row'}}}>
+  <Grid lg={12} md={12} sm={12} xs={12} sx={{marginTop:"20px",display:"flex",flexDirection:{xs:'column',sm:'column',md:'row',lg:'row'}}}>
   
-  <Grid xs={12} md={6} lg={6} sm={6} sx={{ width: {xs:"100",sm:"50%",md:"50%",lg:"50%"}, display: "flex", justifyContent: 'center', alignItems: 'center'}}>
+  <Grid xs={12} md={6} lg={6} sm={11} sx={{ width: {xs:"100",sm:"100%",md:"50%",lg:"50%"}, display: "flex", justifyContent: 'center', alignItems: 'center'}}>
   <Grid container sx={{width:{xs:'80%',sm:"65%",md:"65%",lg:'65%'},display:'flex',flexDirection:'column'}}>
     <Grid item sx={{ width: '100%',margin:"10px 0px",marginTop:"30px" }}>
       <Typography variant="h3" sx={{fontWeight:"bold"}}> " Best Pickles From Our GunturKaram "</Typography>
@@ -86,8 +86,8 @@ const Knowmore = () => {
   </Grid>
 </Grid>
 
-<Grid container xs={12} md={6} lg={6} sm={6} sx={{ display: "flex", justifyContent: 'center', alignItems: 'center', flexDirection: 'column',width: {xs:"100",sm:"50%",md:"50%",lg:"50%"} }}>
-  <Grid className='ImageKnowmore' sx={{ width: {xs:'50%',lg:'70%'}, height: {xs:'250px',lg:'80%',md:'80%',sm:'80%'}, display: "flex", justifyContent: "center", alignItems: "center" }}>
+<Grid container xs={12} md={6} lg={6} sm={12} sx={{ display: "flex", justifyContent: 'center', alignItems: 'center', flexDirection: 'column',width: {xs:"100",sm:"100%",md:"50%",lg:"50%"} }}>
+  <Grid className='ImageKnowmore' sx={{ width: {xs:'50%',lg:'70%'}, height: {xs:'250px',lg:'80%',md:'80%',sm:'400px'}, display: "flex", justifyContent: "center", alignItems: "center" }}>
     <img className='ImageKnowmore' style={{ maxWidth: "100%", maxHeight: "100%" }} src='https://holycowvegan.net/wp-content/uploads/2021/07/lime-pickle-nimbu-ka-achaar.jpg' alt='pickle' />
   </Grid>
 </Grid>
