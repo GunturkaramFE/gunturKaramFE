@@ -9,7 +9,7 @@ import PickleComponent from "./PickleComponent"
 import Bestseller from "./Topproducts"
 import TopProducts from "./TrendingProducts"
 import Advertisement from "./Advertisement"
-import Footer from "./footer"
+import Footer from "./footer";
 const Landing_page=()=>{
     return(
     <div style={{ width: "100%", height: "auto", backgroundColor: "#eeeee4" }}>

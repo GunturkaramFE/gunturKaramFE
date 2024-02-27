@@ -30,7 +30,7 @@
   align-items: end;  
 
 }
-.item-card img{
+.item-card>img{
   width: 100%;
  position: absolute;
   height: 60%;

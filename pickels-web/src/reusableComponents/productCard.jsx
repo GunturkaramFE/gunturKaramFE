@@ -7,7 +7,7 @@ import { parseProduct } from '../helpers/parser';
 import '../styles/productCard.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { draweropen } from '../store/lsDrawer';
-
+import OutStock from '../asserts/OutStock.png'
 const ProductCard = ({ productdetails, PopUpHandler }) => {
   const [isHovered, setIsHovered] = useState(false);
   const user = useSelector((state) => state.user);
@@ -15,7 +15,7 @@ const ProductCard = ({ productdetails, PopUpHandler }) => {
   return (
     <Card
       className="card"
-      sx={{ width: {xs:"18rem",sm:'14rem',md:"14rem"}, height: '38vh', marginTop: '10px', marginLeft: '12px', position: 'relative'}}
+      sx={{ width: {xs:"18rem",sm:'14rem',md:"14rem"}, height: '40vh', marginTop: '10px', marginLeft: '12px', position: 'relative',marginBottom:'8px'}}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -41,10 +41,15 @@ const ProductCard = ({ productdetails, PopUpHandler }) => {
         component="img"
         alt="Product Image"       
         image={productdetails.url}
-        sx={{ marginTop: '3px', objectFit: 'contain', height:{xs:"70%",md:"60%",sm:'60%'} }}
+        sx={{ marginTop: '3px', objectFit: 'contain', height:{xs:"65%",md:"60%",sm:'60%',lg:"57%"} }}
       />
 
       <CardContent style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+      <Grid>
+      {productdetails.stock ==0 && (
+        <img style={{ width: '100px', height: '23px' }} src={OutStock} alt='$/' />
+          )}
+      </Grid>
        <Typography variant="h6" component="div">
                {productdetails.title.length > 18 ? `${productdetails.title.slice(0, 18)}...` : productdetails.title}
        </Typography>

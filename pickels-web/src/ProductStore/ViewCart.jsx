@@ -12,6 +12,7 @@ import { Button, Card, CardContent, Grid, IconButton, Input, TextField, Typograp
 import { List, ListItem} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import EmptyData from '../reusableComponents/EmptyData';
+import OutStock from '../asserts/OutStock.png'
 const ViewCart = () => {
   const [isaddressPopup, setIsAddressPopup] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -197,12 +198,14 @@ navigate('/Confirm-order/',{ replace: true })
                               <img src={item.url} alt="Cotton T-shirt" style={{ width: '60px' }} />
                             </Grid>
                             <Grid item xs={3.5}>
-                              <Grid sx={{height:{xs:"auto",lg:"auto",md:'auto',sm:"auto"}}}>
+                               <Grid>
+                                {item.stock==0 && <img style={{width:'90px', height:'22px'}} src={OutStock} alt='$/'/>}  
+                               </Grid>
+                               <Grid sx={{height:{xs:"auto",lg:"auto",md:'auto',sm:"auto"}}}>
                               <Typography variant="h6" sx={{fontSize:{xs:"14px",sm:"20px",lg:'20px'}}}>
                                 {item.title}
                               </Typography>
-                              </Grid>
-                              
+                              </Grid>                              
                               <Typography variant="body2" color="textSecondary">
                                 <span className="text-muted">Item: </span>{item.subCategory}{' '}                            
                               </Typography>

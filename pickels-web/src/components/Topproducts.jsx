@@ -6,11 +6,10 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import RatingComponent from '../ProductStore/RatingComponent';
-
+import OutStock from '../asserts/OutStock.png';
 const Bestseller = () => {
   const [items, setItems] = useState([]);
   const navigate = useNavigate();
-
   const handleView = (id) => {
     window.open(`/ViewProduct/${id}`, '_blank');
   };
@@ -45,12 +44,20 @@ const Bestseller = () => {
       <Typography  variant="h6" className="card-title" sx={{fontFamily:'Comic Sans MS',marginTop:"20px"}}>
       { x.title.length > 25 ? `${x.title.slice(0, 25)}...` : x.title }
       </Typography>
-      </Grid>     
-      <Typography variant="body1" sx={{fontFamily:"Tahoma" ,fontSize:'14px'}}>
-        From &#x20B9;<span style={{ fontSize: '1.3em',fontFamily:'Tahoma' }}>{x.startingPrice}</span>
-      </Typography>
+      </Grid>   
       <Grid>
-      <RatingComponent/>
+      {x.stock==0 ? (
+                  <Grid>
+                    <img style={{ width: '100px', height: '23px' }} src={OutStock} alt='$/' />
+                  </Grid>
+                ) : (
+                  <Typography variant="body1" sx={{ fontFamily: "Tahoma", fontSize: '14px' }}>
+                    From &#x20B9;<span style={{ fontSize: '1.3em', fontFamily: 'Tahoma' }}>{x.startingPrice}</span>
+                  </Typography>
+                )}
+      </Grid>                
+      <Grid>
+        <RatingComponent rating={x.rating}/>
       </Grid>   
       <div className="buttons-container">
         <Stack spacing={1} direction="row"> {/* Decreased spacing from 2 to 1 */}

@@ -11,7 +11,7 @@ import api from '../api';
 import { CircularProgress, Grid } from '@mui/material';
 import AddToCartPopUp from '../reusableComponents/addToCartPopUp';
 import AddToCart from './AddToCart';
-
+import '../styles/rotatingprogress.css'
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
   return (
@@ -51,7 +51,14 @@ const ProductTab = () => {
   const [pop, setPopUp] = useState(false);
   const [popUpData, setPopUpData] = useState({});
   const [filteredProducts, setFilteredProducts] = useState([]);
-  
+  const [rotation, setRotation] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRotation((rotation) => (rotation + 1) % 360);
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, []);
   const fetchAllProducts = async () => {
     const products = await api.get('/user/get-all-products');
     dispatch(setAllProducts(products?.items || []));
@@ -138,7 +145,14 @@ const ProductTab = () => {
         </Box>
       ) : (
         <div style={{ width: '100%', height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <CircularProgress />
+        <div className="rotating-image">
+        <img
+          src="https://spyranretail.in/files/cache/catalog/new_products/Spyran-Mix-Pickle-200-g-188x250.png"
+          alt="Rotating Image"
+          className="rotate"
+          style={{ transform: `rotate(${rotation}deg)` }}
+        />
+        </div>
         </div>
       )}
     </>

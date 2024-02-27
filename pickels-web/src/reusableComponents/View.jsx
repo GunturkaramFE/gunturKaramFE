@@ -17,6 +17,7 @@ import { setShoppingData } from '../store/shoppingSlicer';
 import {updateUserWishList} from '../helpers/AddToWishlist'
 import Footer from '../components/footer';
 import { draweropen } from '../store/lsDrawer';
+import OutStock from '../asserts/OutStock.png'
 const View = () => {
   const [count, setCount] = useState(1);
   const [price, setPrice] = useState(0);
@@ -188,8 +189,11 @@ const HandleRemoveFromWhishList = async ()=>{
       ) : (
         <Container maxWidth="lg">
           <Grid container justifyContent="center" style={{ marginTop: '20px' }}>
-            <Grid item xs={12} sm={12} md={6} lg={6} style={{ padding: '20px' }}>
+            <Grid item xs={12} sm={12} md={6} lg={6} style={{ padding: '20px' ,position:'relative'}}>
               <img src={product.url} alt='$/' sx={{ width: '100%', height: '100vh', maxWidth: '100%' }} />
+              <Grid sx={{position:'absolute',top:{sm:55,md:50,lg:55},left:2}}>
+                {product.stock==0 && <img style={{width:'160px', height:'40px'}} src={OutStock} alt='$/'/>}
+              </Grid>
             </Grid>
             <Grid item xs={12} sm={12} md={6} lg={6} style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <Typography sx={{fontFamily:'Verdana'}} variant="h4">{product.title}</Typography>
@@ -274,7 +278,8 @@ const HandleRemoveFromWhishList = async ()=>{
                 <FavoriteIcon style={{ color: 'green', cursor: 'pointer' }} onClick={HandleRemoveFromWhishList} />
                 <Typography sx={{ fontSize: 15 }}>Added to wishlist</Typography>
               </div>}
-              <RatingComponent initialRating={product.rating} sx={{ margin: 0 }} />
+              <RatingComponent rating={product.rating} sx={{ margin: 0 }} />
+            
               <hr />
               <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '15px' }}>
                 <Box sx={{ display: 'flex' }}>
