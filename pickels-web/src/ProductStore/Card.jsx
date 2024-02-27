@@ -7,7 +7,7 @@ import RatingComponent from './RatingComponent';
 import { parseProduct } from '../helpers/parser';
 import { useDispatch, useSelector } from 'react-redux';
 import { draweropen } from '../store/lsDrawer';
-
+import OutStock from '../asserts/OutStock.png'
 const Card = ({ data, PopUpHandler }) => {
   const navigate = useNavigate();
   const [price, setPrice] = useState(JSON.parse(data.pricelist)[0]?.price || 0);
@@ -20,6 +20,9 @@ const Card = ({ data, PopUpHandler }) => {
           <div style={{ position: 'relative' }}>
             <div style={{ width: '100%', height: '50%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <img id='ImageHover' src={data.url || ''} alt="" style={{ objectFit: 'contain', height: '250px' }} />
+            </div>
+            <div style={{position:'absolute',top:20,left:5}}>
+              {data.stock==0&&<img style={{width:'90px', height:'22px'}} src={OutStock} alt='$/'/>} 
             </div>
           </div>
           <div style={{ width: '100%', height: '40%', padding: '0', margin: '0', display: 'flex', flexDirection: 'column', justifyContent: "center", alignItems: "center" }}>
@@ -43,7 +46,7 @@ const Card = ({ data, PopUpHandler }) => {
             </div>
             <bdi style={{ margin: '0', color: 'green', fontWeight: 'bold' }}><span>₹ </span>{price}</bdi>
             <div>
-              <RatingComponent />
+              <RatingComponent rating={data.rating}/>
             </div>
             <div style={{ display: 'flex', width: '100%', justifyContent: 'space-evenly', padding: '6px' }}>
               <button
