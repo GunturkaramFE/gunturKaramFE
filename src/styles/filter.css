@@ -1,0 +1,21 @@
+.filter{
+    width: 100%;
+    height: 40px;
+    display: flex;
+    border: 2px solid #d6dfe7;
+    /* border-radius: 5px; */
+}
+.filter:hover {
+    border-color:green; 
+  }
+
+
+
+.filter input:focus {
+    outline: none; 
+    border-color: initial;
+}
+.search-icon{
+    width: 10%;
+    height: 100%;
+}

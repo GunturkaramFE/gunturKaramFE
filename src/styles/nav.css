@@ -1,0 +1,21 @@
+.nav{
+    width: 100%;
+    height: auto;    
+    background-color: #ffffff;
+    border-bottom: 1px solid lightgrey;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 101;
+}
+.carts{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10%;
+    justify-content: end;
+    padding-right: 2%;    
+}
+.Drawer{
+    width: 40%;
+}

@@ -1,0 +1,74 @@
+/* styles.css */
+.Best-Seller-Container {
+  margin-left: 1%;
+  width: 97%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+ background-color:white;
+  box-sizing: border-box;
+  border-radius: 15px;
+}
+.Best-seller-inner-card  {
+ width: 100%;
+ height: 50vh;
+ display: flex;
+ margin: 10px 0 20px;
+ flex-wrap: wrap;
+ justify-content: space-around;
+ align-items: center;
+}
+.item-card{
+  min-width: 220px;
+  width: 15%;
+  position: relative;
+  display: flex;
+  justify-content:end;
+  height: 40vh;
+  margin-top: 1%;
+  flex-direction: column;
+  align-items: end;  
+
+}
+.item-card>img{
+  width: 100%;
+ position: absolute;
+  height: 60%;
+  object-fit: contain;
+  bottom:70%;
+  z-index:10;
+}
+.class-body-text-container{ 
+  display:flex;
+  min-height: 30vh;
+   width: 100%;
+   align-items:center;
+   justify-content: center;
+   flex-direction: column;
+  
+   }
+
+.item-card img:hover{
+  height: 160px;
+}
+.card-title{
+  margin-top: 10%;
+  font-family: cursive;
+  font-size: 18px;
+}
+.card-text{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.buttons-container{
+  width:100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+.buttons-container button:hover {
+  background-color: green;
+  color: white; /* Optional: Change text color to white on hover */
+}
+

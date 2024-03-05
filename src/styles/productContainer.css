@@ -1,0 +1,39 @@
+.product-container{
+    width: 100%;
+    height: 50vh;
+    display: flex;
+    flex-wrap: wrap; 
+    margin-left: 1px;   
+    border:2px solid grey
+    
+}
+.product-container {
+    width: 100%;
+    height: 50vh;
+    display: flex;
+    overflow-x: hidden; /* Hide horizontal overflow */
+    border: 2px solid grey;
+    position: relative;
+  }
+  
+  .product-container .arrow-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    outline: none;
+  }
+  
+  .product-container .arrow-button.left {
+    left: 10px;
+  }
+  
+  .product-container .arrow-button.right {
+    right: 10px;
+  }
+  
+  /* Add your styles for ProductCard */
+  

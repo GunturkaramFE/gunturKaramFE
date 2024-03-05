@@ -1,0 +1,33 @@
+.main-container-static {
+  width: 97%;
+  height: auto;
+  background-color: white;
+  margin: 1%;
+  overflow: hidden;    
+  border-radius: 15px;
+}
+
+.scroll-container {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 30%;
+  animation: scroll 20s linear infinite;
+}
+
+.item-container {
+  display: flex;
+  width: 100px;
+  box-sizing: border-box;
+  padding: 0 10px;
+  align-items: center;
+  margin-left: 79px;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

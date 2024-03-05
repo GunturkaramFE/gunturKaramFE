@@ -1,0 +1,50 @@
+.card {
+    position: relative;
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0); /* Initial background color set to transparent */
+    z-index: 10;
+    transition: background-color 1s ease-out; /* Use background-color for the transition */
+    /* pointer-events: none; */ /* Commented out this line */
+    transition-delay: 1s; /* Adjusted transition delay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.6); /* Background color added on hover */
+    transition-delay: 0s; /* Resetting transition delay for hover effect */
+}
+
+
+
+
+  
+  .overlay-content {
+    display: flex;
+    gap: 25px;
+  }
+  
+  .icon {
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .card:hover .overlay {
+    opacity: 1;
+  }
+  
+  .overlay-content span {
+    color: white;
+  }
+  .icon :hover{
+    color:red;
+  }

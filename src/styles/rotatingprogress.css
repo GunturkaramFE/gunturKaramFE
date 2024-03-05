@@ -1,0 +1,26 @@
+#Rotate-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    background-color: pink;
+  }
+  .rotating-image {
+    width: 180px;
+    height: 180px;
+    animation: rotateImage 1s linear infinite;
+  }
+  
+  @keyframes rotateImage {
+    0% {
+      transform: rotate(-80deg);
+    }
+    50% {
+      transform: rotate(120deg);
+    }
+    100% {
+      transform: rotate(-80deg);
+    }
+  }
+  

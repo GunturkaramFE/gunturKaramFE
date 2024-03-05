@@ -1,0 +1,100 @@
+{
+  "name": "pickels-web",
+  "homepage":"https://fildeal.com/webpickels/",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/core": "^11.0.0",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
+    "@mui/icons-material": "^5.15.0",
+    "@mui/joy": "^5.0.0-beta.22",
+    "@mui/material": "^5.15.0",
+    "@reduxjs/toolkit": "^2.0.1",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.6.3",
+    "bcryptjs": "^2.4.3",
+    "bootstrap": "^5.3.2",
+    "chart.js": "^3.9.1",
+    "jsonwebtoken": "^9.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-rating": "^2.0.5",
+    "react-razorpay": "^2.0.1",
+    "react-redux": "^9.0.4",
+    "react-router-dom": "^6.21.3",
+    "react-scripts": "5.0.1",
+    "react-select": "^5.8.0",
+    "react-select-country-list": "^2.2.3",
+    "react-swipeable": "^7.0.1",
+    "styled-components": "^6.1.2",
+    "uuid": "^9.0.1",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.ts",
+          "**/*.tsx"
+        ],
+        "parser": "@typescript-eslint/parser",
+        "parserOptions": {
+          "ecmaVersion": 2018,
+          "sourceType": "module",
+          "ecmaFeatures": {
+            "jsx": true
+          },
+          "warnOnUnsupportedTypeScriptVersion": true
+        },
+        "plugins": [
+          "@typescript-eslint"
+        ],
+        "rules": {
+          "default-case": "off",
+          "no-dupe-class-members": "off",
+          "@typescript-eslint/no-angle-bracket-type-assertion": "warn",
+          "no-array-constructor": "off",
+          "@typescript-eslint/no-array-constructor": "warn",
+          "@typescript-eslint/no-namespace": "error",
+          "no-unused-vars": "off",
+          "@typescript-eslint/no-unused-vars": [
+            "warn",
+            {
+              "args": "none",
+              "ignoreRestSiblings": true
+            }
+          ],
+          "no-useless-constructor": "off",
+          "@typescript-eslint/no-useless-constructor": "warn"
+        }
+      }
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
