@@ -22,8 +22,8 @@ const AdminDashboard = () => {
   
       let obj = {
         filter: {
-          startdate: startDate.toISOString(), // Convert to ISO string
-          enddate: endOfDay.toISOString() // Convert to ISO string
+          startdate: startDate.toISOString(), 
+                    enddate: endOfDay.toISOString()
         }
       };
   

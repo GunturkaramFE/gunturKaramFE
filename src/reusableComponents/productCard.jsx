@@ -29,7 +29,7 @@ const ProductCard = ({ productdetails, PopUpHandler }) => {
               <AddShoppingCart className="icon" />
               <h6>Add</h6>
             </span>
-            <span className="animate__animated animate__headShake" onClick={() => window.open(`/ViewProduct/${productdetails.id}`, '_blank')}>
+            <span className="animate__animated animate__headShake" onClick={() =>window.open(`https://www.fildeal.com/gunturukaramweb/ViewProduct/${productdetails.id}`, '_blank')}>
               <Visibility className="icon" />
               <h6>View</h6>
             </span>

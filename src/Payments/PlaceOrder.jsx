@@ -86,7 +86,7 @@ const PlaceOrder = () => {
       const paymentObject = new Razorpay(options);
       paymentObject.open();
     } 
-    console.log('created ',responseorder)
+
   
     let orderData = {
       UserID: shoppingData.userId,

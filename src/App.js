@@ -56,9 +56,10 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter basename='gunturukaramweb'>
         {isOnline ? (
           <Routes>
+            <Route path="/welcome" element={<div>welcome</div>}/>
             <Route path="/" element={<LandingPage/>}/>
             <Route path="/verify" element={<VerifyDiv/>}/>
             <Route path="/ViewCart" element={user.id ?<ViewCart/> : <Navigate to="/" />} />
@@ -95,7 +96,7 @@ function App() {
                 }
               />
             ) : (
-              // Render the Alertpage component for non-admin users accessing admin pages
+              
               <Route path="/admin-menu/*" element={<Alertpage message="You are not authorized to access this page" 
               src="https://icon-library.com/images/not-found-icon/not-found-icon-6.jpg" navigation='/'
               />} />

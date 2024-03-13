@@ -11,8 +11,9 @@ const Bestseller = () => {
   const [items, setItems] = useState([]);
   const navigate = useNavigate();
   const handleView = (id) => {
-    window.open(`/ViewProduct/${id}`, '_blank');
+    window.open(`https://www.fildeal.com/gunturukaramweb/ViewProduct/${id}`, '_blank');
   };
+
    
   const fetchItems = async () => {
     const response = await api.get(`/user/sort-items/${4}`);
